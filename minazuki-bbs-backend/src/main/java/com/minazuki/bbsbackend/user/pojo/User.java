@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class User {
 
     private Long id;
-    private int role;
+    private boolean isAdmin;
     private String userName;
     private String password;
 
@@ -19,6 +19,7 @@ public class User {
     private LocalDateTime lastSignIn;
     private String email;
     private String phoneNumber;
+    private int adminCategoryId;
 
     public Long getId() {
         return id;
@@ -26,11 +27,11 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-    public int getRole() {
-        return role;
+    public boolean isAdmin() {
+        return isAdmin;
     }
-    public void setRole(int role) {
-        this.role = role;
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
     public String getUserName() {
         return userName;
@@ -79,5 +80,11 @@ public class User {
     }
     public void setLastSignIn(LocalDateTime lastSignIn) {
         this.lastSignIn = lastSignIn;
+    }
+    public int getAdminCategoryId() {
+        return adminCategoryId;
+    }
+    public void setAdminCategoryId(int adminCategoryId) {
+        this.adminCategoryId = adminCategoryId;
     }
 }
