@@ -30,7 +30,7 @@ public class UserController {
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", user);
     }
 
-    @RequestMapping("/signup")
+    @RequestMapping("/signUp")
     public void signUp(HttpServletRequest request) {
         User user = new User();
         user.setUsername(request.getParameter("username"));
@@ -43,8 +43,9 @@ public class UserController {
         user.setAdmin(false);
         userDao.addUser(user);
     }
-
+    @RequestMapping("/signIn")
     public void signIn(HttpServletRequest request) {
         String userName = request.getParameter("username");
+        String password = request.getParameter("password");
     }
 }

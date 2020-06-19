@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class JwtUtilTest {
 
     @Test
-    public void sigh() {
+    public void sign() {
         User user = new User();
         user.setId(1L);
         user.setUsername("testUserName");
@@ -19,7 +19,7 @@ public class JwtUtilTest {
 
     @Test
     public void verify() {
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtaW5henVraS1iYnMiLCJleHAiOjE1OTIzOTQ4NjUsInVzZXJJZCI6MSwiaWF0IjoxNTkyMzg3NjY1LCJ1c2VybmFtZSI6InRlc3RVc2VyTmFtZSJ9.fcuacUU7I2r-M_fLn09PhQSYRIzXboHiHBEYAcX4lVM";
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJtaW5henVraS1iYnMiLCJleHAiOjE1OTI1OTgyMjIsInVzZXJJZCI6MSwiaWF0IjoxNTkyNTkxMDIyLCJ1c2VybmFtZSI6InRlc3RVc2VyTmFtZSJ9.kr3SJwxarKJSlkLj5rwd95EsQ5Cd21jzTaWMSn32psQ";
         System.out.println("解析token: userId = " + JwtUtil.verify(token));
     }
 }
