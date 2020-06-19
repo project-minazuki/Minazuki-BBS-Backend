@@ -37,7 +37,7 @@ public class JwtUtil {
         map.put("typ", "JWT");
         return JWT.create().withHeader(map)
                 .withClaim("userId", user.getId())
-                .withClaim("username", user.getUserName())
+                .withClaim("username", user.getUsername())
                 .withIssuer("minazuki-bbs")
                 .withIssuedAt(DateUtil.localDateTimeToDate(LocalDateTime.now()))
                 .withExpiresAt(DateUtil.localDateTimeToDate(LocalDateTime.now().plusHours(2)))

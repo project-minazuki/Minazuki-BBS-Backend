@@ -5,11 +5,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Component
+
 public class Category {
 
     private int id;
-    private Long categoryAdminId;
     private String categoryName;
     private boolean status;
     private String description;
@@ -22,12 +21,6 @@ public class Category {
     }
     public void setId(int id) {
         this.id = id;
-    }
-    public Long getCategoryAdminId() {
-        return categoryAdminId;
-    }
-    public void setCategoryAdminId(Long categoryAdminId) {
-        this.categoryAdminId = categoryAdminId;
     }
     public String getCategoryName() {
         return categoryName;

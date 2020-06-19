@@ -3,32 +3,32 @@ package com.minazuki.bbsbackend.bbs.pojo;
 import java.time.LocalDateTime;
 
 public class Post {
-    private Long id;
-    private Long targetPostId;
-    private int creatorId;
+    private long id;
+    private long targetPostId;
+    private long creatorId;
     private LocalDateTime createdAt;
     private String content;
     private int order;
     private int likesCount;
     private int unlikesCount;
-    private int themeId;
+    private long themeId;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
-    public Long getTargetPostId() {
+    public long getTargetPostId() {
         return targetPostId;
     }
-    public void setTargetPostId(Long targetPostId) {
+    public void setTargetPostId(long targetPostId) {
         this.targetPostId = targetPostId;
     }
-    public int getCreatorId() {
+    public long getCreatorId() {
         return creatorId;
     }
-    public void setCreatorId(int creatorId) {
+    public void setCreatorId(long creatorId) {
         this.creatorId = creatorId;
     }
     public LocalDateTime getCreatedAt() {
@@ -61,10 +61,10 @@ public class Post {
     public void setUnlikesCount(int unlikesCount) {
         this.unlikesCount = unlikesCount;
     }
-    public int getThemeId() {
+    public long getThemeId() {
         return themeId;
     }
-    public void setThemeId(int themeId) {
+    public void setThemeId(long themeId) {
         this.themeId = themeId;
     }
 }

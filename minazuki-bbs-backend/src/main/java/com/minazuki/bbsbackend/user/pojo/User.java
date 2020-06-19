@@ -1,30 +1,28 @@
 package com.minazuki.bbsbackend.user.pojo;
 
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.type.Alias;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Component("user")
+@Alias("user")
 public class User {
 
-    private Long id;
+    private long id;
     private boolean isAdmin;
-    private String userName;
+    private String username;
     private String password;
 
-    private String nickName;
+    private String nickname;
     private String avatarUrl;
     private LocalDateTime createdAt;
     private LocalDateTime lastSignIn;
     private String email;
     private String phoneNumber;
-    private int adminCategoryId;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
     public boolean isAdmin() {
@@ -33,11 +31,11 @@ public class User {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public String getPassword() {
         return password;
@@ -45,11 +43,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
     public String getAvatarUrl() {
         return avatarUrl;
@@ -80,11 +78,5 @@ public class User {
     }
     public void setLastSignIn(LocalDateTime lastSignIn) {
         this.lastSignIn = lastSignIn;
-    }
-    public int getAdminCategoryId() {
-        return adminCategoryId;
-    }
-    public void setAdminCategoryId(int adminCategoryId) {
-        this.adminCategoryId = adminCategoryId;
     }
 }

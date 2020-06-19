@@ -13,7 +13,7 @@ public class JwtUtilTest {
     public void sigh() {
         User user = new User();
         user.setId(1L);
-        user.setUserName("testUserName");
+        user.setUsername("testUserName");
         System.out.println("测试jwt:token = " + JwtUtil.sign(user));
     }
 

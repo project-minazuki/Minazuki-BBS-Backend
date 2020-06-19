@@ -6,22 +6,22 @@ import java.time.LocalDateTime;
 
 @Alias("theme")
 public class Theme {
-    private Long id;
+    private long id;
     private boolean isHighQuality;
     private boolean status;
     private String themeTitle;
-    private Long createdUserId;
+    private long createdUserId;
     private int categoryId;
     private int visitsCount;
     private LocalDateTime lastUpdatedTime;
     private int replyCount;
-    private int latestReplyId;
+    private long latestReplyId;
     private LocalDateTime latestReplyTime;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
     public boolean isHighQuality() {
@@ -40,10 +40,10 @@ public class Theme {
     public void setThemeTitle(String themeTitle) {
         this.themeTitle = themeTitle;
     }
-    public Long getCreatedUserId() {
+    public long getCreatedUserId() {
         return createdUserId;
     }
-    public void setCreatedUserId(Long createdUserId) {
+    public void setCreatedUserId(long createdUserId) {
         this.createdUserId = createdUserId;
     }
     public int getCategoryId() {
@@ -70,10 +70,10 @@ public class Theme {
     public void setReplyCount(int replyCount) {
         this.replyCount = replyCount;
     }
-    public int getLatestReplyId() {
+    public long getLatestReplyId() {
         return latestReplyId;
     }
-    public void setLatestReplyId(int latestReplyId) {
+    public void setLatestReplyId(long latestReplyId) {
         this.latestReplyId = latestReplyId;
     }
     public LocalDateTime getLatestReplyTime() {

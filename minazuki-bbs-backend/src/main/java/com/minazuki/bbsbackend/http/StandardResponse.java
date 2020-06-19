@@ -1,20 +1,22 @@
 package com.minazuki.bbsbackend.http;
 
-public class ApiResponse<T> {
+public class StandardResponse<T> {
     private Integer code;
     private String msg;
     private T data;
+    public static int SUCCESS_CODE = 1;
+    public static int FAILURE_CODE = -1;
 
-    public ApiResponse(Integer code, String msg, T data) {
+    public StandardResponse(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public Integer getCode() {
+    public int getCode() {
         return code;
     }
-    public void setCode(Integer code) {
+    public void setCode(int code) {
         this.code = code;
     }
     public String getMsg() {
