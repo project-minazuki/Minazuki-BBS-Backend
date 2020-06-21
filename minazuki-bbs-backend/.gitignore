@@ -29,6 +29,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### SpringBoot application.yml ###
-/src/main/resources/application.yml
