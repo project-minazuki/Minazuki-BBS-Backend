@@ -6,7 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 public class UserDaoTest {
@@ -23,9 +24,9 @@ public class UserDaoTest {
          * @author hlodice
          * @date 2020/6/20 22:37
          */
-       User user = new User(false, "username2", "password", "nickname2",
-                        "wdnmd", true, null, LocalDateTime.now(), LocalDateTime.now(),
-                        "12345", "12345");
+       User user = User.builder().isAdmin(false).username("user name balabala").password("nmnsdms").nickname("tfeqwem")
+               .avatarUrl("asfkjasnf").createdAt(LocalDateTime.now()).lastSignIn(LocalDateTime.now()).email("safnbaskjf")
+               .phoneNumber("12412312").signature("wfasjkfnas").privacyShow(true).build();
        userDao.addUser(user);
     }
 
@@ -38,74 +39,95 @@ public class UserDaoTest {
          * @author hlodice
          * @date 2020/6/20 22:46
          */
-        long deleteTestId = 2;
+        int deleteTestId = 2;
         userDao.deleteUser(deleteTestId);
     }
 
     @Test
     public void selectUserTest() {
         /**
-         * @Description: 建议开debug一个字段的选择语句一个字段的检查
+         * @Description: 搜索功能测试，使用map传参
          * @param []
          * @return void
          * @author hlodice
-         * @date 2020/6/21 0:13
+         * @date 2020/6/21 19:55
          */
-        User user = new User();
-        user.setId(3);
-        System.out.println(userDao.searchUser(user));
-        user = new User();
-        user.setAdmin(true);
-        System.out.println(userDao.searchUser(user));
-        user = new User();
-        user.setNickname("e2");
-        System.out.println(userDao.searchUser(user));
-        user = new User();
-        user.setEmail("123");
-        System.out.println(userDao.searchUser(user));
-        user = new User();
-        user.setPhoneNumber("666");
-        System.out.println(userDao.searchUser(user));
+        Map<String, Object> testArgs = new HashMap<>();
+        testArgs.put("id", 4);
+        System.out.println(userDao.searchUser(testArgs));
+        testArgs.remove("id");
+        testArgs.put("isAdmin", true);
+        System.out.println(userDao.searchUser(testArgs));
+        testArgs.remove("isAdmin");
+        testArgs.put("username", "new");
+        System.out.println(userDao.searchUser(testArgs));
+        testArgs.remove("username");
+        testArgs.put("nickname", "kna");
+        System.out.println(userDao.searchUser(testArgs));
+        testArgs.remove("nickname");
+        testArgs.put("signature", "si");
+        System.out.println(userDao.searchUser(testArgs));
+        testArgs.remove("signature");
+        testArgs.put("privacyShow", true);
+        System.out.println(userDao.searchUser(testArgs));
+        testArgs.remove("privacyShow");
+        testArgs.put("email", "43");
+        System.out.println(userDao.searchUser(testArgs));
+        testArgs.remove("email");
+        testArgs.put("phoneNumber", "66");
+        System.out.println(userDao.searchUser(testArgs));
     }
 
     @Test
     public void updateUserTest() {
         /**
-         * @Description: 这里打好了断电，可以debug，每次只修改一个字段，检查是否均正常修改
+         * @Description: 更新用户测试，改用Map传参
          * @param []
          * @return void
          * @author hlodice
-         * @date 2020/6/20 23:09
+         * @date 2020/6/21 18:27
          */
-        User user = new User();
-        user.setId(1);
-        user.setAdmin(true);
-        userDao.updateUser(user);
-        user = new User();
-        user.setId(1);
-        user.setNickname("new nickname");
-        userDao.updateUser(user);
-        user = new User();
-        user.setId(1);
-        user.setSignature("new Signature");
-        userDao.updateUser(user);
-        user = new User();
-        user.setId(1);
-        user.setPrivacyShow(false);
-        userDao.updateUser(user);
-        user = new User();
-        user.setId(1);
-        user.setAvatarUrl("new avatar url");
-        userDao.updateUser(user);
-        user = new User();
-        user.setId(1);
-        user.setPhoneNumber("6666666");
-        userDao.updateUser(user);
-        user = new User();
-        user.setId(1);
-        user.setEmail("sjkfansjkfnbaskj@newemail.com");
-        userDao.updateUser(user);
+        Map<String, Object> testArgs = new HashMap<>();
+        testArgs.put("id", 4);
+        testArgs.put("isAdmin", true);
+        userDao.updateUser(testArgs);
+        testArgs.remove("isAdmin");
+        testArgs.put("username", "new username bsioasd");
+        userDao.updateUser(testArgs);
+        testArgs.remove("username");
+        testArgs.put("password", "new password bsioasd");
+        userDao.updateUser(testArgs);
+        testArgs.remove("password");
+        testArgs.put("nickname", "new nickname bsioasd");
+        userDao.updateUser(testArgs);
+        testArgs.remove("nickname");
+        testArgs.put("avatarUrl", "new url bsioasd");
+        userDao.updateUser(testArgs);
+        testArgs.remove("avatarUrl");
+        testArgs.put("createdAt", LocalDateTime.now());
+        userDao.updateUser(testArgs);
+        testArgs.remove("createdAt");
+        testArgs.put("lastSignIn", LocalDateTime.now());
+        userDao.updateUser(testArgs);
+        testArgs.remove("lastSignIn");
+        testArgs.put("email", "new email");
+        userDao.updateUser(testArgs);
+        testArgs.remove("email");
+        testArgs.put("phoneNumber", "124124");
+        userDao.updateUser(testArgs);
+        testArgs.remove("phoneNumber");
+        testArgs.put("signature", "new signature");
+        userDao.updateUser(testArgs);
+        testArgs.remove("signature");
+        testArgs.put("privacyShow", false);
+        userDao.updateUser(testArgs);
     }
 
-
+    @Test
+    public void getUserByUniqueKeyTest() {
+        Map<String, Object> testArgs = new HashMap<>();
+        testArgs.put("username", "username1");
+        testArgs.put("nickname", "niiiii");
+        System.out.println(userDao.getUserByUniqueKey(testArgs));
+    }
 }

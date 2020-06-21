@@ -12,7 +12,7 @@ public class JwtUtilTest {
     @Test
     public void sign() {
         User user = new User();
-        user.setId(1L);
+        user.setId(1);
         user.setUsername("testUserName");
         System.out.println("测试jwt:token = " + JwtUtil.sign(user));
     }

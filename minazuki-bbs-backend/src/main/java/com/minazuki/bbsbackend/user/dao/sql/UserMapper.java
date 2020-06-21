@@ -4,6 +4,7 @@ import com.minazuki.bbsbackend.user.pojo.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -18,7 +19,7 @@ public interface UserMapper {
     void deleteUser(@Param("id") long id);
 
     @UpdateProvider(type = UserSqlProvider.class, method = "update")
-    void updateUser(@Param("user") User user);
+    void updateUser(@Param("args")Map<String, Object> args);
 
     @SelectProvider(type = UserSqlProvider.class, method = "select")
     @Results({
@@ -28,7 +29,17 @@ public interface UserMapper {
             @Result(property = "lastSignIn", column = "last_signin_time"),
             @Result(property = "privacyShow", column = "privacy_show")
     })
-    List<User> selectUser(@Param("user") User user);
+    List<User> selectUser(@Param("args") Map<String, Object> args);
+
+    @SelectProvider(type = UserSqlProvider.class, method = "uniqueCheck")
+    @Results({
+            @Result(property = "isAdmin", column = "is_admin"),
+            @Result(property = "avatarUrl", column = "avatar_url"),
+            @Result(property = "createdAt", column = "created_time"),
+            @Result(property = "lastSignIn", column = "last_signin_time"),
+            @Result(property = "privacyShow", column = "privacy_show")
+    })
+    User getUserByUniqueKey(@Param("args") Map<String, Object> args);
 
 
 }

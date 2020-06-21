@@ -4,45 +4,53 @@ import com.minazuki.bbsbackend.http.StandardResponse;
 import com.minazuki.bbsbackend.user.dao.UserDao;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.user.pojo.User.UserBuilder;
+import com.minazuki.bbsbackend.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserDao userDao;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserDao userDao) {
-        this.userDao = userDao;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/{userId}")
     @ResponseBody
-    public StandardResponse<User> searchUserById(@PathVariable Long userId) {
-        List<User> users = userDao.searchUser(User.builder().id(userId).build());
-        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", users.get(0));
+    public StandardResponse<User> getUserById(@PathVariable int userId) {
+        User user = userService.index(userId);
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", user);
+    }
+
+    @GetMapping("/search")
+    @ResponseBody
+    public StandardResponse<List<User>> searchUsers(@RequestParam Map<String, Object> args) {
+        List<User> users = userService.search(args);
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", users);
     }
 
     @PostMapping("/signUp")
-    public void signUp(HttpServletRequest request) {
-        User user = new User();
-        user.setUsername(request.getParameter("username"));
-        user.setPassword(request.getParameter("password"));
-        user.setNickname(request.getParameter("nickname"));
-        user.setEmail(request.getParameter("email"));
-        user.setPhoneNumber(request.getParameter("phoneNumber"));
-        user.setCreatedAt(LocalDateTime.now());
-        user.setLastSignIn(LocalDateTime.now());
-        user.setAdmin(false);
-        userDao.addUser(user);
+    @ResponseBody
+    public StandardResponse<Object> signUp(@RequestParam Map<String, Object> args) {
+        try {
+            userService.signUp(args);
+        } catch (Exception e) {
+            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
+        }
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", args.get("username"));
     }
+
     @PostMapping("/signIn")
     public void signIn(HttpServletRequest request) {
         String userName = request.getParameter("username");
