@@ -34,7 +34,11 @@ public class UserDao {
         this.sqlSession.update("updateUser", args);
     }
 
-    public User getUserByUniqueKey(Map<String, Object> args) {
-        return this.sqlSession.selectOne("getUserByUniqueKey", args);
+    public List<User> getUserByUniqueKey(Map<String, Object> args) {
+        return this.sqlSession.selectList("getUserByUniqueKey", args);
+    }
+
+    public User signInCheck(Map<String, Object> signInInfo) {
+        return this.sqlSession.selectOne("signInCheck", signInInfo);
     }
 }

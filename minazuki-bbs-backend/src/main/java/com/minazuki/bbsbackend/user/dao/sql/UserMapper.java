@@ -39,7 +39,16 @@ public interface UserMapper {
             @Result(property = "lastSignIn", column = "last_signin_time"),
             @Result(property = "privacyShow", column = "privacy_show")
     })
-    User getUserByUniqueKey(@Param("args") Map<String, Object> args);
+    List<User> getUserByUniqueKey(@Param("args") Map<String, Object> args);
 
-
+    @Select("SELECT * FROM user WHERE password = #{password} AND " +
+            "(username = #{username} OR email = #{username} OR phonenumber = #{username})")
+    @Results({
+            @Result(property = "isAdmin", column = "is_admin"),
+            @Result(property = "avatarUrl", column = "avatar_url"),
+            @Result(property = "createdAt", column = "created_time"),
+            @Result(property = "lastSignIn", column = "last_signin_time"),
+            @Result(property = "privacyShow", column = "privacy_show")
+    })
+    User signInCheck(@Param("signInInfo") Map<String, Object> signInInfo);
 }

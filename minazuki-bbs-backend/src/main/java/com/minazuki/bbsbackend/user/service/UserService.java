@@ -1,8 +1,10 @@
 package com.minazuki.bbsbackend.user.service;
 
 import com.minazuki.bbsbackend.user.dao.UserDao;
+import com.minazuki.bbsbackend.user.exception.DuplicateRegistrationInfoException;
+import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.pojo.User;
-import com.minazuki.bbsbackend.user.util.ArgsUtil;
+import com.minazuki.bbsbackend.user.util.JwtUtil;
 import com.minazuki.bbsbackend.user.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +34,9 @@ public class UserService {
         return userDao.searchUser(args).get(0);
     }
 
-    public boolean signUp(Map<String, Object> signUpArgs) throws Exception {
-        User user = userDao.getUserByUniqueKey(signUpArgs);
-        if (user == null) {
+    public boolean signUp(Map<String, Object> signUpArgs) throws DuplicateRegistrationInfoException {
+        List<User> users = userDao.getUserByUniqueKey(signUpArgs);
+        if (users.size() == 0) {
             User newUser = User.builder().isAdmin(false).username((String) signUpArgs.get("username"))
                     .password(PasswordUtil.encryptPassword((String) signUpArgs.get("password")))
                     .nickname((String) signUpArgs.get("nickname")).privacyShow(true)
@@ -44,15 +46,25 @@ public class UserService {
             userDao.addUser(newUser);
             return true;
         } else {
-            if (user.getUsername().equals(signUpArgs.get("username")))
-                throw new Exception("username duplicated");
-            if (user.getNickname().equals(signUpArgs.get("nickname")))
-                throw new Exception("nickname duplicated");
-            if (user.getPhoneNumber().equals(signUpArgs.get("phoneNumber")))
-                throw new Exception("phoneNumber duplicated");
-            if (user.getEmail().equals(signUpArgs.get("email")))
-                throw new Exception("email duplicated");
+            DuplicateRegistrationInfoException e = new DuplicateRegistrationInfoException();
+            for (User user: users
+                 ) {
+                if (user.getUsername().equals(signUpArgs.get("username")))
+                    e.addDuplicateInfo("username");
+                if (user.getNickname().equals(signUpArgs.get("nickname")))
+                    e.addDuplicateInfo("nickname");
+                if (user.getPhoneNumber().equals(signUpArgs.get("phoneNumber")))
+                    e.addDuplicateInfo("phoneNumber");
+                if (user.getEmail().equals(signUpArgs.get("email")))
+                    e.addDuplicateInfo("email");
+            }
+            throw e;
         }
-        return false;
+    }
+
+    public String signIn(Map<String, Object> signInInfo) throws NoUserMatchException {
+        signInInfo.replace("password", PasswordUtil.encryptPassword((String) signInInfo.get("password")));
+        User user = userDao.signInCheck(signInInfo);
+        return JwtUtil.sign(user);
     }
 }

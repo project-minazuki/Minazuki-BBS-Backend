@@ -2,6 +2,8 @@ package com.minazuki.bbsbackend.user.controlloer;
 
 import com.minazuki.bbsbackend.http.StandardResponse;
 import com.minazuki.bbsbackend.user.dao.UserDao;
+import com.minazuki.bbsbackend.user.exception.DuplicateRegistrationInfoException;
+import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.user.pojo.User.UserBuilder;
 import com.minazuki.bbsbackend.user.service.UserService;
@@ -42,18 +44,24 @@ public class UserController {
 
     @PostMapping("/signUp")
     @ResponseBody
-    public StandardResponse<Object> signUp(@RequestParam Map<String, Object> args) {
+    public StandardResponse<Object> signUp(@RequestParam Map<String, Object> signUpInfo) {
         try {
-            userService.signUp(args);
-        } catch (Exception e) {
-            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
+            userService.signUp(signUpInfo);
+        } catch (DuplicateRegistrationInfoException e) {
+            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), e.getData());
         }
-        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", args.get("username"));
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
 
     @PostMapping("/signIn")
-    public void signIn(HttpServletRequest request) {
-        String userName = request.getParameter("username");
-        String password = request.getParameter("password");
+    @ResponseBody
+    public StandardResponse<String> signIn(@RequestParam Map<String, Object> signInInfo) {
+        String token = "";
+        try {
+            token = userService.signIn(signInInfo);
+        } catch (NoUserMatchException e) {
+            return new StandardResponse<>(StandardResponse.FAILURE_CODE, "failure", null);
+        }
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", token);
     }
 }

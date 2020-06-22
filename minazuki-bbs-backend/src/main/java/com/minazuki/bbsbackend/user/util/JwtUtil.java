@@ -5,10 +5,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -44,17 +46,21 @@ public class JwtUtil {
                 .sign(algorithm);
     }
 
-    public static Long verify(String token) {
-        Long userId = 0L;
+    public static int verify(String token) throws JWTVerificationException {
+        int userId;
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             JWTVerifier jwtVerifier = JWT.require(algorithm)
                     .withIssuer("minazuki-bbs")
                     .build();
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
-            userId = decodedJWT.getClaim("userId").asLong();
+            userId = decodedJWT.getClaim("userId").asInt();
+        } catch (TokenExpiredException e) {
+            log.error("token过期, exception = " + e.toString());
+            throw e;
         } catch (JWTVerificationException e) {
-            log.error("解析token失败, exception = ", e.toString());
+            log.error("解析token失败, exception = " + e.toString());
+            throw e;
         }
         return userId;
     }
