@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.minazuki.bbsbackend.user.annotation.PassToken;
 import com.minazuki.bbsbackend.user.annotation.UserLoginToken;
+import com.minazuki.bbsbackend.user.exception.UnauthenticatedException;
 import com.minazuki.bbsbackend.user.util.JwtUtil;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,16 +38,16 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             if (userLoginToken.required()) {
                 //执行认证
                 if (token == null) {
-                    throw new RuntimeException("missing the token");
+                    throw new UnauthenticatedException("missing the token");
                 }
                 //获取 token 中的 username
                 try {
                     JwtUtil.verify(token);
                 } catch (TokenExpiredException e) {
-                    throw new RuntimeException("The token expired", e);
+                    throw new UnauthenticatedException("The token expired", e);
                 }
                 catch (JWTVerificationException e) {
-                    throw new RuntimeException("Token verify failed", e);
+                    throw new UnauthenticatedException("Token verify failed", e);
                 }
                 return true;
             }

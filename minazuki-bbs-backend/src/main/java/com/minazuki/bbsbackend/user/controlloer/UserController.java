@@ -1,9 +1,11 @@
 package com.minazuki.bbsbackend.user.controlloer;
 
 import com.minazuki.bbsbackend.http.StandardResponse;
+import com.minazuki.bbsbackend.user.annotation.UserLoginToken;
 import com.minazuki.bbsbackend.user.dao.UserDao;
 import com.minazuki.bbsbackend.user.exception.DuplicateRegistrationInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
+import com.minazuki.bbsbackend.user.exception.UnauthenticatedException;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.user.pojo.User.UserBuilder;
 import com.minazuki.bbsbackend.user.service.UserService;
@@ -28,8 +30,10 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @GetMapping("/{userId}")
     @ResponseBody
+    @UserLoginToken
     public StandardResponse<User> getUserById(@PathVariable int userId) {
         User user = userService.index(userId);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", user);
@@ -63,5 +67,11 @@ public class UserController {
             return new StandardResponse<>(StandardResponse.FAILURE_CODE, "failure", null);
         }
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", token);
+    }
+
+    @ResponseBody
+    @ExceptionHandler({UnauthenticatedException.class})
+    public StandardResponse<Object> authenticationException(UnauthenticatedException e) {
+        return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
     }
 }
