@@ -1,70 +1,86 @@
-package com.minazuki.bbsbackend.bbs.pojo;
+package com.minazuki.bbsbackend.bbs.Post.pojo;
+
+import lombok.Builder;
+import lombok.ToString;
+import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
 
+@Alias("Post")
+@ToString
+@Builder
 public class Post {
-    private long id;
-    private long targetPostId;
-    private long creatorId;
+
+    private Integer id;
+    private Integer creatorId;
     private LocalDateTime createdAt;
     private String content;
-    private int order;
-    private int likesCount;
-    private int unlikesCount;
-    private long themeId;
+    private Integer order;
+    private Integer likesCount;
+    private Integer unlikesCount;
+    private Integer themeId;
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(long id) {
+
+    public void setId(Integer id) {
         this.id = id;
     }
-    public long getTargetPostId() {
-        return targetPostId;
-    }
-    public void setTargetPostId(long targetPostId) {
-        this.targetPostId = targetPostId;
-    }
-    public long getCreatorId() {
+
+    public Integer getCreatorId() {
         return creatorId;
     }
-    public void setCreatorId(long creatorId) {
+
+    public void setCreatorId(Integer creatorId) {
         this.creatorId = creatorId;
     }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
-    public int getOrder() {
+
+    public Integer getOrder() {
         return order;
     }
-    public void setOrder(int order) {
+
+    public void setOrder(Integer order) {
         this.order = order;
     }
-    public int getLikesCount() {
+
+    public Integer getLikesCount() {
         return likesCount;
     }
-    public void setLikesCount(int likesCount) {
+
+    public void setLikesCount(Integer likesCount) {
         this.likesCount = likesCount;
     }
-    public int getUnlikesCount() {
+
+    public Integer getUnlikesCount() {
         return unlikesCount;
     }
-    public void setUnlikesCount(int unlikesCount) {
+
+    public void setUnlikesCount(Integer unlikesCount) {
         this.unlikesCount = unlikesCount;
     }
-    public long getThemeId() {
+
+    public Integer getThemeId() {
         return themeId;
     }
-    public void setThemeId(long themeId) {
+
+    public void setThemeId(Integer themeId) {
         this.themeId = themeId;
     }
 }
