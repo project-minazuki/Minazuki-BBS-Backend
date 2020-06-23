@@ -1,7 +1,11 @@
 package com.minazuki.bbsbackend.user.service;
 
 import com.minazuki.bbsbackend.user.dao.UserDao;
-import com.minazuki.bbsbackend.user.exception.DuplicateRegistrationInfoException;
+import com.minazuki.bbsbackend.user.dataObject.UserInfoOutDto;
+import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
+import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
+import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
+import com.minazuki.bbsbackend.user.exception.DuplicateInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.user.util.JwtUtil;
@@ -10,9 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {
@@ -24,47 +27,73 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public List<User> search(Map<String, Object> args) {
-        return userDao.searchUser(args);
+    public List<UserInfoOutDto> search(String keyword) {
+        List<User> users = userDao.searchUser(keyword);
+        List<UserInfoOutDto> userInfoOutDtoList = new ArrayList<>();
+        for (User user : users
+             ) {
+            UserInfoOutDto userInfoOutDto = new UserInfoOutDto();
+            userInfoOutDto.setInfo(user);
+            userInfoOutDtoList.add(userInfoOutDto);
+        }
+        return userInfoOutDtoList;
     }
 
-    public User index(int id) {
-        Map<String, Object> args = new HashMap<>();
-        args.put("id", id);
-        return userDao.searchUser(args).get(0);
+    public UserInfoOutDto getByIndex(Integer id) {
+        User user = userDao.getUserById(id);
+        UserInfoOutDto userInfoOutDto = new UserInfoOutDto();
+        userInfoOutDto.setInfo(user);
+        return userInfoOutDto;
     }
 
-    public boolean signUp(Map<String, Object> signUpArgs) throws DuplicateRegistrationInfoException {
-        List<User> users = userDao.getUserByUniqueKey(signUpArgs);
+    public void updateUser(UserUpdateDto userUpdateDto) throws DuplicateInfoException {
+        if (userUpdateDto.isAllNone())
+            return;
+        if (userUpdateDto.getNickname() != null) {
+            User user = userDao.getUserByNickname(userUpdateDto.getNickname());
+            if (user == null)
+                userDao.updateUser(userUpdateDto);
+            else {
+                DuplicateInfoException e = new DuplicateInfoException();
+                e.addDuplicateInfo("nickname");
+                throw e;
+            }
+        }
+        userDao.updateUser(userUpdateDto);
+    }
+
+    public boolean signUp(UserRegistrationDto userRegistrationDto) throws DuplicateInfoException {
+        List<User> users = userDao.getUserByUniqueKey(userRegistrationDto);
         if (users.size() == 0) {
-            User newUser = User.builder().isAdmin(false).username((String) signUpArgs.get("username"))
-                    .password(PasswordUtil.encryptPassword((String) signUpArgs.get("password")))
-                    .nickname((String) signUpArgs.get("nickname")).privacyShow(true)
+            User newUser = User.builder().isAdmin(false).username(userRegistrationDto.getUsername())
+                    .password(PasswordUtil.encryptPassword(userRegistrationDto.getPassword()))
+                    .nickname(userRegistrationDto.getNickname()).privacyShow(true)
                     .createdAt(LocalDateTime.now()).lastSignIn(LocalDateTime.now())
-                    .email((String) signUpArgs.get("email")).phoneNumber((String) signUpArgs.get("phoneNumber"))
+                    .email(userRegistrationDto.getEmail()).phoneNumber(userRegistrationDto.getPhoneNumber())
                     .build();
             userDao.addUser(newUser);
             return true;
         } else {
-            DuplicateRegistrationInfoException e = new DuplicateRegistrationInfoException();
+            DuplicateInfoException e = new DuplicateInfoException();
             for (User user: users
                  ) {
-                if (user.getUsername().equals(signUpArgs.get("username")))
+                if (user.getUsername().equals(userRegistrationDto.getUsername()))
                     e.addDuplicateInfo("username");
-                if (user.getNickname().equals(signUpArgs.get("nickname")))
+                if (user.getNickname().equals(userRegistrationDto.getNickname()))
                     e.addDuplicateInfo("nickname");
-                if (user.getPhoneNumber().equals(signUpArgs.get("phoneNumber")))
+                if (user.getPhoneNumber().equals(userRegistrationDto.getPhoneNumber()))
                     e.addDuplicateInfo("phoneNumber");
-                if (user.getEmail().equals(signUpArgs.get("email")))
+                if (user.getEmail().equals(userRegistrationDto.getEmail()))
                     e.addDuplicateInfo("email");
             }
             throw e;
         }
     }
 
-    public String signIn(Map<String, Object> signInInfo) throws NoUserMatchException {
-        signInInfo.replace("password", PasswordUtil.encryptPassword((String) signInInfo.get("password")));
-        User user = userDao.signInCheck(signInInfo);
+    public String signIn(UserSignInDto userSignInDto) throws NoUserMatchException {
+        userSignInDto.setPassword(PasswordUtil.encryptPassword(userSignInDto.getPassword()));
+        User user = userDao.signInCheck(userSignInDto);
         return JwtUtil.sign(user);
     }
+
 }

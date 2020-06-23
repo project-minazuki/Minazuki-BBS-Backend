@@ -11,22 +11,22 @@ import java.time.LocalDateTime;
 @Builder
 public class User {
 
-    private int id;
-    private boolean isAdmin;
+    private Integer id;
+    private Boolean isAdmin;
     private String username;
     private String password;
 
     private String nickname;
     private String signature;
-    private boolean privacyShow;
+    private Boolean privacyShow;
     private String avatarUrl;
     private LocalDateTime createdAt;
     private LocalDateTime lastSignIn;
     private String email;
     private String phoneNumber;
 
-    public User(int id, boolean isAdmin, String username, String password, String nickname, String signature,
-                boolean privacyShow, String avatarUrl, LocalDateTime createdAt, LocalDateTime lastSignIn,
+    public User(Integer id, Boolean isAdmin, String username, String password, String nickname, String signature,
+                Boolean privacyShow, String avatarUrl, LocalDateTime createdAt, LocalDateTime lastSignIn,
                 String email, String phoneNumber) {
         this.id = id;
         this.isAdmin = isAdmin;
@@ -44,16 +44,16 @@ public class User {
 
     public User() {}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return isAdmin;
     }
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
     public String getUsername() {
@@ -80,10 +80,10 @@ public class User {
     public void setSignature(String signature) {
         this.signature = signature;
     }
-    public boolean isPrivacyShow() {
+    public Boolean isPrivacyShow() {
         return privacyShow;
     }
-    public void setPrivacyShow(boolean privacyShow) {
+    public void setPrivacyShow(Boolean privacyShow) {
         this.privacyShow = privacyShow;
     }
     public String getAvatarUrl() {

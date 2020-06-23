@@ -1,6 +1,10 @@
 package com.minazuki.bbsbackend.user.dao;
 
+import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
+import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
+import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.pojo.User;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,19 +30,27 @@ public class UserDao {
         this.sqlSession.delete("deleteUser", id);
     }
 
-    public List<User> searchUser(Map<String, Object> args) {
-        return this.sqlSession.selectList("selectUser", args);
+    public User getUserById(Integer id) {
+        return this.sqlSession.selectOne("getUserById", id);
     }
 
-    public void updateUser(Map<String, Object > args) {
-        this.sqlSession.update("updateUser", args);
+    public List<User> searchUser(String keyword) {
+        return this.sqlSession.selectList("searchUsers", "%" + keyword + "%");
     }
 
-    public List<User> getUserByUniqueKey(Map<String, Object> args) {
-        return this.sqlSession.selectList("getUserByUniqueKey", args);
+    public User getUserByNickname(String nickname) {
+        return this.sqlSession.selectOne("getUserByNickname", nickname);
     }
 
-    public User signInCheck(Map<String, Object> signInInfo) {
-        return this.sqlSession.selectOne("signInCheck", signInInfo);
+    public void updateUser(UserUpdateDto userUpdateDto) {
+        this.sqlSession.update("updateUser", userUpdateDto);
+    }
+
+    public List<User> getUserByUniqueKey(UserRegistrationDto userRegistrationDto) {
+        return this.sqlSession.selectList("getUserByUniqueKey", userRegistrationDto);
+    }
+
+    public User signInCheck(UserSignInDto userSignInDto) {
+        return this.sqlSession.selectOne("signInCheck", userSignInDto);
     }
 }

@@ -2,12 +2,12 @@ package com.minazuki.bbsbackend.user.exception;
 
 import java.util.*;
 
-public class DuplicateRegistrationInfoException extends Exception {
+public class DuplicateInfoException extends Exception {
 
     private final Set<String> duplicateInfo = new HashSet<>();
 
-    public DuplicateRegistrationInfoException() {
-        super("duplicate registration information");
+    public DuplicateInfoException() {
+        super("duplicate information");
     }
 
     public Map<String, Object> getData() {

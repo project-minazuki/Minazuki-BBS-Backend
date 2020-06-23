@@ -1,5 +1,8 @@
 package com.minazuki.bbsbackend.user.dao.sql;
 
+import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
+import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
+import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.pojo.User;
 import org.apache.ibatis.annotations.*;
 
@@ -15,13 +18,7 @@ public interface UserMapper {
             "#{avatarUrl}, #{createdAt}, #{lastSignIn}, #{email}, #{phoneNumber})")
     void addUser(@Param("user") User user);
 
-    @Delete("DELETE FROM user WHERE id = #{id}")
-    void deleteUser(@Param("id") long id);
-
-    @UpdateProvider(type = UserSqlProvider.class, method = "update")
-    void updateUser(@Param("args")Map<String, Object> args);
-
-    @SelectProvider(type = UserSqlProvider.class, method = "select")
+    @Select("SELECT * FROM user WHERE id = #{id}")
     @Results({
             @Result(property = "isAdmin", column = "is_admin"),
             @Result(property = "avatarUrl", column = "avatar_url"),
@@ -29,7 +26,33 @@ public interface UserMapper {
             @Result(property = "lastSignIn", column = "last_signin_time"),
             @Result(property = "privacyShow", column = "privacy_show")
     })
-    List<User> selectUser(@Param("args") Map<String, Object> args);
+    User getUserById(@Param("id") Integer id);
+
+    @Delete("DELETE FROM user WHERE id = #{id}")
+    void deleteUser(@Param("id") Integer id);
+
+    @UpdateProvider(type = UserSqlProvider.class, method = "update")
+    void updateUser(@Param("userUpdateDto")UserUpdateDto userUpdateDto);
+
+    @Select("SELECT * FROM user WHERE nickname like #{keyword} OR username like #{keyword}")
+    @Results({
+            @Result(property = "isAdmin", column = "is_admin"),
+            @Result(property = "avatarUrl", column = "avatar_url"),
+            @Result(property = "createdAt", column = "created_time"),
+            @Result(property = "lastSignIn", column = "last_signin_time"),
+            @Result(property = "privacyShow", column = "privacy_show")
+    })
+    List<User> searchUsers(@Param("keyword") String keyword);
+
+    @Select("SELECT * FROM user WHERE nickname = #{nickname}")
+    @Results({
+            @Result(property = "isAdmin", column = "is_admin"),
+            @Result(property = "avatarUrl", column = "avatar_url"),
+            @Result(property = "createdAt", column = "created_time"),
+            @Result(property = "lastSignIn", column = "last_signin_time"),
+            @Result(property = "privacyShow", column = "privacy_show")
+    })
+    User getUserByNickname(@Param("nickname") String nickname);
 
     @SelectProvider(type = UserSqlProvider.class, method = "uniqueCheck")
     @Results({
@@ -39,7 +62,7 @@ public interface UserMapper {
             @Result(property = "lastSignIn", column = "last_signin_time"),
             @Result(property = "privacyShow", column = "privacy_show")
     })
-    List<User> getUserByUniqueKey(@Param("args") Map<String, Object> args);
+    List<User> getUserByUniqueKey(@Param("userRegistrationDto")UserRegistrationDto userRegistrationDto);
 
     @Select("SELECT * FROM user WHERE password = #{password} AND " +
             "(username = #{username} OR email = #{username} OR phonenumber = #{username})")
@@ -50,5 +73,5 @@ public interface UserMapper {
             @Result(property = "lastSignIn", column = "last_signin_time"),
             @Result(property = "privacyShow", column = "privacy_show")
     })
-    User signInCheck(@Param("signInInfo") Map<String, Object> signInInfo);
+    User signInCheck(@Param("userSignInDto") UserSignInDto userSignInDto);
 }
