@@ -21,7 +21,6 @@ public class Theme {
     private Integer categoryId;
     private Integer visitsCount;
     private Integer replyCount;
-    private Integer latestReplyId;
     private LocalDateTime latestReplyAt;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
@@ -96,14 +95,6 @@ public class Theme {
 
     public void setReplyCount(Integer replyCount) {
         this.replyCount = replyCount;
-    }
-
-    public Integer getLatestReplyId() {
-        return latestReplyId;
-    }
-
-    public void setLatestReplyId(Integer latestReplyId) {
-        this.latestReplyId = latestReplyId;
     }
 
     public LocalDateTime getLatestReplyAt() {

@@ -13,7 +13,7 @@ public class Notice {
 
     private Integer id;
     private String title;
-    private String Content;
+    private String content;
     private Integer categoryId;
     private Integer creatorId;
     private LocalDateTime createdAt;
@@ -36,11 +36,11 @@ public class Notice {
     }
 
     public String getContent() {
-        return Content;
+        return content;
     }
 
     public void setContent(String content) {
-        Content = content;
+        content = content;
     }
 
     public Integer getCategoryId() {

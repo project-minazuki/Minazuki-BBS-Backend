@@ -15,7 +15,7 @@ public class Post {
     private Integer creatorId;
     private LocalDateTime createdAt;
     private String content;
-    private Integer order;
+    private Integer number;
     private Integer likesCount;
     private Integer unlikesCount;
     private Integer themeId;
@@ -52,12 +52,12 @@ public class Post {
         this.content = content;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getNumber() {
+        return number;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Integer getLikesCount() {
