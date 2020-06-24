@@ -1,7 +1,7 @@
 package com.minazuki.bbsbackend.user.controlloer;
 
 import com.minazuki.bbsbackend.http.StandardResponse;
-import com.minazuki.bbsbackend.user.annotation.UserLoginToken;
+import com.minazuki.bbsbackend.user.annotation.UserLoginRequired;
 import com.minazuki.bbsbackend.user.dataObject.UserInfoOutDto;
 import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
 import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
@@ -9,7 +9,7 @@ import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.exception.DuplicateInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.exception.UnauthenticatedException;
-import com.minazuki.bbsbackend.user.pojo.User;
+import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import com.minazuki.bbsbackend.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseBody
-    @UserLoginToken
+    @UserLoginRequired
     @ApiOperation(value = "查看用户详情", notes = "查看用户详情", httpMethod = "GET")
     public StandardResponse<UserInfoOutDto> getUserById(@ApiParam(name = "用户id", value = "用户id", required = true)@PathVariable Integer userId) {
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", userService.getByIndex(userId));
@@ -75,7 +75,7 @@ public class UserController {
     @ResponseBody
     @ApiOperation(value = "用户登录", notes = "登陆成功返回token", httpMethod = "POST")
     public StandardResponse<String> signIn(@ApiParam(name = "登录信息", value = "用户名/电话号码/邮件 、 密码") @RequestBody UserSignInDto userSignInDto) {
-        String token = "";
+        String token;
         try {
             token = userService.signIn(userSignInDto);
         } catch (NoUserMatchException e) {

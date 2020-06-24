@@ -46,8 +46,8 @@ public class JwtUtil {
                 .sign(algorithm);
     }
 
-    public static int verify(String token) throws JWTVerificationException {
-        int userId;
+    public static Integer verify(String token) throws JWTVerificationException {
+        Integer userId;
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             JWTVerifier jwtVerifier = JWT.require(algorithm)
