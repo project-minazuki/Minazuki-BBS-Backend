@@ -36,6 +36,6 @@ public class CategoryModerator {//即数据库中的category_admin
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-        createdAt = createdAt;
+        this.createdAt = createdAt;
     }
 }
