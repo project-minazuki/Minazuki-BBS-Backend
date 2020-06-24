@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 @Builder
 public class CategoryModerator {//即数据库中的category_admin
 
-    private Long moderatorId;
+    private Integer moderatorId;
     private Integer categoryId;
-    private LocalDateTime CreatedAt;
+    private LocalDateTime createdAt;
 
-    public Long getModeratorId() {
+    public Integer getModeratorId() {
         return moderatorId;
     }
 
-    public void setModeratorId(Long moderatorId) {
+    public void setModeratorId(Integer moderatorId) {
         this.moderatorId = moderatorId;
     }
 
@@ -32,10 +32,10 @@ public class CategoryModerator {//即数据库中的category_admin
     }
 
     public LocalDateTime getCreatedAt() {
-        return CreatedAt;
+        return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-        CreatedAt = createdAt;
+        createdAt = createdAt;
     }
 }
