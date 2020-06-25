@@ -6,7 +6,7 @@ import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
 
-@Alias("user")
+@Alias("User")
 @ToString
 @Builder
 public class User {

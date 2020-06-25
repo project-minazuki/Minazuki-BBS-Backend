@@ -9,7 +9,6 @@ import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.exception.DuplicateInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.exception.UnauthenticatedException;
-import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import com.minazuki.bbsbackend.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
