@@ -18,7 +18,7 @@ class ThemeDaoTest {
 
     @Test
     void addTheme() {
-        Theme theme = Theme.builder().isTop(true).isHighQuality(true).status(true).title("主题名称").categoryId(1)
+        Theme theme = Theme.builder().isTop(true).isHighQuality(true).status(true).title("nmsl").categoryId(1)
                 .creatorId(1).visitsCount(777).replyCount(777).latestReplyAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).createdAt(LocalDateTime.now()).build();
         themeDao.addTheme(theme);

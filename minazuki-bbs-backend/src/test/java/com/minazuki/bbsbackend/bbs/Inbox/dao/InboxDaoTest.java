@@ -27,4 +27,20 @@ class InboxDaoTest {
         Integer id = 1;
         inboxDao.deleteInbox(id);
     }
+
+    @Test
+    void testAddInbox() {
+    }
+
+    @Test
+    void testDeleteInbox() {
+    }
+
+    @Test
+    void getInboxById() {
+    }
+
+    @Test
+    void findAllInboxesBetweenTwoUsers() {
+    }
 }
