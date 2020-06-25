@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class HistoryViewed {
 
     private Integer id;
-    private Integer OwnerId;
+    private Integer ownerId;
     private Integer viewedThemeId;
     private LocalDateTime viewedAt;
 
@@ -24,11 +24,11 @@ public class HistoryViewed {
     }
 
     public Integer getOwnerId() {
-        return OwnerId;
+        return ownerId;
     }
 
     public void setOwnerId(Integer ownerId) {
-        OwnerId = ownerId;
+        this.ownerId = ownerId;
     }
 
     public Integer getViewedThemeId() {

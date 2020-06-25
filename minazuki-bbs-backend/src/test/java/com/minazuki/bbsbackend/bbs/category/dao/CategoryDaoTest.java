@@ -64,4 +64,9 @@ class CategoryDaoTest {
     void findAllOpenCategories() {
         System.out.println(categoryDao.findAllOpenCategories());
     }
+
+    @Test
+    void getCategoryByName() {
+        System.out.println(categoryDao.getCategoryByName("测试版块"));
+    }
 }

@@ -44,7 +44,7 @@ public interface UserMapper {
     })
     List<User> searchUsers(@Param("keyword") String keyword);
 
-    @Select("SELECT * FROM user WHERE nickname = #{nickname}")
+    @Select("SELECT * FROM user WHERE nickname like #{nickname}")
     @Results({
             @Result(property = "isAdmin", column = "is_admin"),
             @Result(property = "avatarUrl", column = "avatar_url"),

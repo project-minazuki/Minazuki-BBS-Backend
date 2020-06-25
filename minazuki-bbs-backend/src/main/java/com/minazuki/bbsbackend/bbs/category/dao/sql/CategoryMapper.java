@@ -21,6 +21,15 @@ public interface CategoryMapper {
     })
     Category getCategoryById(@Param("id") Integer id);
 
+    @Select("SELECT * FROM category WHERE category_name like #{categoryName}")
+    @Results({
+            @Result(property = "createdAt", column = "created_time"),
+            @Result(property = "updatedAt", column = "updated_time"),
+            @Result(property = "visitsCount", column = "visits_count"),
+            @Result(property = "coverUrl", column = "cover_url")
+    })
+    Category getCategoryByName(@Param("categoryName") String categoryName);
+
     @Select("SELECT * FROM category")
     @Results({
             @Result(property = "createdAt", column = "created_time"),

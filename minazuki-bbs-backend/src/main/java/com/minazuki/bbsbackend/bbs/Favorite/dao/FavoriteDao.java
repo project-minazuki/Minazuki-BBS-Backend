@@ -1,7 +1,6 @@
 package com.minazuki.bbsbackend.bbs.Favorite.dao;
 
 import com.minazuki.bbsbackend.bbs.Favorite.pojo.Favorite;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

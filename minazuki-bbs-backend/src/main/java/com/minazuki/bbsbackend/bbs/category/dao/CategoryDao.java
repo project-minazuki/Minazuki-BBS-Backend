@@ -28,6 +28,10 @@ public class CategoryDao {
         return this.sqlSession.selectOne("getCategoryById", id);
     }
 
+    public Category getCategoryByName(String categoryName) {
+        return this.sqlSession.selectOne("getCategoryByName", categoryName);
+    }
+
     public void deleteCategory(Integer id){this.sqlSession.delete("deleteCategory",id);}
 
     public void updateCategoryById(CategoryUpdateDto categoryUpdateDto){this.sqlSession.update("updateCategoryById",categoryUpdateDto);}
