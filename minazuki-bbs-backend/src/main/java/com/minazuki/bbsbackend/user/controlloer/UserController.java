@@ -6,7 +6,7 @@ import com.minazuki.bbsbackend.user.dataObject.UserInfoOutDto;
 import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
 import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
 import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
-import com.minazuki.bbsbackend.user.exception.DuplicateInfoException;
+import com.minazuki.bbsbackend.user.exception.DuplicateUserInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.exception.UnauthenticatedException;
 import com.minazuki.bbsbackend.user.service.UserService;
@@ -52,7 +52,7 @@ public class UserController {
     public StandardResponse<Object> updateUser(@RequestBody UserUpdateDto userUpdateDto) {
         try {
             userService.updateUser(userUpdateDto);
-        } catch (DuplicateInfoException e) {
+        } catch (DuplicateUserInfoException e) {
             return new StandardResponse<>(StandardResponse.FAILURE_CODE, "duplicated info", e.getData());
         }
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
@@ -64,7 +64,7 @@ public class UserController {
     public StandardResponse<Object> signUp(@ApiParam(name = "注册信息", value = "昵称、用户名、密码、邮件、电话号码", required = true) @RequestBody UserRegistrationDto userRegistrationDto) {
         try {
             userService.signUp(userRegistrationDto);
-        } catch (DuplicateInfoException e) {
+        } catch (DuplicateUserInfoException e) {
             return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), e.getData());
         }
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);

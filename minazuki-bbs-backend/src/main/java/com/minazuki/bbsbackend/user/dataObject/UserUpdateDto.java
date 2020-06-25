@@ -27,7 +27,7 @@ public class UserUpdateDto {
     @ApiModelProperty(value = "更新后隐私设置")
     private Boolean privacyShow;
 
-    public boolean isAllNone() {
+    public boolean isAllNull() {
         return nickname == null && signature == null && avatarUrl == null && privacyShow == null;
     }
 }

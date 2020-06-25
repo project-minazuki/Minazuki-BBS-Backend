@@ -34,4 +34,10 @@ public class CategoryUpdateDto {
 
     @ApiModelProperty(value = "附件路径")
     private String coverUrl;
+
+    public boolean isAllNull()
+    {
+        return name == null && status == null && description == null &&
+                updatedAt == null && visitsCount == null && coverUrl == null;
+    }
 }

@@ -5,7 +5,7 @@ import com.minazuki.bbsbackend.user.dataObject.UserInfoOutDto;
 import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
 import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
 import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
-import com.minazuki.bbsbackend.user.exception.DuplicateInfoException;
+import com.minazuki.bbsbackend.user.exception.DuplicateUserInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.user.service.UserService;
@@ -49,15 +49,15 @@ public class UserServiceImpl implements UserService {
         return userInfoOutDto;
     }
 
-    public void updateUser(UserUpdateDto userUpdateDto) throws DuplicateInfoException {
-        if (userUpdateDto.isAllNone())
+    public void updateUser(UserUpdateDto userUpdateDto) throws DuplicateUserInfoException {
+        if (userUpdateDto.isAllNull())
             return;
         if (userUpdateDto.getNickname() != null) {
             User user = userDao.getUserByNickname(userUpdateDto.getNickname());
             if (user == null)
                 userDao.updateUser(userUpdateDto);
             else {
-                DuplicateInfoException e = new DuplicateInfoException();
+                DuplicateUserInfoException e = new DuplicateUserInfoException();
                 e.addDuplicateInfo("nickname");
                 throw e;
             }
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         userDao.updateUser(userUpdateDto);
     }
 
-    public void signUp(UserRegistrationDto userRegistrationDto) throws DuplicateInfoException {
+    public void signUp(UserRegistrationDto userRegistrationDto) throws DuplicateUserInfoException {
         List<User> users = userDao.getUserByUniqueKey(userRegistrationDto);
         if (users.size() == 0) {
             User newUser = User.builder().isAdmin(false).username(userRegistrationDto.getUsername())
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
                     .build();
             userDao.addUser(newUser);
         } else {
-            DuplicateInfoException e = new DuplicateInfoException();
+            DuplicateUserInfoException e = new DuplicateUserInfoException();
             for (User user: users
                  ) {
                 if (user.getUsername().equals(userRegistrationDto.getUsername()))

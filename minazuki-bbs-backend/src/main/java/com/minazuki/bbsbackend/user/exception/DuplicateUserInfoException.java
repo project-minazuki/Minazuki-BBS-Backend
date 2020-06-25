@@ -2,11 +2,11 @@ package com.minazuki.bbsbackend.user.exception;
 
 import java.util.*;
 
-public class DuplicateInfoException extends Exception {
+public class DuplicateUserInfoException extends Exception {
 
     private final Set<String> duplicateInfo = new HashSet<>();
 
-    public DuplicateInfoException() {
+    public DuplicateUserInfoException() {
         super("duplicate information");
     }
 
