@@ -1,6 +1,6 @@
 package com.minazuki.bbsbackend.bbs.category.dao;
 
-import com.minazuki.bbsbackend.bbs.category.dataObject.CategoryUpdateDto;
+import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;

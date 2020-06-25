@@ -1,8 +1,8 @@
 package com.minazuki.bbsbackend.user.dao;
 
-import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
-import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
-import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
+import com.minazuki.bbsbackend.user.dataobject.UserRegistrationDto;
+import com.minazuki.bbsbackend.user.dataobject.UserSignInDto;
+import com.minazuki.bbsbackend.user.dataobject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.pojo.User;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;

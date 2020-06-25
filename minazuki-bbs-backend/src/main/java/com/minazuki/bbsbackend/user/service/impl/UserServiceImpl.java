@@ -1,10 +1,10 @@
 package com.minazuki.bbsbackend.user.service.impl;
 
 import com.minazuki.bbsbackend.user.dao.UserDao;
-import com.minazuki.bbsbackend.user.dataObject.UserInfoOutDto;
-import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
-import com.minazuki.bbsbackend.user.dataObject.UserSignInDto;
-import com.minazuki.bbsbackend.user.dataObject.UserUpdateDto;
+import com.minazuki.bbsbackend.user.dataobject.UserInfoOutDto;
+import com.minazuki.bbsbackend.user.dataobject.UserRegistrationDto;
+import com.minazuki.bbsbackend.user.dataobject.UserSignInDto;
+import com.minazuki.bbsbackend.user.dataobject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.exception.DuplicateUserInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.pojo.User;
@@ -50,8 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void updateUser(UserUpdateDto userUpdateDto) throws DuplicateUserInfoException {
-        if (userUpdateDto.isAllNull())
-            return;
+        if (userUpdateDto.isAllNull()) return;
         if (userUpdateDto.getNickname() != null) {
             User user = userDao.getUserByNickname(userUpdateDto.getNickname());
             if (user == null)

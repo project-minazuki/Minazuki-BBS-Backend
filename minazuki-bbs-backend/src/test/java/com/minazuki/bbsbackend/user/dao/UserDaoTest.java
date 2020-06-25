@@ -1,14 +1,11 @@
 package com.minazuki.bbsbackend.user.dao;
 
-import com.minazuki.bbsbackend.user.dataObject.UserRegistrationDto;
 import com.minazuki.bbsbackend.user.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootTest
 public class UserDaoTest {

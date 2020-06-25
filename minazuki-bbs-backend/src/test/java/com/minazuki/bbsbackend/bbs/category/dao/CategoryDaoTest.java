@@ -1,6 +1,6 @@
 package com.minazuki.bbsbackend.bbs.category.dao;
 
-import com.minazuki.bbsbackend.bbs.category.dataObject.CategoryUpdateDto;
+import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,8 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CategoryDaoTest {
@@ -42,12 +40,6 @@ class CategoryDaoTest {
         categoryUpdateDto.setCoverUrl("更新后的路径");
         categoryUpdateDto.setVisitsCount(555);
         categoryDao.updateCategoryById(categoryUpdateDto);
-    }
-
-    @Test
-    public void addVisitsCountById(){
-        Integer id = 1;
-        categoryDao.addVisitsCountById(id);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.minazuki.bbsbackend.bbs.category.dao.sql;
 
-import com.minazuki.bbsbackend.bbs.category.dataObject.CategoryUpdateDto;
+import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.jdbc.SQL;
 
