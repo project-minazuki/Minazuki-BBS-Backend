@@ -49,4 +49,9 @@ class CategoryDaoTest {
         Integer id = 1;
         categoryDao.addVisitsCountById(id);
     }
+
+    @Test
+    public void getCategoryById() {
+        System.out.println(categoryDao.getCategoryById(1));
+    }
 }
