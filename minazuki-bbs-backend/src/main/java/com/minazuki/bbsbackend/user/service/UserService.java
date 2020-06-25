@@ -47,8 +47,7 @@ public class UserService {
     }
 
     public void updateUser(UserUpdateDto userUpdateDto) throws DuplicateInfoException {
-        if (userUpdateDto.isAllNone())
-            return;
+        if (userUpdateDto.isAllNone()) return;
         if (userUpdateDto.getNickname() != null) {
             User user = userDao.getUserByNickname(userUpdateDto.getNickname());
             if (user == null)
