@@ -19,5 +19,4 @@ public interface CategoryModeratorMapper {
 
     @Select("SELECT category_admin_id FROM category_admin WHERE managed_category_id = #{categoryId}")
     List<Integer> getModeratorIds(@Param("categoryId") Integer categoryId);
-
 }

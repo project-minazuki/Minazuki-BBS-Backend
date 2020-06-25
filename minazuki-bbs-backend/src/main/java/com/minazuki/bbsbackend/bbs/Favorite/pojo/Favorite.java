@@ -3,7 +3,6 @@ package com.minazuki.bbsbackend.bbs.Favorite.pojo;
 import lombok.Builder;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
-
 import java.time.LocalDateTime;
 
 @Alias("Favorite")
@@ -15,6 +14,7 @@ public class Favorite {
     private Integer themeId;
     private Integer OwnerId;
     private LocalDateTime createdAt;
+    private LocalDateTime lastViewedAt;
 
     public Integer getId() {
         return id;
@@ -48,4 +48,11 @@ public class Favorite {
         this.createdAt = createdAt;
     }
 
+    public LocalDateTime getLastViewedAt() {
+        return lastViewedAt;
+    }
+
+    public void setLastViewedAt(LocalDateTime lastViewedAt) {
+        this.lastViewedAt = lastViewedAt;
+    }
 }

@@ -22,4 +22,16 @@ public class InboxDao {
     public List<Inbox> findAllInboxesBetweenTwoUsers(InboxIndexDto inboxIndexDto) {
         return this.sqlSession.selectList("getInboxesByTwoUsers", inboxIndexDto);
     }
+
+    public void checkInbox(Integer id) {
+        this.sqlSession.update("checkInbox", id);
+    }
+
+    public Integer countUnCheckedInbox(Integer userId) {
+        return this.sqlSession.selectOne("countUnCheckedInbox", userId);
+    }
+
+    public Integer countUnCheckedInboxOfTwoUsers(InboxIndexDto inboxIndexDto){
+        return this.sqlSession.selectOne("countUnCheckedInboxOfTwoUsers", inboxIndexDto);
+    }
 }
