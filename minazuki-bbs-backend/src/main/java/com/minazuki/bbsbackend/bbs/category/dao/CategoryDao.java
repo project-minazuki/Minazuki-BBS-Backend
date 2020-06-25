@@ -14,6 +14,10 @@ public class CategoryDao {
 
     public void addCategory(Category category){this.sqlSession.insert("addCategory",category);}
 
+    public Category getCategoryById(Integer id) {
+        return this.sqlSession.selectOne("getCategoryById", id);
+    }
+
     public void deleteCategory(Integer id){this.sqlSession.delete("deleteCategory",id);}
 
     public void updateCategoryById(CategoryUpdateDto categoryUpdateDto){this.sqlSession.update("updateCategoryById",categoryUpdateDto);}

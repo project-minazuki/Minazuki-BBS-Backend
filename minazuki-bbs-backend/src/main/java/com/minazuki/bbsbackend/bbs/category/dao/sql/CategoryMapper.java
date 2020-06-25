@@ -10,6 +10,15 @@ public interface CategoryMapper {
             "VALUES (#{name},#{status},#{description},#{createdAt},#{updatedAt},#{visitsCount},#{coverUrl})")
     void addCategory(@Param("category") Category category);
 
+    @Select("SELECT * FROM category WHERE id = #{id}")
+    @Results({
+            @Result(property = "createdAt", column = "created_time"),
+            @Result(property = "updatedAt", column = "updated_time"),
+            @Result(property = "visitsCount", column = "visits_count"),
+            @Result(property = "coverUrl", column = "cover_url")
+    })
+    Category getCategoryById(@Param("id") Integer id);
+
     @Delete("DELETE FROM category WHERE id=#{id}")
     void deleteCategory(@Param("id") Integer id);
 
