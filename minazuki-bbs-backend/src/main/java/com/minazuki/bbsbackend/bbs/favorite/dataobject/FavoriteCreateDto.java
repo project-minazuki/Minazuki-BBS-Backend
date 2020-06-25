@@ -15,7 +15,7 @@ public class FavoriteCreateDto {
     @NotNull
     private Integer themeId;
 
-    @ApiModelProperty(value = "收藏人")
+    @ApiModelProperty(value = "收藏者")
     @NotNull
     private Integer OwnerId;
 }
