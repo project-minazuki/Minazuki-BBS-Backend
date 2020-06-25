@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.category.dao;
 
+import com.minazuki.bbsbackend.bbs.category.dataObject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,7 @@ class CategoryDaoTest {
 
     @Test
     public void addCategory() {
-        Category category =Category.builder().name("测试板块").status(true).description("用于测试").createdAt(LocalDateTime.now())
+        Category category =Category.builder().name("测试版块").status(true).description("用于测试").createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).visitsCount(100).coverUrl("附件路径").build();
         categoryDao.addCategory(category);
 
@@ -28,5 +29,23 @@ class CategoryDaoTest {
     public void deleteCategory() {
         Integer id = 1;
         categoryDao.deleteCategory(id);
+    }
+
+    @Test
+    public void updateCategoryById(){
+        CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto();
+        categoryUpdateDto.setId(1);
+        categoryUpdateDto.setName("更新");
+        categoryUpdateDto.setDescription("更新描述");
+        categoryUpdateDto.setStatus(false);
+        categoryUpdateDto.setUpdatedAt(LocalDateTime.now());
+        categoryUpdateDto.setCoverUrl("更新后的路径");
+        categoryDao.updateCategoryById(categoryUpdateDto);
+    }
+
+    @Test
+    public void addVisitsCountById(){
+        Integer id = 1;
+        categoryDao.addVisitsCountById(id);
     }
 }

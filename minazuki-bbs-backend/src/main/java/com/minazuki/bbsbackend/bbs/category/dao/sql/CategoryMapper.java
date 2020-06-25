@@ -1,10 +1,8 @@
 package com.minazuki.bbsbackend.bbs.category.dao.sql;
 
+import com.minazuki.bbsbackend.bbs.category.dataObject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface CategoryMapper {
@@ -14,4 +12,12 @@ public interface CategoryMapper {
 
     @Delete("DELETE FROM category WHERE id=#{id}")
     void deleteCategory(@Param("id") Integer id);
+
+    @UpdateProvider(type = CategorySqlProvider.class, method = "updateCategoryById")
+    void updateCategoryById(@Param("categoryUpdateDto") CategoryUpdateDto categoryUpdateDto);
+
+    @Update("UPDATE category SET visits_count = visits_count + 1 WHERE id=#{id}")
+    void addVisitsCountById(@Param("id") Integer id);
+
+
 }

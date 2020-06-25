@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.category.dao;
 
+import com.minazuki.bbsbackend.bbs.category.dataObject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,5 +15,9 @@ public class CategoryDao {
     public void addCategory(Category category){this.sqlSession.insert("addCategory",category);}
 
     public void deleteCategory(Integer id){this.sqlSession.delete("deleteCategory",id);}
+
+    public void updateCategoryById(CategoryUpdateDto categoryUpdateDto){this.sqlSession.update("updateCategoryById",categoryUpdateDto);}
+
+    public void addVisitsCountById(Integer id){this.sqlSession.update("addVisitsCountById",id);}
 
 }
