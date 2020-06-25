@@ -16,6 +16,7 @@ public class Inbox {
     private Integer senderId;
     private Integer recipientId;
     private LocalDateTime createdAt;
+    private Boolean isChecked;
 
     public Integer getId() {
         return id;
@@ -55,5 +56,13 @@ public class Inbox {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
     }
 }

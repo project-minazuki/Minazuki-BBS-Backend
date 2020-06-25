@@ -22,9 +22,9 @@ public class UserDaoTest {
          * @author hlodice
          * @date 2020/6/20 22:37
          */
-       User user = User.builder().isAdmin(false).username("user name balabala").password("nmnsdms").nickname("tfeqwem")
-               .avatarUrl("asfkjasnf").createdAt(LocalDateTime.now()).lastSignIn(LocalDateTime.now()).email("safnbaskjf")
-               .phoneNumber("12412312").signature("wfasjkfnas").privacyShow(true).build();
+       User user = User.builder().isAdmin(false).username("wdnmd").password("nmnsdms").nickname("lalala")
+               .avatarUrl("asfkjasnf").createdAt(LocalDateTime.now()).lastSignIn(LocalDateTime.now()).email("safssnbaskjf")
+               .phoneNumber("124123ss12").signature("wfasjkddfnas").privacyShow(true).build();
        userDao.addUser(user);
     }
 

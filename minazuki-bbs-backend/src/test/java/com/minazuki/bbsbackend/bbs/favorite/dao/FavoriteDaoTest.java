@@ -16,8 +16,8 @@ class FavoriteDaoTest {
 
     @Test
     void addFavorite() {
-        Favorite favorite = Favorite.builder().themeId(2).OwnerId(1)
-                .createdAt(LocalDateTime.now()).build();
+        Favorite favorite = Favorite.builder().themeId(1).OwnerId(1)
+                .createdAt(LocalDateTime.now()).lastViewedAt(LocalDateTime.now()).build();
         favoriteDao.addFavorite(favorite);
     }
 
@@ -25,5 +25,15 @@ class FavoriteDaoTest {
     void deleteFavorite() {
         Integer id = 1;
         favoriteDao.deleteFavorite(id);
+    }
+
+    @Test
+    void findAllFavorites() {
+        System.out.println(favoriteDao.findAllFavorites(1));
+    }
+
+    @Test
+    void updateFavoriteLastViewedTime() {
+        favoriteDao.updateFavoriteLastViewedTime(1);
     }
 }
