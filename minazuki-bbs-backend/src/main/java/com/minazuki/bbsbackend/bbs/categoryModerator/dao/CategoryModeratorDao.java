@@ -2,6 +2,7 @@ package com.minazuki.bbsbackend.bbs.categoryModerator.dao;
 
 import com.minazuki.bbsbackend.bbs.categoryModerator.dataObject.PrimaryKeyDto;
 import com.minazuki.bbsbackend.bbs.categoryModerator.pojo.CategoryModerator;
+import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,4 +17,7 @@ public class CategoryModeratorDao {
 
     public void deleteCategoryModerator(PrimaryKeyDto primaryKeyDto){this.sqlSession.delete("deleteCategoryModerator", primaryKeyDto);}
 
+    public List<Integer> getManageCategoryIds(Integer userId) {return this.sqlSession.selectList("getManagedCategoryIds", userId);}
+
+    public List<Integer> getModeratorIds(Integer categoryId) {return this.sqlSession.selectList("getModeratorIds", categoryId);}
 }

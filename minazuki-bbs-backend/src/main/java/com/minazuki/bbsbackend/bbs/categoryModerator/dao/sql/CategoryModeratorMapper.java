@@ -2,6 +2,7 @@ package com.minazuki.bbsbackend.bbs.categoryModerator.dao.sql;
 
 import com.minazuki.bbsbackend.bbs.categoryModerator.dataObject.PrimaryKeyDto;
 import com.minazuki.bbsbackend.bbs.categoryModerator.pojo.CategoryModerator;
+import java.util.List;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -14,5 +15,9 @@ public interface CategoryModeratorMapper {
     void deleteCategoryModerator(@Param("primaryKeyDto") PrimaryKeyDto primaryKeyDto);
 
     @Select("SELECT managed_category_id FROM category_admin WHERE category_admin_id = #{userId}")
-    CategoryModerator checkModerator(@Param("userId") Integer userId);
+    List<Integer> getManagedCategoryIds(@Param("userId") Integer userId);
+
+    @Select("SELECT category_admin_id FROM category_admin WHERE managed_category_id = #{categoryId}")
+    List<Integer> getModeratorIds(@Param("categoryId") Integer categoryId);
+
 }

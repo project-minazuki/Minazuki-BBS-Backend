@@ -20,7 +20,6 @@ class CategoryModeratorDaoTest {
     @Test
     void addCategoryModerator() {
         CategoryModerator categoryModerator = CategoryModerator.builder().moderatorId(1).categoryId(1).createdAt(LocalDateTime.now()).build();
-
         categoryModeratorDao.addCategoryModerator(categoryModerator);
     }
 
@@ -30,5 +29,16 @@ class CategoryModeratorDaoTest {
         primaryKeyDto.setCategoryId(1);
         primaryKeyDto.setModeratorId(1);
         categoryModeratorDao.deleteCategoryModerator(primaryKeyDto);
+    }
+
+
+    @Test
+    void getManageCategoryIds() {
+        System.out.println(categoryModeratorDao.getManageCategoryIds(1));
+    }
+
+    @Test
+    void getModeratorIds() {
+        System.out.println(categoryModeratorDao.getModeratorIds(1));
     }
 }
