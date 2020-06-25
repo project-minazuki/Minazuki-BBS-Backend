@@ -1,11 +1,8 @@
 package com.minazuki.bbsbackend.bbs.Notice.dao.sql;
 
+import com.minazuki.bbsbackend.bbs.Notice.dataObject.NoticeUpdateDto;
 import com.minazuki.bbsbackend.bbs.Notice.pojo.Notice;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface NoticeMapper {
@@ -16,4 +13,6 @@ public interface NoticeMapper {
     @Delete("DELETE FROM notice WHERE id=#{id}")
     void deleteNotice(@Param("id") Integer id);
 
+    @UpdateProvider(type = NoticeSqlProvider.class, method = "updateById")
+    void updateNoticeById(NoticeUpdateDto noticeUpdateDto);
 }

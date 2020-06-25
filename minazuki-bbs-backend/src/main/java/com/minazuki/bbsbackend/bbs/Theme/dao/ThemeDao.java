@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.Theme.dao;
 
+import com.minazuki.bbsbackend.bbs.Theme.dataObject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.Theme.pojo.Theme;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,4 +16,7 @@ public class ThemeDao {
     public void addTheme(Theme theme){this.sqlSession.insert("addTheme",theme);}
 
     public void deleteTheme(Integer id){this.sqlSession.delete("deleteTheme",id);}
+
+    public void updateThemeById(ThemeUpdateDto themeUpdateDto){this.sqlSession.insert("updateThemeById",themeUpdateDto);}
+
 }

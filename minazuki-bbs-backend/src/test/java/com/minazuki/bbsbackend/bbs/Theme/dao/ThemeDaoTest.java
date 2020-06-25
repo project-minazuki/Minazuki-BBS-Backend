@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.Theme.dao;
 
+import com.minazuki.bbsbackend.bbs.Theme.dataObject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.Theme.pojo.Theme;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,5 +28,17 @@ class ThemeDaoTest {
     void deleteTheme() {
         Integer id = 1;
         themeDao.deleteTheme(id);
+    }
+
+    @Test
+    void updateThemeById(){
+        ThemeUpdateDto themeUpdateDto = new ThemeUpdateDto();
+        themeUpdateDto.setIsTop(true);themeUpdateDto.setIsHighQuality(true);themeUpdateDto.setTitle("从现在开始，我要起飞了");
+        themeUpdateDto.setStatus(false);themeUpdateDto.setLatestReplyAt(LocalDateTime.now());
+        themeUpdateDto.setUpdatedAt(LocalDateTime.now());themeUpdateDto.setVisitsCount(111);themeUpdateDto.setReplyCount(222);
+        themeUpdateDto.setId(1);
+
+        themeDao.updateThemeById(themeUpdateDto);
+
     }
 }

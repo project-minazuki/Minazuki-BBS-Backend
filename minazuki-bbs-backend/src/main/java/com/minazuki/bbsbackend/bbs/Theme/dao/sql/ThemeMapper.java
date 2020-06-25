@@ -1,10 +1,8 @@
 package com.minazuki.bbsbackend.bbs.Theme.dao.sql;
 
+import com.minazuki.bbsbackend.bbs.Theme.dataObject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.Theme.pojo.Theme;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface ThemeMapper {
@@ -17,5 +15,8 @@ public interface ThemeMapper {
 
     @Delete("DELETE FROM theme WHERE id=#{id}")
     void deleteTheme(@Param("id") Integer id);
+
+    @UpdateProvider(type = ThemeSqlProvider.class, method = "updateById")
+    void updateThemeById(ThemeUpdateDto themeUpdateDto);
 
 }

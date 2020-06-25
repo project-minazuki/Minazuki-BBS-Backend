@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.Notice.dao;
 
+import com.minazuki.bbsbackend.bbs.Notice.dataObject.NoticeUpdateDto;
 import com.minazuki.bbsbackend.bbs.Notice.pojo.Notice;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,5 +28,16 @@ class NoticeDaoTest {
     void deleteNotice() {
         Integer id = 1;
         noticeDao.deleteNotice(id);
+    }
+
+    @Test
+    void updateNotice(){
+        NoticeUpdateDto noticeUpdateDto = new NoticeUpdateDto();
+        noticeUpdateDto.setTitle("公告更新");
+        noticeUpdateDto.setContent("隔壁超市的薯片半价啦！！");
+        noticeUpdateDto.setUpdatedAt(LocalDateTime.now());
+        noticeUpdateDto.setId(1);
+
+        noticeDao.updateNoticeById(noticeUpdateDto);
     }
 }

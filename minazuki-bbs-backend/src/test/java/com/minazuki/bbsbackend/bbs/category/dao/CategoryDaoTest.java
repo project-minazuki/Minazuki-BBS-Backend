@@ -40,6 +40,7 @@ class CategoryDaoTest {
         categoryUpdateDto.setStatus(false);
         categoryUpdateDto.setUpdatedAt(LocalDateTime.now());
         categoryUpdateDto.setCoverUrl("更新后的路径");
+        categoryUpdateDto.setVisitsCount(555);
         categoryDao.updateCategoryById(categoryUpdateDto);
     }
 

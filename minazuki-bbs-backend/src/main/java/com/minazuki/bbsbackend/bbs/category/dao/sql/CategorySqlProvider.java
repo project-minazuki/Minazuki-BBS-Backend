@@ -10,12 +10,23 @@ public class CategorySqlProvider {
         return new SQL(){
             {
                 UPDATE("category");
-                SET("category_name = #{name}" );
-                SET("status = #{status}");
-                SET("description = #{description}");
-                SET("updated_time = #{updatedAt}");
+                if(categoryUpdateDto.getName()!=null){
+                    SET("category_name = #{name}" );
+                }
+                if(categoryUpdateDto.getStatus()!=null){
+                    SET("status = #{status}");
+                }
+                if (categoryUpdateDto.getDescription()!=null) {
+                    SET("description = #{description}");
+                }
+                if(categoryUpdateDto.getUpdatedAt()!=null) {
+                    SET("updated_time = #{updatedAt}");
+                }
                 if(categoryUpdateDto.getCoverUrl() != null){
                     SET("cover_url = #{coverUrl}");
+                }
+                if (categoryUpdateDto.getVisitsCount()!=null){
+                    SET("visits_count = #{visitsCount}");
                 }
                 WHERE("id=#{id}");
             }
