@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.favorite.dao.sql;
 
+import com.minazuki.bbsbackend.bbs.favorite.dataobject.FavoriteCreateDto;
 import com.minazuki.bbsbackend.bbs.favorite.pojo.Favorite;
 import org.apache.ibatis.annotations.*;
 
@@ -8,8 +9,8 @@ import java.util.List;
 @Mapper
 public interface FavoriteMapper {
     @Insert("INSERT INTO favorite(favorite_theme_id,collector_id,created_time,last_viewed_time) " +
-            "VALUES (#{themeId},#{OwnerId},#{createdAt},#{lastViewedAt})")
-    void addFavorite(@Param("favorite") Favorite favorite);
+            "VALUES (#{themeId},#{OwnerId},NOW(),NOW())")
+    void addFavorite(@Param("favoriteCreateDto")FavoriteCreateDto favoriteCreateDto);
 
     @Delete("DELETE FROM favorite WHERE id=#{id}")
     void deleteFavorite(@Param("id") Integer id);
