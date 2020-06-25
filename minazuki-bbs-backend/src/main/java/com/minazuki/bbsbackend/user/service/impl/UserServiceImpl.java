@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         userDao.updateUser(userUpdateDto);
     }
 
-    public boolean signUp(UserRegistrationDto userRegistrationDto) throws DuplicateInfoException {
+    public void signUp(UserRegistrationDto userRegistrationDto) throws DuplicateInfoException {
         List<User> users = userDao.getUserByUniqueKey(userRegistrationDto);
         if (users.size() == 0) {
             User newUser = User.builder().isAdmin(false).username(userRegistrationDto.getUsername())
@@ -75,7 +75,6 @@ public class UserServiceImpl implements UserService {
                     .email(userRegistrationDto.getEmail()).phoneNumber(userRegistrationDto.getPhoneNumber())
                     .build();
             userDao.addUser(newUser);
-            return true;
         } else {
             DuplicateInfoException e = new DuplicateInfoException();
             for (User user: users

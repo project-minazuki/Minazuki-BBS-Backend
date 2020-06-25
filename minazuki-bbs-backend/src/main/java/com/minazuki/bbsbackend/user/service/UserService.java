@@ -17,7 +17,7 @@ public interface UserService {
 
     void updateUser(UserUpdateDto userUpdateDto) throws DuplicateInfoException;
 
-    boolean signUp(UserRegistrationDto userRegistrationDto) throws DuplicateInfoException;
+    void signUp(UserRegistrationDto userRegistrationDto) throws DuplicateInfoException;
 
     String signIn(UserSignInDto userSignInDto) throws NoUserMatchException;
 }

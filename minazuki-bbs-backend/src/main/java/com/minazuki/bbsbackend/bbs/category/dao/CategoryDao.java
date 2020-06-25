@@ -22,6 +22,4 @@ public class CategoryDao {
 
     public void updateCategoryById(CategoryUpdateDto categoryUpdateDto){this.sqlSession.update("updateCategoryById",categoryUpdateDto);}
 
-    public void addVisitsCountById(Integer id){this.sqlSession.update("addVisitsCountById",id);}
-
 }
