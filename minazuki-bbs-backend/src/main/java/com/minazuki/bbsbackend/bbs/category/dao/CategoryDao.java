@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CategoryDao {
     private final SqlSession sqlSession;
@@ -13,6 +15,14 @@ public class CategoryDao {
     public CategoryDao(SqlSession sqlSession){this.sqlSession = sqlSession;}
 
     public void addCategory(Category category){this.sqlSession.insert("addCategory",category);}
+
+    public List<Category> findAllCategories() {
+        return this.sqlSession.selectList("findAllCategories");
+    }
+
+    public List<Category> findAllOpenCategories() {
+        return this.sqlSession.selectList("findAllOpenCategories");
+    }
 
     public Category getCategoryById(Integer id) {
         return this.sqlSession.selectOne("getCategoryById", id);
