@@ -15,6 +15,15 @@ public interface FavoriteMapper {
     @Delete("DELETE FROM favorite WHERE id=#{id}")
     void deleteFavorite(@Param("id") Integer id);
 
+    @Select("SELECT * FROM favorite WHERE id = #{id}")
+    @Results({
+            @Result(property = "themeId", column = "favorite_theme_id"),
+            @Result(property = "OwnerId", column = "collector_id"),
+            @Result(property = "createdAt", column = "created_time"),
+            @Result(property = "lastViewedAt", column = "last_viewed_time")
+    })
+    Favorite getFavoriteById(@Param("id") Integer id);
+
     @Select("SELECT * FROM favorite WHERE collector_id = #{userId}")
     @Results({
             @Result(property = "themeId", column = "favorite_theme_id"),
