@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.minazuki.bbsbackend.user.dataobject.UserJwtInfoDto;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -39,15 +40,16 @@ public class JwtUtil {
         map.put("typ", "JWT");
         return JWT.create().withHeader(map)
                 .withClaim("userId", user.getId())
-                .withClaim("username", user.getUsername())
+                .withClaim("isAdmin", user.isAdmin())
                 .withIssuer("minazuki-bbs")
                 .withIssuedAt(DateUtil.localDateTimeToDate(LocalDateTime.now()))
                 .withExpiresAt(DateUtil.localDateTimeToDate(LocalDateTime.now().plusHours(2)))
                 .sign(algorithm);
     }
 
-    public static Integer verify(String token) throws JWTVerificationException {
+    public static UserJwtInfoDto verify(String token) throws JWTVerificationException {
         Integer userId;
+        Boolean isAdmin;
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             JWTVerifier jwtVerifier = JWT.require(algorithm)
@@ -55,6 +57,7 @@ public class JwtUtil {
                     .build();
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
             userId = decodedJWT.getClaim("userId").asInt();
+            isAdmin = decodedJWT.getClaim("isAdmin").asBoolean();
         } catch (TokenExpiredException e) {
             log.error("token过期, exception = " + e.toString());
             throw e;
@@ -62,6 +65,6 @@ public class JwtUtil {
             log.error("解析token失败, exception = " + e.toString());
             throw e;
         }
-        return userId;
+        return new UserJwtInfoDto(userId, isAdmin);
     }
 }

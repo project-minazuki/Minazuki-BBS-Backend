@@ -17,6 +17,10 @@ public class FavoriteDao {
 
     public void deleteFavorite(Integer id){this.sqlSession.delete("deleteFavorite", id);}
 
+    public Favorite getFavoriteById(Integer id) {
+        return this.sqlSession.selectOne("getFavoriteById", id);
+    }
+
     public List<Favorite> findAllFavorites(Integer userId) {
         return sqlSession.selectList("findAllThemes", userId);
     }

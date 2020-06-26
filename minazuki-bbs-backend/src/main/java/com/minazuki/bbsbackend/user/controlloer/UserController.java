@@ -1,6 +1,7 @@
 package com.minazuki.bbsbackend.user.controlloer;
 
 import com.minazuki.bbsbackend.http.StandardResponse;
+import com.minazuki.bbsbackend.user.annotation.AdminRequired;
 import com.minazuki.bbsbackend.user.annotation.UserLoginRequired;
 import com.minazuki.bbsbackend.user.dataobject.UserInfoOutDto;
 import com.minazuki.bbsbackend.user.dataobject.UserRegistrationDto;
@@ -33,7 +34,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseBody
-    @UserLoginRequired
+    @AdminRequired
     @ApiOperation(value = "查看用户详情", notes = "查看用户详情", httpMethod = "GET")
     public StandardResponse<UserInfoOutDto> getUserById(@ApiParam(name = "用户id", value = "用户id", required = true)@PathVariable Integer userId) {
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", userService.getByIndex(userId));

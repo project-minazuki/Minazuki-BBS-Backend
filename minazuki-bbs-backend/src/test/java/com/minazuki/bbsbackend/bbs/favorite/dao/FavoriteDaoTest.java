@@ -38,4 +38,9 @@ class FavoriteDaoTest {
     void updateFavoriteLastViewedTime() {
         favoriteDao.updateFavoriteLastViewedTime(1);
     }
+
+    @Test
+    void getFavoriteByIdTest() {
+        System.out.println(favoriteDao.getFavoriteById(1));
+    }
 }
