@@ -53,4 +53,6 @@ public class ThemeDao {
 
     public void decreaseReplyCountById(Integer id){this.sqlSession.update("decreaseReplyCountById",id);}
 
+    public List<Theme> selectAll(){return this.sqlSession.selectList("selectAll");}
+
 }

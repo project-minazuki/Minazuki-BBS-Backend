@@ -60,4 +60,7 @@ public interface ThemeMapper {
 
     @Update("UPDATE theme SET reply_count = reply_count - 1 WHERE id =#{id}")
     void decreaseReplyCountById(@Param("id") Integer id);
+
+    @Select("SELECT * FROM theme")
+    List<Theme> selectAll();
 }

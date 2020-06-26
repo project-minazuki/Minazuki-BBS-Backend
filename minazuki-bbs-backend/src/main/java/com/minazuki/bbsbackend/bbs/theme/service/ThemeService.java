@@ -41,5 +41,11 @@ public interface ThemeService {
     void increaseReplyCountById(Integer id);
     void decreaseReplyCountById(Integer id);
 
+    //找到访问数的Top10
+    List<Theme> findTop10ByVisitsCount();
+
+    //找到回复数的Top10
+    List<Theme> findTop10ByReplyCount();
+
 
 }

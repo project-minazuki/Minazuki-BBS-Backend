@@ -7,12 +7,13 @@ import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -127,5 +128,70 @@ public class ThemeServiceImpl implements ThemeService {
     public void decreaseReplyCountById(Integer id) {
         themeDao.decreaseReplyCountById(id);
     }
+
+    @Override
+    public List<Theme> findTop10ByVisitsCount() {
+        List<Theme> list = themeDao.selectAll();
+        List<Theme> resList = new ArrayList<Theme>();
+        Theme defaultTheme = Theme.builder().id(-1).visitsCount(-1).build();
+        int i = 0;
+        for(i=0;i<=9;i++){
+            resList.add(defaultTheme);
+        }
+        for(i=0;i<=list.size();i++){
+            if(list.get(i).getVisitsCount() >= resList.get(9).getVisitsCount()){
+                resList.add(9,list.get(i));
+                rankListByVisitsCount(resList);
+            }
+        }
+        return resList;
+    }
+
+    public void rankListByVisitsCount(List<Theme> listOf10){
+        int i = 0;
+        int j = 0;
+        for(i=1;i<=9;i++){
+            for(j=i;j>=1;j--){
+                if (listOf10.get(j).getVisitsCount()>listOf10.get(j-1).getVisitsCount()){
+                    Theme tempTheme = listOf10.get(j);
+                    listOf10.add(j,listOf10.get(j-1));
+                    listOf10.add(j-1,tempTheme);
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<Theme> findTop10ByReplyCount() {
+        List<Theme> list = themeDao.selectAll();
+        List<Theme> resList = new ArrayList<Theme>();
+        Theme defaultTheme = Theme.builder().id(-1).replyCount(-1).build();
+        int i = 0;
+        for(i=0;i<=9;i++){
+            resList.add(defaultTheme);
+        }
+        for(i=0;i<=list.size();i++){
+            if(list.get(i).getReplyCount() >= resList.get(9).getReplyCount()){
+                resList.add(9,list.get(i));
+                rankListByReplyCount(resList);
+            }
+        }
+        return resList;
+    }
+
+    public void rankListByReplyCount(List<Theme> listOf10){
+        int i = 0;
+        int j = 0;
+        for(i=1;i<=9;i++){
+            for(j=i;j>=1;j--){
+                if (listOf10.get(j).getReplyCount()>listOf10.get(j-1).getReplyCount()){
+                    Theme tempTheme = listOf10.get(j);
+                    listOf10.add(j,listOf10.get(j-1));
+                    listOf10.add(j-1,tempTheme);
+                }
+            }
+        }
+    }
+
 
 }
