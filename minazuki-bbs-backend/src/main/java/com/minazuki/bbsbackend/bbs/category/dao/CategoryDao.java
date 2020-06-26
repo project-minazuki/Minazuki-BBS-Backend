@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.category.dao;
 
+import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryCreateDto;
 import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import org.apache.ibatis.session.SqlSession;
@@ -14,7 +15,7 @@ public class CategoryDao {
     @Autowired
     public CategoryDao(SqlSession sqlSession){this.sqlSession = sqlSession;}
 
-    public void addCategory(Category category){this.sqlSession.insert("addCategory",category);}
+    public void addCategory(CategoryCreateDto categoryCreateDto){this.sqlSession.insert("addCategory",categoryCreateDto);}
 
     public List<Category> findAllCategories() {
         return this.sqlSession.selectList("findAllCategories");
@@ -35,5 +36,17 @@ public class CategoryDao {
     public void deleteCategory(Integer id){this.sqlSession.delete("deleteCategory",id);}
 
     public void updateCategoryById(CategoryUpdateDto categoryUpdateDto){this.sqlSession.update("updateCategoryById",categoryUpdateDto);}
+
+    public void addVisitsCountById(Integer id) {
+        this.sqlSession.update("addVisitsCountById", id);
+    }
+
+    public void openCategory(Integer id) {
+        this.sqlSession.update("openCategory", id);
+    }
+
+    public void closeCategory(Integer id) {
+        this.sqlSession.update("closeCategory", id);
+    }
 
 }

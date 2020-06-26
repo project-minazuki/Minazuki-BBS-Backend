@@ -8,8 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface CategoryMapper {
-    @Insert("INSERT INTO category(category_name,status,description,created_time,updated_time,visits_count,cover_url) " +
-            "VALUES (#{name},#{status},#{description},#{createdAt},#{updatedAt},#{visitsCount},#{coverUrl})")
+    @Insert("INSERT INTO category(category_name,status,description,created_time,updated_time,visits_count) " +
+            "VALUES (#{name},1,#{description},NOW(),NOW(),0)")
     void addCategory(@Param("category") Category category);
 
     @Select("SELECT * FROM category WHERE id = #{id}")
@@ -57,5 +57,10 @@ public interface CategoryMapper {
     @Update("UPDATE category SET visits_count = visits_count + 1 WHERE id=#{id}")
     void addVisitsCountById(@Param("id") Integer id);
 
+    @Update("UPDATE category SET status = 1 WHERE id = #{id}")
+    void openCategory(@Param("id") Integer id);
+
+    @Update("UPDATE category SET status = 0 WHERE id = #{id}")
+    void closeCategory(@Param("id") Integer id);
 
 }
