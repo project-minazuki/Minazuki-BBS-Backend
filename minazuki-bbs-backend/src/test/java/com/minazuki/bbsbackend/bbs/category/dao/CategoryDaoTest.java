@@ -17,7 +17,7 @@ class CategoryDaoTest {
 
     @Test
     public void addCategory() {
-        Category category =Category.builder().name("测试关闭版块").status(false).description("用于测试").createdAt(LocalDateTime.now())
+        Category category =Category.builder().name("恰饭版块").status(false).description("用于测试").createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now()).visitsCount(100).coverUrl("附件路径").build();
         categoryDao.addCategory(category);
 
