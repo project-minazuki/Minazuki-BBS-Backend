@@ -41,10 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new DuplicateCategoryNameException();
         }
         else {
-            categoryDao.addCategory(Category.builder().name(categoryCreateDto.getName()).
-                    createdAt(LocalDateTime.now()).status(true).description(categoryCreateDto.getDescription()).
-                    updatedAt(LocalDateTime.now()).visitsCount(0).
-                    build());
+            categoryDao.addCategory(categoryCreateDto);
         }
     }
 

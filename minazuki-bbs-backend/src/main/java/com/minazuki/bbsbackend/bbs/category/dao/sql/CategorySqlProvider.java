@@ -13,21 +13,13 @@ public class CategorySqlProvider {
                 if(categoryUpdateDto.getName()!=null){
                     SET("category_name = #{name}" );
                 }
-                if(categoryUpdateDto.getStatus()!=null){
-                    SET("status = #{status}");
-                }
                 if (categoryUpdateDto.getDescription()!=null) {
                     SET("description = #{description}");
-                }
-                if(categoryUpdateDto.getUpdatedAt()!=null) {
-                    SET("updated_time = #{updatedAt}");
                 }
                 if(categoryUpdateDto.getCoverUrl() != null){
                     SET("cover_url = #{coverUrl}");
                 }
-                if (categoryUpdateDto.getVisitsCount()!=null){
-                    SET("visits_count = #{visitsCount}");
-                }
+                SET("updated_time = NOW()");
                 WHERE("id=#{id}");
             }
         }.toString();
