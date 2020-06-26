@@ -25,7 +25,11 @@ public class HistoryViewedDao {
         this.sqlSession.delete("deleteHistoryView", id);
     }
 
-    public List<HistoryViewed> findHistoryViews() {
-        return this.sqlSession.selectList("findAllHistoryViews");
+    public HistoryViewed getHistoryViewById(Integer id) {
+        return this.sqlSession.selectOne("getHistoryViewById", id);
+    }
+
+    public List<HistoryViewed> findHistoryViews(Integer ownerId) {
+        return this.sqlSession.selectList("findAllHistoryViews", ownerId);
     }
 }

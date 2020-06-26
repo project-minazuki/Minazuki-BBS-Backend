@@ -14,11 +14,19 @@ public interface HistoryViewedMapper {
     @Delete("DELETE FROM history_viewed WHERE id = #{id}")
     void deleteHistoryView(@Param("id") Integer id);
 
-    @Select("SELECT * FROM history_viewed")
+    @Select("SELECT * FROM history_viewed WHERE id = #{id}")
     @Results({
             @Result(property = "ownerId", column = "view_user_id"),
             @Result(property = "viewedThemeId", column = "viewed_theme_id"),
             @Result(property = "viewedAt", column = "viewed_time")
     })
-    List<HistoryViewed> findAllHistoryViews();
+    HistoryViewed getHistoryViewById(@Param("id") Integer id);
+
+    @Select("SELECT * FROM history_viewed WHERE view_user_id = #{ownerId}")
+    @Results({
+            @Result(property = "ownerId", column = "view_user_id"),
+            @Result(property = "viewedThemeId", column = "viewed_theme_id"),
+            @Result(property = "viewedAt", column = "viewed_time")
+    })
+    List<HistoryViewed> findAllHistoryViews(@Param("ownerId") Integer ownerId);
 }
