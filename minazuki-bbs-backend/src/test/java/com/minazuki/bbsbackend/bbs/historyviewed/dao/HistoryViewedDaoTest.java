@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.historyviewed.dao;
 
+import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewCreateDto;
 import com.minazuki.bbsbackend.bbs.historyviewed.pojo.HistoryViewed;
 import org.assertj.core.error.ShouldBeAfterYear;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,10 @@ class HistoryViewedDaoTest {
 
     @Test
     void addHistoryView() {
-        HistoryViewed historyViewed = HistoryViewed.builder().ownerId(4).viewedAt(LocalDateTime.now()).viewedThemeId(1).build();
-        this.historyViewedDao.addHistoryView(historyViewed);
+        HistoryViewCreateDto hvcDto = new HistoryViewCreateDto();
+        hvcDto.setOwnerId(4);
+        hvcDto.setViewedThemeId(2);
+        this.historyViewedDao.addHistoryView(hvcDto);
     }
 
     @Test

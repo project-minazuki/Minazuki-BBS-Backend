@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.historyviewed.dao.sql;
 
+import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewCreateDto;
 import com.minazuki.bbsbackend.bbs.historyviewed.pojo.HistoryViewed;
 import java.util.List;
 import org.apache.ibatis.annotations.*;
@@ -8,8 +9,8 @@ import org.apache.ibatis.annotations.*;
 public interface HistoryViewedMapper {
 
     @Insert("INSERT INTO history_viewed (view_user_id,viewed_theme_id,viewed_time) " +
-            "VALUES (#{ownerId}, #{viewedThemeId}, #{viewedAt})")
-    void addHistoryView(@Param("historyViewed")HistoryViewed historyViewed);
+            "VALUES (#{ownerId}, #{viewedThemeId}, NOW())")
+    void addHistoryView(@Param("hvcDto") HistoryViewCreateDto hvcDto);
 
     @Delete("DELETE FROM history_viewed WHERE id = #{id}")
     void deleteHistoryView(@Param("id") Integer id);

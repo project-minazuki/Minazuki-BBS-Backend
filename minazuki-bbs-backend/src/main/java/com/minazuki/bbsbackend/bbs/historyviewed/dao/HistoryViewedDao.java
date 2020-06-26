@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.historyviewed.dao;
 
+import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewCreateDto;
 import com.minazuki.bbsbackend.bbs.historyviewed.pojo.HistoryViewed;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class HistoryViewedDao {
         this.sqlSession = sqlSession;
     }
 
-    public void addHistoryView(HistoryViewed historyViewed) {
-        this.sqlSession.insert("addHistoryView", historyViewed);
+    public void addHistoryView(HistoryViewCreateDto hvcDto) {
+        this.sqlSession.insert("addHistoryView", hvcDto);
     }
 
     public void deleteHistoryView(Integer id) {
