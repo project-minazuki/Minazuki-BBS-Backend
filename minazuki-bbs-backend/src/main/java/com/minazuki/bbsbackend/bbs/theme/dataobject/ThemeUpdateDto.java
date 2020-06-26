@@ -37,6 +37,7 @@ public class ThemeUpdateDto {
     @ApiModelProperty(value = "最后回复时间")
     private LocalDateTime latestReplyAt;
 
+    //Service层自动更新时间，传参时不用填
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updatedAt;
 }
