@@ -5,7 +5,7 @@ import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryModeratorException;
 import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryNameException;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
-import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.PrimaryKeyDto;
+import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ public interface CategoryService {
 
     List<Category> getAllOpenCategories();
 
-    void addModerator(PrimaryKeyDto primaryKeyDto) throws DuplicateCategoryModeratorException;
+    void addModerator(ModeratorPrimaryKeyDto moderatorPrimaryKeyDto) throws DuplicateCategoryModeratorException;
 
-    void removeModerator(PrimaryKeyDto primaryKeyDto);
+    void removeModerator(ModeratorPrimaryKeyDto moderatorPrimaryKeyDto);
 
     List<Integer> getModerators(Integer categoryId);
 

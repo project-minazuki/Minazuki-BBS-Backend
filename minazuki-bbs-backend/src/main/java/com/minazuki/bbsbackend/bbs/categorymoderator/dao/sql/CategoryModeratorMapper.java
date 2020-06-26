@@ -1,6 +1,6 @@
 package com.minazuki.bbsbackend.bbs.categorymoderator.dao.sql;
 
-import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.PrimaryKeyDto;
+import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
 import com.minazuki.bbsbackend.bbs.categorymoderator.pojo.CategoryModerator;
 import java.util.List;
 import org.apache.ibatis.annotations.*;
@@ -8,11 +8,11 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface CategoryModeratorMapper {
     @Insert("INSERT INTO category_admin(category_admin_id,managed_category_id,created_time) " +
-            "VALUES (#{moderatorId},#{categoryId},#{createdAt})")
-    void addCategoryModerator(@Param("categoryModerator") CategoryModerator categoryModerator);
+            "VALUES (#{moderatorId},#{categoryId},NOW())")
+    void addCategoryModerator(@Param("mpkDto") ModeratorPrimaryKeyDto mpkDto);
 
     @Delete("DELETE FROM category_admin WHERE category_admin_id=#{moderatorId} AND managed_category_id=#{categoryId}")
-    void deleteCategoryModerator(@Param("primaryKeyDto") PrimaryKeyDto primaryKeyDto);
+    void deleteCategoryModerator(@Param("mpkDto") ModeratorPrimaryKeyDto mpkDto);
 
     @Select("SELECT managed_category_id FROM category_admin WHERE category_admin_id = #{userId}")
     List<Integer> getManagedCategoryIds(@Param("userId") Integer userId);

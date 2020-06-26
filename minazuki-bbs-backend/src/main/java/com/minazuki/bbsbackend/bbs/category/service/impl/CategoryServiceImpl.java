@@ -8,7 +8,7 @@ import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryNameExcep
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import com.minazuki.bbsbackend.bbs.category.service.CategoryService;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dao.CategoryModeratorDao;
-import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.PrimaryKeyDto;
+import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
 import com.minazuki.bbsbackend.bbs.categorymoderator.pojo.CategoryModerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,21 +67,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void addModerator(PrimaryKeyDto primaryKeyDto) throws DuplicateCategoryModeratorException {
-        if (getModerators(primaryKeyDto.getCategoryId()).contains(primaryKeyDto.getModeratorId())) {
+    public void addModerator(ModeratorPrimaryKeyDto moderatorPrimaryKeyDto) throws DuplicateCategoryModeratorException {
+        if (getModerators(moderatorPrimaryKeyDto.getCategoryId()).contains(moderatorPrimaryKeyDto.getModeratorId())) {
             throw new DuplicateCategoryModeratorException();
         }
         else {
-            categoryModeratorDao.addCategoryModerator(CategoryModerator.builder()
-                    .categoryId(primaryKeyDto.getCategoryId())
-                    .moderatorId(primaryKeyDto.getModeratorId())
-                    .createdAt(LocalDateTime.now()).build());
+            categoryModeratorDao.addCategoryModerator(moderatorPrimaryKeyDto);
         }
     }
 
     @Override
-    public void removeModerator(PrimaryKeyDto primaryKeyDto) {
-        categoryModeratorDao.deleteCategoryModerator(primaryKeyDto);
+    public void removeModerator(ModeratorPrimaryKeyDto moderatorPrimaryKeyDto) {
+        categoryModeratorDao.deleteCategoryModerator(moderatorPrimaryKeyDto);
     }
 
     @Override
