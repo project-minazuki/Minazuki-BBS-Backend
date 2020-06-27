@@ -1,6 +1,6 @@
 package com.minazuki.bbsbackend.bbs.historyviewed.dao;
 
-import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewCreateDto;
+import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewedCreateDto;
 import com.minazuki.bbsbackend.bbs.historyviewed.pojo.HistoryViewed;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +18,19 @@ public class HistoryViewedDao {
         this.sqlSession = sqlSession;
     }
 
-    public void addHistoryView(HistoryViewCreateDto hvcDto) {
-        this.sqlSession.insert("addHistoryView", hvcDto);
+    public void addHistoryViewed(HistoryViewedCreateDto hvcDto) {
+        this.sqlSession.insert("addHistoryViewed", hvcDto);
     }
 
-    public void deleteHistoryView(Integer id) {
-        this.sqlSession.delete("deleteHistoryView", id);
+    public void deleteHistoryViewed(Integer id) {
+        this.sqlSession.delete("deleteHistoryViewed", id);
     }
 
-    public HistoryViewed getHistoryViewById(Integer id) {
-        return this.sqlSession.selectOne("getHistoryViewById", id);
+    public HistoryViewed getHistoryViewedById(Integer id) {
+        return this.sqlSession.selectOne("getHistoryViewedById", id);
     }
 
-    public List<HistoryViewed> findHistoryViews(Integer ownerId) {
-        return this.sqlSession.selectList("findAllHistoryViews", ownerId);
+    public List<HistoryViewed> findAllHistoryViewed(Integer ownerId) {
+        return this.sqlSession.selectList("findAllHistoryViewed", ownerId);
     }
 }

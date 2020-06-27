@@ -1,14 +1,10 @@
 package com.minazuki.bbsbackend.bbs.historyviewed.dao;
 
-import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewCreateDto;
-import com.minazuki.bbsbackend.bbs.historyviewed.pojo.HistoryViewed;
-import org.assertj.core.error.ShouldBeAfterYear;
+import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewedCreateDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-
-import java.time.LocalDateTime;
 
 @SpringBootTest
 class HistoryViewedDaoTest {
@@ -18,24 +14,24 @@ class HistoryViewedDaoTest {
 
     @Test
     void addHistoryView() {
-        HistoryViewCreateDto hvcDto = new HistoryViewCreateDto();
-        hvcDto.setOwnerId(4);
-        hvcDto.setViewedThemeId(2);
-        this.historyViewedDao.addHistoryView(hvcDto);
+        HistoryViewedCreateDto hvcDto = new HistoryViewedCreateDto();
+        hvcDto.setOwnerId(1);
+        hvcDto.setViewedThemeId(1);
+        this.historyViewedDao.addHistoryViewed(hvcDto);
     }
 
     @Test
     void deleteHistoryView() {
-        this.historyViewedDao.deleteHistoryView(1);
+        this.historyViewedDao.deleteHistoryViewed(1);
     }
 
     @Test
     void getHistoryViewByIdTest() {
-        System.out.println(this.historyViewedDao.getHistoryViewById(3));
+        System.out.println(this.historyViewedDao.getHistoryViewedById(3));
     }
 
     @Test
     void findHistoryViews() {
-        System.out.println(historyViewedDao.findHistoryViews(4));
+        System.out.println(historyViewedDao.findAllHistoryViewed(4));
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FavoriteServiceImpl implements FavoriteService {
 
-    FavoriteDao favoriteDao;
+    private final FavoriteDao favoriteDao;
 
     public FavoriteServiceImpl(FavoriteDao favoriteDao)
     {

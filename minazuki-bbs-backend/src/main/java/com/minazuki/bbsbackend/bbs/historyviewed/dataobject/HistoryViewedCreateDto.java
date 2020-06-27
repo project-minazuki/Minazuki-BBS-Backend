@@ -4,18 +4,16 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 @Data
+@ApiModel
 @NoArgsConstructor
-@ApiModel("创建历史记录入参数据模型")
 public class HistoryViewedCreateDto {
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "历史记录所属用户id")
     private Integer ownerId;
 
-    @ApiModelProperty(value = "查看主题ID")
-    @NotNull
+    @ApiModelProperty(value = "所浏览的主题帖")
     private Integer viewedThemeId;
 
 }
