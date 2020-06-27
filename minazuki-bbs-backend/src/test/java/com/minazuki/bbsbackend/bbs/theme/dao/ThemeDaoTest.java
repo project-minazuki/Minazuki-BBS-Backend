@@ -1,6 +1,7 @@
 package com.minazuki.bbsbackend.bbs.theme.dao;
 
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCheckDto;
+import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import org.junit.jupiter.api.Test;
@@ -18,10 +19,9 @@ class ThemeDaoTest {
 
     @Test
     void addTheme() {
-        Theme theme = Theme.builder().isTop(true).isHighQuality(true).status(true).title("怎么能说脏话呢").categoryId(2)
-                .creatorId(1).visitsCount(777).replyCount(777).latestReplyAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now()).createdAt(LocalDateTime.now()).build();
-        themeDao.addTheme(theme);
+        ThemeCreateDto themeCreateDto = new ThemeCreateDto();
+        themeCreateDto.setCategoryId(1);themeCreateDto.setCreatorId(1);themeCreateDto.setTitle("top10测试12");
+        themeDao.addTheme(themeCreateDto);
     }
 
     @Test
@@ -33,12 +33,10 @@ class ThemeDaoTest {
     @Test
     void updateThemeById(){
         ThemeUpdateDto themeUpdateDto = new ThemeUpdateDto();
-        themeUpdateDto.setIsTop(true);themeUpdateDto.setIsHighQuality(true);themeUpdateDto.setTitle("从现在开始，我要起飞了");
-        themeUpdateDto.setStatus(false);themeUpdateDto.setLatestReplyAt(LocalDateTime.now());
-        themeUpdateDto.setUpdatedAt(LocalDateTime.now());themeUpdateDto.setVisitsCount(111);themeUpdateDto.setReplyCount(222);
+        themeUpdateDto.setTitle("从现在开始，我要起飞了");
         themeUpdateDto.setId(1);
 
-        themeDao.updateTheme(themeUpdateDto);
+        themeDao.updateThemeTitle(themeUpdateDto);
     }
 
 
@@ -106,8 +104,14 @@ class ThemeDaoTest {
 
     @Test
     void increaseVisitsCountById() {
-        Integer id = 2;
-        themeDao.increaseVisitsCountById(id);
+        Integer id = 17;
+
+        //自定义访问数
+        Integer visitsCount = 10;
+        int i = 1;
+        for(i=1;i<=visitsCount;i++){
+            themeDao.increaseVisitsCountById(id);
+        }
 
     }
 
@@ -127,5 +131,21 @@ class ThemeDaoTest {
     void decreaseReplyCountById() {
         Integer id = 2;
         themeDao.decreaseReplyCountById(id);
+    }
+
+    @Test
+    void getVisitsCountTOP10(){
+        List<Theme> list = themeDao.getVisitsCountTOP10();
+        int i = 0;
+        for(i=0;i<=9;i++){
+            System.out.println(list.get(i));
+        }
+    }
+
+    @Test
+    void searchThemeByTitle(){
+        String title = "测试";
+        List<Theme> list = themeDao.searchThemeByTitle(title);
+        System.out.println(list);
     }
 }

@@ -7,6 +7,9 @@ import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
+import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
+import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
+import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +22,12 @@ import java.util.*;
 @Transactional
 public class ThemeServiceImpl implements ThemeService {
     private final ThemeDao themeDao;
+    private final ThemeReportDao themeReportDao;
 
     @Autowired
-    public ThemeServiceImpl(ThemeDao themeDao) {
+    public ThemeServiceImpl(ThemeDao themeDao,ThemeReportDao themeReportDao) {
         this.themeDao = themeDao;
+        this.themeReportDao = themeReportDao;
     }
 
     //创建一个新主题，同一个板块下不可有标题相同的主题帖，否则抛出DuplicateThemeInfoException异常
@@ -136,6 +141,11 @@ public class ThemeServiceImpl implements ThemeService {
         return themeDao.searchThemeByTitle(title);
     }
 
+
+    @Override
+    public List<Theme> getAllThemes() {
+        return themeDao.selectAll();
+    }
 
 
 }

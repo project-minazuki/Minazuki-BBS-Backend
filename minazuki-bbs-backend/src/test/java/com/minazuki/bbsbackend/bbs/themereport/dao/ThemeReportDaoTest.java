@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.themereport.dao;
 
+import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
 import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootTest
 class ThemeReportDaoTest {
@@ -15,14 +17,39 @@ class ThemeReportDaoTest {
 
     @Test
     void addThemeReport() {
-        ThemeReport themeReport = ThemeReport.builder().themeId(2).reporterId(1).reason("此主题贴有问题")
-                .createdAt(LocalDateTime.now()).checkedAt(LocalDateTime.now()).checked(true).build();
-        themeReportDao.addThemeReport(themeReport);
+        ThemeReportCreateDto themeReportCreateDto = new ThemeReportCreateDto();
+        themeReportCreateDto.setThemeId(8);themeReportCreateDto.setReporterId(1);
+        themeReportCreateDto.setReason("cnm2");
+        themeReportDao.addThemeReport(themeReportCreateDto);
     }
 
     @Test
     void deleteThemeReport() {
-        Integer id = 2;
+        Integer id = 3;
         themeReportDao.deleteThemeReport(id);
+    }
+
+    @Test
+    void getAllReportsOfTheme() {
+        List<ThemeReport> list =themeReportDao.getAllReportsOfTheme(7);
+        System.out.println(list);
+    }
+
+    @Test
+    void getUncheckedReportsOfTheme() {
+        List<ThemeReport> list = themeReportDao.getUncheckedReportsOfTheme(7);
+        System.out.println(list);
+    }
+
+    @Test
+    void setThemeReportChecked() {
+        Integer id  = 2;
+        themeReportDao.setThemeReportChecked(id);
+    }
+
+    @Test
+    void deleteCheckedReports() {
+        Integer themeId = 7;
+        themeReportDao.deleteCheckedReports(themeId);
     }
 }

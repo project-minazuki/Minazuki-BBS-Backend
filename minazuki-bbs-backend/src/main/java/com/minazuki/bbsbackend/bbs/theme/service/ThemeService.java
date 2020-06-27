@@ -4,6 +4,8 @@ import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
+import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
+import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +48,9 @@ public interface ThemeService {
 
     //搜索与主题帖名称类似的主题帖
     List<Theme> searchThemeByTitle(String title);
+
+    //寻找所有的主题帖
+    List<Theme> getAllThemes();
 
 
 }
