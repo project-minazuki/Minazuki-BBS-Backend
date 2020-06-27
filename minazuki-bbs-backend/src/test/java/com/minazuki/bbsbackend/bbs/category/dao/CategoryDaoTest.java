@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.category.dao;
 
+import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryCreateDto;
 import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryUpdateDto;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,10 @@ class CategoryDaoTest {
 
     @Test
     public void addCategory() {
-        Category category =Category.builder().name("测试关闭版块").status(false).description("用于测试").createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now()).visitsCount(100).coverUrl("附件路径").build();
-        categoryDao.addCategory(category);
+        CategoryCreateDto categoryCreateDto = new CategoryCreateDto();
+        categoryCreateDto.setName("测试dto");
+        categoryCreateDto.setDescription("test");
+        categoryDao.addCategory(categoryCreateDto);
 
     }
 
@@ -35,10 +37,7 @@ class CategoryDaoTest {
         categoryUpdateDto.setId(1);
         categoryUpdateDto.setName("更新");
         categoryUpdateDto.setDescription("更新描述");
-        categoryUpdateDto.setStatus(false);
-        categoryUpdateDto.setUpdatedAt(LocalDateTime.now());
         categoryUpdateDto.setCoverUrl("更新后的路径");
-        categoryUpdateDto.setVisitsCount(555);
         categoryDao.updateCategoryById(categoryUpdateDto);
     }
 
@@ -60,5 +59,20 @@ class CategoryDaoTest {
     @Test
     void getCategoryByName() {
         System.out.println(categoryDao.getCategoryByName("测试版块"));
+    }
+
+    @Test
+    void addVisitsCountByIdTest() {
+        categoryDao.addVisitsCountById(3);
+    }
+
+    @Test
+    void openCategoryTest() {
+        categoryDao.openCategory(3);
+    }
+
+    @Test
+    void closeCategoryTest() {
+        categoryDao.closeCategory(3);
     }
 }

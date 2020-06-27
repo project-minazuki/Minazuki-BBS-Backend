@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
-@ApiModel(value = "Theme更新的数据结构")
-public class ThemeUpdateDto {
-    @ApiModelProperty(value = "主题帖的Id")
+@ApiModel(value = "用于创建主题贴时检查同一个版块中是否有标题相同的主题帖")
+public class ThemeCheckDto {
+    @ApiModelProperty(value = "主题帖Id")
     @NotNull
-    private Integer id;
-
-    @ApiModelProperty(value = "主题帖标题")
     private String title;
+
+    @ApiModelProperty(value = "主题帖所在版块Id")
+    @NotNull
+    private Integer categoryId;
 }

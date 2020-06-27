@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor
 public class InboxIndexDto {
     @ApiModelProperty(value = "当前用户id")
-    @NotNull
     private Integer thisUserId;
 
     @ApiModelProperty(value = "目标用户id")

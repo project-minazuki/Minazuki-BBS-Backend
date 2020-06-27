@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 @Data
 @NoArgsConstructor
-@ApiModel
-public class PrimaryKeyDto {
+@ApiModel(value = "创建版主和板块关系时的入参和作主键用")
+public class ModeratorPrimaryKeyDto {
     @ApiModelProperty(value = "板块管理者id")
     @NotNull
     private Integer moderatorId;

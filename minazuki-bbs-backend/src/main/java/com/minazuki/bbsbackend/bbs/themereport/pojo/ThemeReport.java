@@ -13,8 +13,8 @@ public class ThemeReport {
 
     private Integer id;
     private Integer themeId;
-    private Integer reporterId;
     private String reason;
+    private Integer reporterId;
     private LocalDateTime createdAt;
     private Boolean checked;
     private LocalDateTime checkedAt;
