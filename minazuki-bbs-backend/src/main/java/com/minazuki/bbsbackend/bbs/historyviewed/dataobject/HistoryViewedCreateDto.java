@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 public class HistoryViewedCreateDto {
 
     @ApiModelProperty(value = "用户ID")
-    @NotNull
     private Integer ownerId;
 
     @ApiModelProperty(value = "查看主题ID")

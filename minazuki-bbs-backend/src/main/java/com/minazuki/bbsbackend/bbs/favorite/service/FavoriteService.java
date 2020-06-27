@@ -16,4 +16,6 @@ public interface FavoriteService {
     void updateLastViewedTime(Integer id);
 
     List<Favorite> getAllFavoriteByUserId(Integer userId);
+
+    Favorite getByIndexAndUpdate(Integer id);
 }

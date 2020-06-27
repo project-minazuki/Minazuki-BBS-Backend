@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         else {
             categoryDao.addCategory(Category.builder().name(categoryCreateDto.getName()).
                     createdAt(LocalDateTime.now()).status(true).description(categoryCreateDto.getDescription()).
-                    updatedAt(LocalDateTime.now()).visitsCount(0).
+                    visitsCount(0).
                     build());
         }
     }
@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryModeratorDao.addCategoryModerator(CategoryModerator.builder()
                     .categoryId(primaryKeyDto.getCategoryId())
                     .moderatorId(primaryKeyDto.getModeratorId())
-                    .createdAt(LocalDateTime.now()).build());
+                    .build());
         }
     }
 

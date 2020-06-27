@@ -26,9 +26,6 @@ public class CategoryUpdateDto {
     @ApiModelProperty(value = "版块描述")
     private String description;
 
-    @ApiModelProperty(value = "更新时间")
-    private LocalDateTime updatedAt;
-
     @ApiModelProperty(value = "版块访问数")
     private Integer visitsCount;
 
@@ -38,6 +35,6 @@ public class CategoryUpdateDto {
     public boolean isAllNull()
     {
         return name == null && status == null && description == null &&
-                updatedAt == null && visitsCount == null && coverUrl == null;
+                visitsCount == null && coverUrl == null;
     }
 }
