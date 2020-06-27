@@ -1,6 +1,7 @@
 package com.minazuki.bbsbackend.bbs.postreport.pojo;
 
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Alias("PostReport")
 @ToString
-@Builder
+@NoArgsConstructor
 public class PostReport {
 
     private Integer id;
