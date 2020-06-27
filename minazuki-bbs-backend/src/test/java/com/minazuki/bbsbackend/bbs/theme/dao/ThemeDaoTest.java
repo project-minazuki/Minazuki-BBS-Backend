@@ -20,7 +20,9 @@ class ThemeDaoTest {
     @Test
     void addTheme() {
         ThemeCreateDto themeCreateDto = new ThemeCreateDto();
-        themeCreateDto.setCategoryId(1);themeCreateDto.setCreatorId(1);themeCreateDto.setTitle("top10测试12");
+        themeCreateDto.setCategoryId(2);
+        themeCreateDto.setCreatorId(4);
+        themeCreateDto.setTitle("12123123");
         themeDao.addTheme(themeCreateDto);
     }
 
