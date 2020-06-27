@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.notice.dao;
 
+import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeCreateDto;
 import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeUpdateDto;
 import com.minazuki.bbsbackend.bbs.notice.pojo.Notice;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,22 @@ class NoticeDaoTest {
 
     @Test
     void addNotice() {
-        Notice notice = Notice.builder().title("Notice标题").content("Notice内容").categoryId(1)
-                .creatorId(1).createdAt(LocalDateTime.now()).updateAt(LocalDateTime.now()).build();
-        noticeDao.addNotice(notice);
+        NoticeCreateDto noticeCreateDto = new NoticeCreateDto();
+        noticeCreateDto.setCategoryId(1);
+        noticeCreateDto.setContent("通告内容");
+        noticeCreateDto.setTitle("通告标题");
+        noticeCreateDto.setCreatorId(4);
+        noticeDao.addNotice(noticeCreateDto);
+    }
+
+    @Test
+    void getNoticeByIdTest() {
+        System.out.println(noticeDao.getNoticeById(1));
+    }
+
+    @Test
+    void findNoticesTest() {
+        System.out.println(noticeDao.findAllNotices(1));
     }
 
     @Test
@@ -33,7 +47,6 @@ class NoticeDaoTest {
         NoticeUpdateDto noticeUpdateDto = new NoticeUpdateDto();
         noticeUpdateDto.setTitle("公告更新");
         noticeUpdateDto.setContent("隔壁超市的薯片半价啦！！");
-        noticeUpdateDto.setUpdatedAt(LocalDateTime.now());
         noticeUpdateDto.setId(1);
 
         noticeDao.updateNoticeById(noticeUpdateDto);

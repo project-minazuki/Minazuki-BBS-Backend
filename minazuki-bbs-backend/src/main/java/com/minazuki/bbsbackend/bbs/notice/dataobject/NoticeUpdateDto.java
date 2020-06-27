@@ -23,6 +23,7 @@ public class NoticeUpdateDto {
     @ApiModelProperty(value = "Notice的内容")
     private String content;
 
-    @ApiModelProperty(value = "Notice的更新时间")
-    private LocalDateTime updatedAt;
+    public boolean isAllNull() {
+        return this.title == null && this.content == null;
+    }
 }

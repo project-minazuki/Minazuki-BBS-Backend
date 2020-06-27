@@ -2,6 +2,7 @@ package com.minazuki.bbsbackend.bbs.inbox.dao.sql;
 
 import java.util.List;
 
+import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxCreateDto;
 import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxIndexDto;
 import com.minazuki.bbsbackend.bbs.inbox.pojo.Inbox;
 import org.apache.ibatis.annotations.*;
@@ -9,8 +10,8 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface InboxMapper {
     @Insert("INSERT INTO inbox(inbox_content,inbox_sender_id,inbox_recipient_id,created_time,is_checked) " +
-            "VALUES (#{content}, #{senderId}, #{recipientId}, #{createdAt}, #{isChecked})")
-    void addInbox(@Param("inbox") Inbox inbox);
+            "VALUES (#{content}, #{senderId}, #{recipientId}, NOW(), 0)")
+    void addInbox(@Param("inboxCreateDto")InboxCreateDto inboxCreateDto);
 
     @Delete("DELETE FROM inbox WHERE id=#{id}")
     void deleteInbox(@Param("id") Integer id);

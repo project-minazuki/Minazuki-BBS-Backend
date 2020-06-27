@@ -17,9 +17,7 @@ public class NoticeSqlProvider {
                 if (noticeUpdateDto.getTitle()!=null){
                     SET("notice_title = #{title}");
                 }
-                if (noticeUpdateDto.getUpdatedAt()!=null){
-                    SET("updated_time = #{updatedAt}");
-                }
+                SET("updated_time = NOW()");
                 WHERE("id = #{id}");
             }
         }.toString();

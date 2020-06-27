@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.favorite.dao;
 
+import com.minazuki.bbsbackend.bbs.favorite.dataobject.FavoriteCreateDto;
 import com.minazuki.bbsbackend.bbs.favorite.pojo.Favorite;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,13 @@ public class FavoriteDao {
     @Autowired
     public FavoriteDao(SqlSession sqlSession){this.sqlSession = sqlSession;}
 
-    public void addFavorite(Favorite favorite){this.sqlSession.insert("addFavorite",favorite);}
+    public void addFavorite(FavoriteCreateDto favoriteCreateDto){this.sqlSession.insert("addFavorite",favoriteCreateDto);}
 
     public void deleteFavorite(Integer id){this.sqlSession.delete("deleteFavorite", id);}
+
+    public Favorite getFavoriteById(Integer id) {
+        return this.sqlSession.selectOne("getFavoriteById", id);
+    }
 
     public List<Favorite> findAllFavorites(Integer userId) {
         return sqlSession.selectList("findAllThemes", userId);

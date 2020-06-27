@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.favorite.dao;
 
+import com.minazuki.bbsbackend.bbs.favorite.dataobject.FavoriteCreateDto;
 import com.minazuki.bbsbackend.bbs.favorite.pojo.Favorite;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +17,10 @@ class FavoriteDaoTest {
 
     @Test
     void addFavorite() {
-        Favorite favorite = Favorite.builder().themeId(1).OwnerId(1)
-                .createdAt(LocalDateTime.now()).lastViewedAt(LocalDateTime.now()).build();
-        favoriteDao.addFavorite(favorite);
+        FavoriteCreateDto favoriteCreateDto = new FavoriteCreateDto();
+        favoriteCreateDto.setThemeId(1);
+        favoriteCreateDto.setOwnerId(1);
+        favoriteDao.addFavorite(favoriteCreateDto);
     }
 
     @Test
@@ -35,5 +37,10 @@ class FavoriteDaoTest {
     @Test
     void updateFavoriteLastViewedTime() {
         favoriteDao.updateFavoriteLastViewedTime(1);
+    }
+
+    @Test
+    void getFavoriteByIdTest() {
+        System.out.println(favoriteDao.getFavoriteById(1));
     }
 }

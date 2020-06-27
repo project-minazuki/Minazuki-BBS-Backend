@@ -1,6 +1,6 @@
 package com.minazuki.bbsbackend.bbs.categorymoderator.dao;
 
-import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.PrimaryKeyDto;
+import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
 import com.minazuki.bbsbackend.bbs.categorymoderator.pojo.CategoryModerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,16 +17,18 @@ class CategoryModeratorDaoTest {
 
     @Test
     void addCategoryModerator() {
-        CategoryModerator categoryModerator = CategoryModerator.builder().moderatorId(1).categoryId(1).createdAt(LocalDateTime.now()).build();
-        categoryModeratorDao.addCategoryModerator(categoryModerator);
+        ModeratorPrimaryKeyDto mpkDto = new ModeratorPrimaryKeyDto();
+        mpkDto.setCategoryId(3);
+        mpkDto.setModeratorId(4);
+        categoryModeratorDao.addCategoryModerator(mpkDto);
     }
 
     @Test
     void deleteCategoryModerator() {
-        PrimaryKeyDto primaryKeyDto = new PrimaryKeyDto();
-        primaryKeyDto.setCategoryId(1);
-        primaryKeyDto.setModeratorId(1);
-        categoryModeratorDao.deleteCategoryModerator(primaryKeyDto);
+        ModeratorPrimaryKeyDto moderatorPrimaryKeyDto = new ModeratorPrimaryKeyDto();
+        moderatorPrimaryKeyDto.setCategoryId(1);
+        moderatorPrimaryKeyDto.setModeratorId(1);
+        categoryModeratorDao.deleteCategoryModerator(moderatorPrimaryKeyDto);
     }
 
 

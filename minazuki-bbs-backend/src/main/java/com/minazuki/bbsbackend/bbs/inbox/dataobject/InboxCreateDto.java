@@ -6,14 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-@ApiModel(value = "私信查询入参")
 @Data
+@ApiModel
 @NoArgsConstructor
-public class InboxIndexDto {
-    @ApiModelProperty(value = "当前用户id")
-    private Integer thisUserId;
+public class InboxCreateDto {
 
-    @ApiModelProperty(value = "目标用户id")
+    @ApiModelProperty(value = "发信人")
+    private Integer senderId;
+
+    @ApiModelProperty(value = "收信人")
     @NotNull
-    private Integer targetUserId;
+    private Integer recipientId;
+
+    @ApiModelProperty(value = "私信内容")
+    @NotNull
+    private String content;
 }

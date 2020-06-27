@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.inbox.dao;
 
+import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxCreateDto;
 import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxIndexDto;
 import com.minazuki.bbsbackend.bbs.inbox.pojo.Inbox;
 import org.junit.jupiter.api.Test;
@@ -16,9 +17,11 @@ class InboxDaoTest {
 
     @Test
     void addInbox() {
-        Inbox inbox = Inbox.builder().content("wdnmd").senderId(3)
-                .recipientId(1).createdAt(LocalDateTime.now()).isChecked(false).build();
-        inboxDao.addInbox(inbox);
+        InboxCreateDto inboxCreateDto = new InboxCreateDto();
+        inboxCreateDto.setContent("你你你送你点覅三年覅四年");
+        inboxCreateDto.setSenderId(1);
+        inboxCreateDto.setRecipientId(4);
+        inboxDao.addInbox(inboxCreateDto);
     }
 
     @Test

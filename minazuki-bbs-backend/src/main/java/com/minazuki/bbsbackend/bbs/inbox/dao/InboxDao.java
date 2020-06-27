@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.inbox.dao;
 
+import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxCreateDto;
 import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxIndexDto;
 import com.minazuki.bbsbackend.bbs.inbox.pojo.Inbox;
 import org.apache.ibatis.session.SqlSession;
@@ -13,7 +14,7 @@ public class InboxDao {
     @Autowired
     public InboxDao(SqlSession sqlSession){this.sqlSession = sqlSession;}
 
-    public void addInbox(Inbox inbox){this.sqlSession.insert("addInbox", inbox);}
+    public void addInbox(InboxCreateDto inboxCreateDto){this.sqlSession.insert("addInbox", inboxCreateDto);}
 
     public void deleteInbox(Integer id){this.sqlSession.delete("deleteInbox", id);}
 
