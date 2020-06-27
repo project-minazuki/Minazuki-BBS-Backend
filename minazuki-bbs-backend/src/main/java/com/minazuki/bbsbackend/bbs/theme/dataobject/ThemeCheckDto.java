@@ -10,11 +10,11 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor
 @ApiModel(value = "用于创建主题贴时检查同一个版块中是否有标题相同的主题帖")
 public class ThemeCheckDto {
-    @ApiModelProperty
+    @ApiModelProperty(value = "主题帖Id")
     @NotNull
     private String title;
 
-    @ApiModelProperty
+    @ApiModelProperty(value = "主题帖所在版块Id")
     @NotNull
     private Integer categoryId;
 }

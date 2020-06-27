@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @ApiModel(value = "用于Theme创建的数据结构")
 public class ThemeCreateDto {
 
-    @ApiModelProperty
+    @ApiModelProperty(value = "创建主题帖标题")
     @NotNull
     private String title;
 
-    @ApiModelProperty
+    @ApiModelProperty(value = "创建者的Id")
     @NotNull
     private Integer creatorId;
 
-    @ApiModelProperty
+    @ApiModelProperty(value = "主题帖所在版块的Id")
     @NotNull
     private Integer categoryId;
 

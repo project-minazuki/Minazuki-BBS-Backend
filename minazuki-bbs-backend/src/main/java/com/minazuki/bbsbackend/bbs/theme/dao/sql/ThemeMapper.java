@@ -1,6 +1,7 @@
 package com.minazuki.bbsbackend.bbs.theme.dao.sql;
 
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCheckDto;
+import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import org.apache.ibatis.annotations.*;
@@ -12,15 +13,15 @@ public interface ThemeMapper {
     @Insert("INSERT INTO theme " +
             "(is_top,is_high_quality,status,theme_title,theme_creator_id,category_id,visits_count," +
             "reply_count,updated_time,latest_reply_time,created_time) " +
-            "VALUES (#{isTop},#{isHighQuality},#{status},#{title},#{creatorId},#{categoryId},#{visitsCount}," +
-            "#{replyCount},#{updatedAt},#{latestReplyAt},#{createdAt})")
-    void addTheme(@Param("theme") Theme theme);
+            "VALUES (0,0,1,#{title},#{creatorId},#{categoryId},0," +
+            "0,NOW(),NOW(),NOW())")
+    void addTheme(@Param("theme") ThemeCreateDto themeCreateDto);
 
     @Delete("DELETE FROM theme WHERE id=#{id}")
     void deleteTheme(@Param("id") Integer id);
 
     @UpdateProvider(type = ThemeSqlProvider.class, method = "updateById")
-    void updateTheme(ThemeUpdateDto themeUpdateDto);
+    void updateThemeTile(ThemeUpdateDto themeUpdateDto);
 
     @Select("SELECT * FROM theme WHERE id = #{id}")
     Theme getThemeById(@Param("id") Integer id);
@@ -63,4 +64,15 @@ public interface ThemeMapper {
 
     @Select("SELECT * FROM theme")
     List<Theme> selectAll();
+
+    @Update("SELECT * FROM theme WHERE theme_title like CONCAT('%',#{title},'%') ")
+    List<Theme> searchThemeByTitle(@Param("title") String title);
+
+    //查询visitsCount的TOP10
+    @Select("SELECT * FROM theme ORDER BY visits_count desc limit 0,10")
+    List<Theme> getVisitsCountTOP10();
+
+    //查询replyCount的TOP10
+    @Select("SELECT * FROM theme ORDER BY reply_count desc limit 0,10")
+    List<Theme> getReplyCountTOP10();
 }

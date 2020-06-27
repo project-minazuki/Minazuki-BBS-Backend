@@ -1,6 +1,7 @@
 package com.minazuki.bbsbackend.bbs.theme.dao;
 
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCheckDto;
+import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import org.apache.ibatis.session.SqlSession;
@@ -16,11 +17,11 @@ public class ThemeDao {
     @Autowired
     public ThemeDao(SqlSession sqlSession){this.sqlSession = sqlSession;}
 
-    public void addTheme(Theme theme){this.sqlSession.insert("addTheme",theme);}
+    public void addTheme(ThemeCreateDto themeCreateDto){this.sqlSession.insert("addTheme",themeCreateDto);}
 
     public void deleteTheme(Integer id){this.sqlSession.delete("deleteTheme",id);}
 
-    public void updateTheme(ThemeUpdateDto themeUpdateDto){this.sqlSession.insert("updateThemeById",themeUpdateDto);}
+    public void updateThemeTitle(ThemeUpdateDto themeUpdateDto){this.sqlSession.insert("updateThemeTitle",themeUpdateDto);}
 
     public List<Theme> getThemeByCategoryId(Integer categoryId){return this.sqlSession.selectList("getThemeByCategoryId",categoryId);}
 
@@ -54,5 +55,11 @@ public class ThemeDao {
     public void decreaseReplyCountById(Integer id){this.sqlSession.update("decreaseReplyCountById",id);}
 
     public List<Theme> selectAll(){return this.sqlSession.selectList("selectAll");}
+
+    public List<Theme> searchThemeByTitle(String title){return this.sqlSession.selectList("searchThemeByTitle",title);}
+
+    public List<Theme> getVisitsCountTOP10(){return this.sqlSession.selectList("getVisitsCountTOP10");}
+
+    public List<Theme> getReplyCountTOP10(){return this.sqlSession.selectList("getReplyCountTOP10");}
 
 }

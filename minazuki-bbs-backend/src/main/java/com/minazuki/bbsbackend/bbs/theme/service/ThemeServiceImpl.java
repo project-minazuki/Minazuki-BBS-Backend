@@ -34,11 +34,7 @@ public class ThemeServiceImpl implements ThemeService {
         uniqueCheckDto.setTitle(themeCreateDto.getTitle());
 
         if (themeDao.isThemeUnique(uniqueCheckDto)) {
-            Theme newTheme = Theme.builder().title(themeCreateDto.getTitle()).categoryId(themeCreateDto.getCategoryId())
-                    .creatorId(themeCreateDto.getCreatorId()).status(true).isHighQuality(false).isTop(false)
-                    .visitsCount(0).replyCount(0).updatedAt(LocalDateTime.now()).createdAt(LocalDateTime.now())
-                    .latestReplyAt(null).build();
-            themeDao.addTheme(newTheme);
+            themeDao.addTheme(themeCreateDto);
         } else {
             throw new DuplicateThemeInfoException();
         }
@@ -48,12 +44,6 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     public List<Theme> getThemeListByCategoryId(Integer id) {
         return themeDao.getThemeByCategoryId(id);
-    }
-
-    //找所有为该标题的主题贴
-    @Override
-    public List<Theme> getThemeListByTitle(String title) {
-        return themeDao.getThemeByTitle(title);
     }
 
     //根据Id找主题帖
@@ -87,7 +77,7 @@ public class ThemeServiceImpl implements ThemeService {
 
     //更新主题帖，同一个板块下不可有标题相同的主题帖，否则抛出DuplicateThemeInfoException异常
     @Override
-    public void updateTheme(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException {
+    public void updateThemeTitle(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException {
         //获取该主题所在版块的Id
         Integer categoryId = themeDao.getCategoryIdOfThemeById(themeUpdateDto.getId());
         //新建一个ThemeCheckDto以备检测
@@ -96,8 +86,7 @@ public class ThemeServiceImpl implements ThemeService {
         uniqueCheckDto.setCategoryId(categoryId);
 
         if (themeDao.isThemeUnique(uniqueCheckDto)) {
-            themeUpdateDto.setUpdatedAt(LocalDateTime.now());
-            themeDao.updateTheme(themeUpdateDto);
+            themeDao.updateThemeTitle(themeUpdateDto);
         }
         else {
             throw new DuplicateThemeInfoException();
@@ -131,67 +120,22 @@ public class ThemeServiceImpl implements ThemeService {
 
     @Override
     public List<Theme> findTop10ByVisitsCount() {
-        List<Theme> list = themeDao.selectAll();
-        List<Theme> resList = new ArrayList<Theme>();
-        Theme defaultTheme = Theme.builder().id(-1).visitsCount(-1).build();
-        int i = 0;
-        for(i=0;i<=9;i++){
-            resList.add(defaultTheme);
-        }
-        for(i=0;i<=list.size();i++){
-            if(list.get(i).getVisitsCount() >= resList.get(9).getVisitsCount()){
-                resList.add(9,list.get(i));
-                rankListByVisitsCount(resList);
-            }
-        }
-        return resList;
-    }
-
-    public void rankListByVisitsCount(List<Theme> listOf10){
-        int i = 0;
-        int j = 0;
-        for(i=1;i<=9;i++){
-            for(j=i;j>=1;j--){
-                if (listOf10.get(j).getVisitsCount()>listOf10.get(j-1).getVisitsCount()){
-                    Theme tempTheme = listOf10.get(j);
-                    listOf10.add(j,listOf10.get(j-1));
-                    listOf10.add(j-1,tempTheme);
-                }
-            }
-        }
+        List<Theme> list = themeDao.getReplyCountTOP10();
+        return list;
     }
 
     @Override
     public List<Theme> findTop10ByReplyCount() {
-        List<Theme> list = themeDao.selectAll();
-        List<Theme> resList = new ArrayList<Theme>();
-        Theme defaultTheme = Theme.builder().id(-1).replyCount(-1).build();
-        int i = 0;
-        for(i=0;i<=9;i++){
-            resList.add(defaultTheme);
-        }
-        for(i=0;i<=list.size();i++){
-            if(list.get(i).getReplyCount() >= resList.get(9).getReplyCount()){
-                resList.add(9,list.get(i));
-                rankListByReplyCount(resList);
-            }
-        }
-        return resList;
+        List<Theme> list = themeDao.getReplyCountTOP10();
+        return list;
     }
 
-    public void rankListByReplyCount(List<Theme> listOf10){
-        int i = 0;
-        int j = 0;
-        for(i=1;i<=9;i++){
-            for(j=i;j>=1;j--){
-                if (listOf10.get(j).getReplyCount()>listOf10.get(j-1).getReplyCount()){
-                    Theme tempTheme = listOf10.get(j);
-                    listOf10.add(j,listOf10.get(j-1));
-                    listOf10.add(j-1,tempTheme);
-                }
-            }
-        }
+    //找所有板块下与该名称类似的主题帖
+    @Override
+    public List<Theme> searchThemeByTitle(String title) {
+        return themeDao.searchThemeByTitle(title);
     }
+
 
 
 }

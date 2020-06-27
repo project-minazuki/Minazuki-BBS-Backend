@@ -18,9 +18,6 @@ public interface ThemeService {
     //根据版块Id搜索主题帖
     List<Theme> getThemeListByCategoryId(Integer id);
 
-     //根据主题帖名称搜索主题帖
-    List<Theme> getThemeListByTitle(String title);
-
     //根据Id搜索主题帖
     Theme getThemeByIndex(Integer id);
 
@@ -33,7 +30,7 @@ public interface ThemeService {
     void cancelHighQuality(Integer id);
 
     //更新主题帖
-    void updateTheme(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException;
+    void updateThemeTitle(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException;
 
     //添加，减少访问数或回复数(+1,-1)
     void increaseVisitsCountById(Integer id);
@@ -46,6 +43,9 @@ public interface ThemeService {
 
     //找到回复数的Top10
     List<Theme> findTop10ByReplyCount();
+
+    //搜索与主题帖名称类似的主题帖
+    List<Theme> searchThemeByTitle(String title);
 
 
 }
