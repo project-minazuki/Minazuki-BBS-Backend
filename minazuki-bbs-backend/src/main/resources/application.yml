@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/dev_bbs
     username: root
-    password: 123456
+    password: 3239
 
 # 应用服务web访问端口
 server:

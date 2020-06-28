@@ -10,6 +10,8 @@ import com.minazuki.bbsbackend.bbs.category.service.CategoryService;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dao.CategoryModeratorDao;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
 import com.minazuki.bbsbackend.bbs.categorymoderator.pojo.CategoryModerator;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
+import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,13 +48,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(CategoryUpdateDto categoryUpdateDto) throws DuplicateCategoryNameException{
-        if (categoryUpdateDto.isAllNull()) return;
-        if (categoryDao.getCategoryByName(categoryUpdateDto.getName()) != null) {
-            throw new DuplicateCategoryNameException();
-        }
-        else {
+    public void deleteCategory(Integer categoryId){
+        this.categoryDao.deleteCategory(categoryId);
+    }
+
+    @Override
+    public void updateCategory(CategoryUpdateDto categoryUpdateDto) throws DuplicateCategoryNameException, PermissionDeniedException{
+        if (getManagedCategories(AuthenticationInterceptor.getCurrentUserId()).contains(categoryUpdateDto.getId())) {
+            if (categoryUpdateDto.isAllNull()) return;
+            if (categoryDao.getCategoryByName(categoryUpdateDto.getName()) != null) {
+                throw new DuplicateCategoryNameException();
+            }
             categoryDao.updateCategoryById(categoryUpdateDto);
+        }else{
+            throw new PermissionDeniedException();
         }
     }
 
@@ -94,5 +103,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean isModerator(Integer userId) {
         return getManagedCategories(userId).size() != 0;
+    }
+
+    @Override
+    public void closeCategory(Integer categoryId) {
+        this.categoryDao.closeCategory(categoryId);
+    }
+
+    @Override
+    public void openCategory(Integer categoryId) {
+        this.categoryDao.openCategory(categoryId);
     }
 }
