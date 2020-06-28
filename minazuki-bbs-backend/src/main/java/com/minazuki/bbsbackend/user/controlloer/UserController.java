@@ -11,6 +11,7 @@ import com.minazuki.bbsbackend.user.exception.DuplicateUserInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
 import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import com.minazuki.bbsbackend.user.exception.UnauthenticatedException;
+import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import com.minazuki.bbsbackend.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,21 +38,38 @@ public class UserController {
     @ResponseBody
     @AdminRequired
     @ApiOperation(value = "查看用户详情", notes = "查看用户详情", httpMethod = "GET")
-    public StandardResponse<UserInfoOutDto> getUserById(@ApiParam(name = "用户id", value = "用户id", required = true)@PathVariable Integer userId) {
+    public StandardResponse<UserInfoOutDto> getUserById(
+            @ApiParam(name = "用户id", value = "用户id", required = true)
+            @PathVariable Integer userId) {
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", userService.getByIndex(userId));
     }
 
     @GetMapping("/search")
     @ResponseBody
-    public StandardResponse<List<UserInfoOutDto>> searchUsers(@RequestParam String keyword) {
+    @UserLoginRequired
+    @ApiOperation(value = "搜索用户", notes = "需要登陆", httpMethod = "GET")
+    public StandardResponse<List<UserInfoOutDto>> searchUsers(
+            @ApiParam(name = "搜索用户入参关键字", value = "关键字", required = true)
+            @RequestParam String keyword) {
         List<UserInfoOutDto> userInfoOutDtoList = userService.search(keyword);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", userInfoOutDtoList);
+    }
+
+    @GetMapping("/current")
+    @ResponseBody
+    @UserLoginRequired
+    @ApiOperation(value = "获取当前登录用户信息", notes = "需要登陆", httpMethod = "GET")
+    public StandardResponse<UserInfoOutDto> getCurrentUserInfo() {
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success",
+                userService.getByIndex(AuthenticationInterceptor.getCurrentUserId()));
     }
 
     @PostMapping("/update")
     @ResponseBody
     @ApiOperation(value = "修改用户资料", notes = "只传入需要修改的部分，其他如果未修改不传即可", httpMethod = "POST")
-    public StandardResponse<Object> updateUser(@RequestBody UserUpdateDto userUpdateDto) {
+    public StandardResponse<Object> updateUser(
+            @ApiParam(name = "修改用户资料入参数据模型", value = "用户id（必需）" , required = true)
+            @RequestBody UserUpdateDto userUpdateDto) {
         try {
             userService.updateUser(userUpdateDto);
         } catch (DuplicateUserInfoException e) {
@@ -63,7 +81,9 @@ public class UserController {
     @PostMapping("/signUp")
     @ResponseBody
     @ApiOperation(value = "用户注册", notes = "注册信息不允许重复并且5个值缺一不可", httpMethod = "POST")
-    public StandardResponse<Object> signUp(@ApiParam(name = "注册信息", value = "昵称、用户名、密码、邮件、电话号码", required = true) @RequestBody UserRegistrationDto userRegistrationDto) {
+    public StandardResponse<Object> signUp(
+            @ApiParam(name = "注册信息", value = "昵称、用户名、密码、邮件、电话号码", required = true)
+            @RequestBody UserRegistrationDto userRegistrationDto) {
         try {
             userService.signUp(userRegistrationDto);
         } catch (DuplicateUserInfoException e) {
@@ -75,7 +95,9 @@ public class UserController {
     @PostMapping("/signIn")
     @ResponseBody
     @ApiOperation(value = "用户登录", notes = "登陆成功返回token", httpMethod = "POST")
-    public StandardResponse<String> signIn(@ApiParam(name = "登录信息", value = "用户名/电话号码/邮件 、 密码") @RequestBody UserSignInDto userSignInDto) {
+    public StandardResponse<String> signIn(
+            @ApiParam(name = "登录信息", value = "用户名/电话号码/邮件 & 密码", required = true)
+            @RequestBody UserSignInDto userSignInDto) {
         String token;
         try {
             token = userService.signIn(userSignInDto);

@@ -6,6 +6,7 @@ import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryModerator
 import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryNameException;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 
 import java.util.List;
 
@@ -15,7 +16,9 @@ public interface CategoryService {
 
     void createCategory(CategoryCreateDto categoryCreateDto) throws DuplicateCategoryNameException;
 
-    void updateCategory(CategoryUpdateDto categoryUpdateDto) throws DuplicateCategoryNameException;
+    void deleteCategory(Integer categoryId);
+
+    void updateCategory(CategoryUpdateDto categoryUpdateDto) throws DuplicateCategoryNameException, PermissionDeniedException;
 
     List<Category> getAllCategories();
 
@@ -30,4 +33,8 @@ public interface CategoryService {
     List<Integer> getManagedCategories(Integer moderator);
 
     boolean isModerator(Integer userId);
+
+    void closeCategory(Integer categoryId);
+
+    void openCategory(Integer categoryId);
 }
