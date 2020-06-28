@@ -4,6 +4,7 @@ import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCheckDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
+import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -61,5 +62,41 @@ public class ThemeDao {
     public List<Theme> getVisitsCountTOP10(){return this.sqlSession.selectList("getVisitsCountTOP10");}
 
     public List<Theme> getReplyCountTOP10(){return this.sqlSession.selectList("getReplyCountTOP10");}
+
+    public Integer getCreatorIdByThemeId(Integer id){return this.sqlSession.selectOne("getCreatorIdByThemeId",id);}
+
+    public List<Integer> getCategoryAdminIdOfTheTheme(Integer id){return this.sqlSession.selectList("getCategoryAdminIdOfTheTheme",id);}
+
+    public boolean isUserCreatorOfTheTheme(Integer themeId){
+        Integer currentUserId = AuthenticationInterceptor.getCurrentUserId();
+
+        //用于测试
+        //currentUserId = 2;
+
+        Integer themeCreatorId = getCreatorIdByThemeId(themeId);
+        if(themeCreatorId == currentUserId){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean isUserAdministratorOfTheCategoryOfTheTheme(Integer themeId){
+        Integer currentUserId = AuthenticationInterceptor.getCurrentUserId();
+
+        //用于测试
+        //currentUserId = 3;
+
+        List<Integer> categoryAdministratorIdList = getCategoryAdminIdOfTheTheme(themeId);
+        int i = 0;
+
+        for (i = 0;i<categoryAdministratorIdList.size();i++){
+            if (currentUserId == categoryAdministratorIdList.get(i))
+                return true;
+        }
+
+        return false;
+
+    }
 
 }

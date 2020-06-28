@@ -75,4 +75,12 @@ public interface ThemeMapper {
     //查询replyCount的TOP10
     @Select("SELECT * FROM theme ORDER BY reply_count desc limit 0,10")
     List<Theme> getReplyCountTOP10();
+
+    //获得主题帖对应的创建者Id，以及主题帖所在版块的版主的Id
+    @Select("SELECT theme_creator_id FROM theme WHERE id = #{id}")
+    Integer getCreatorIdByThemeId(@Param("id") Integer id);
+
+    //获得主题帖所在版块的所有版主的Id
+    @Select("SELECT category_admin_id FROM category_admin INNER JOIN theme ON theme.category_id = category_admin.managed_category_id WHERE theme.id = #{id} ")
+    List<Integer> getCategoryAdminIdOfTheTheme(@Param("id") Integer id);
 }

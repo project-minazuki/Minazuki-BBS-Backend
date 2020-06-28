@@ -59,4 +59,39 @@ class ThemeReportDaoTest {
         List<ThemeReport> list = themeReportDao.findAllThemeReportsByCategoryId(categoryId);
         System.out.println(list);
     }
+
+    @Test
+    void getThemeCreatorIdByReportId(){
+        Integer id = 4;
+        Integer creatorId = themeReportDao.getThemeCreatorIdByReportId(id);
+        System.out.println(creatorId);
+
+    }
+
+    @Test
+    void getCategoryAdministratorList(){
+        Integer id = 7;
+        List<Integer> list = themeReportDao.getCategoryAdministratorList(id);
+        System.out.println(list);
+    }
+
+    @Test
+    void isUserThemeCreator(){
+        Integer id = 4;
+        boolean flag = themeReportDao.isUserThemeCreator(id);
+        System.out.println(flag);
+    }
+
+    @Test
+    void isUserCategoryAdministrator(){
+        Integer id = 7;
+        boolean flag = themeReportDao.isUserCategoryAdministrator(id);
+        System.out.println(flag);
+    }
+
+    @Test
+    void isChecked(){
+        Integer id  = 7;
+        System.out.println(themeReportDao.isChecked(id));
+    }
 }

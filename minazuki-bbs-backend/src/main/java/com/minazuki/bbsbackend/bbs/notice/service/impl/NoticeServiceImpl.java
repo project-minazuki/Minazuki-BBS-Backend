@@ -5,6 +5,7 @@ import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeCreateDto;
 import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeUpdateDto;
 import com.minazuki.bbsbackend.bbs.notice.pojo.Notice;
 import com.minazuki.bbsbackend.bbs.notice.service.NoticeService;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,12 @@ public class NoticeServiceImpl implements NoticeService {
 
 
     @Override
-    public void addNotice(NoticeCreateDto noticeCreateDto) {
-        noticeCreateDto.setCreatorId(AuthenticationInterceptor.getCurrentUserId());
-        noticeDao.addNotice(noticeCreateDto);
+    public void addNotice(NoticeCreateDto noticeCreateDto) throws PermissionDeniedException {
+        if(noticeDao.isUserCategoryAdministrator(noticeCreateDto.getCreatorId())){
+            noticeCreateDto.setCreatorId(AuthenticationInterceptor.getCurrentUserId());
+            noticeDao.addNotice(noticeCreateDto);
+        }
+        else throw new PermissionDeniedException();
     }
 
     @Override
@@ -38,15 +42,25 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void deleteNoticeById(Integer id) {
-        noticeDao.deleteNotice(id);
+    public void deleteNoticeById(Integer id) throws PermissionDeniedException{
+        if(noticeDao.isUserCategoryAdministrator(id)){
+            noticeDao.deleteNotice(id);
+        }
+        else {
+            throw new PermissionDeniedException();
+        }
 
     }
 
     @Override
-    public void updateNoticeById(NoticeUpdateDto noticeUpdateDto) {
+    public void updateNoticeById(NoticeUpdateDto noticeUpdateDto) throws PermissionDeniedException{
 
-        if(noticeUpdateDto.isAllNull()) return;
-        else noticeDao.updateNotice(noticeUpdateDto);
+        if (noticeDao.isUserNoticeCreator(noticeUpdateDto.getId())&&noticeDao.isUserCategoryAdministrator(noticeUpdateDto.getId())){
+            if(noticeUpdateDto.isAllNull()) return;
+            else noticeDao.updateNotice(noticeUpdateDto);
+        }
+        else {
+            throw new PermissionDeniedException();
+        }
     }
 }

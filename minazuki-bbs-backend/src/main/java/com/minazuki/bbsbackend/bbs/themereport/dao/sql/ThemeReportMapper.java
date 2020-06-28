@@ -26,9 +26,21 @@ public interface ThemeReportMapper {
     @Update("UPDATE theme_report SET is_checked = true, checked_time = NOW() WHERE id = #{id}")
     void setThemeReportChecked(@Param("id") Integer id);
 
-    @Delete("DELETE FROM theme_report WHERE report_theme_id = #{themeId} AND is_checked = true")
-    void deleteCheckedReports(@Param("themeId") Integer themeId);
+    @Delete("DELETE FROM theme_report INNER JOIN theme ON theme_report.report_theme_id = theme.id WHERE theme.category_id = #{categoryId} AND theme_report.is_checked = true")
+    void deleteCheckedReports(@Param("themeId") Integer categoryId);
 
     @Select("SELECT * FROM theme_report INNER JOIN theme ON theme_report.report_theme_id = theme.id WHERE theme.category_id = #{id}")
     List<ThemeReport> findAllThemeReportsByCategoryId(@Param("categoryId") Integer categoryId);
+
+    //找被举报的主题帖的创建者
+    @Select("SELECT theme_creator_id FROM theme INNER JOIN theme_report ON theme_report.report_theme_id = theme.id WHERE theme_report.id = #{id}")
+    Integer getThemeCreatorIdByReportId(@Param("id") Integer id);
+
+    //找被举报的主题帖的版块的版主
+    @Select("SELECT category_admin_id FROM (category_admin INNER JOIN theme ON category_admin.managed_category_id = theme.category_id)" +
+            " INNER JOIN theme_report ON theme_report.report_theme_id = theme.id WHERE theme_report.id = #{id} ")
+    List<Integer> getCategoryAdministratorList(@Param("id") Integer id);
+
+    @Select("SELECT is_checked FROM theme_report WHERE id = #{id}")
+    boolean getCheckedStatus(@Param("id") Integer id);
 }

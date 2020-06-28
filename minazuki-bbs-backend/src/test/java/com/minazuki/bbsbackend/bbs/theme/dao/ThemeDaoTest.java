@@ -150,4 +150,25 @@ class ThemeDaoTest {
         List<Theme> list = themeDao.searchThemeByTitle(title);
         System.out.println(list);
     }
+
+    @Test
+    void getCategoryAdminIdOfTheTheme(){
+        Integer themeId = 9;
+        List<Integer> list = themeDao.getCategoryAdminIdOfTheTheme(themeId);
+        System.out.println(list);
+    }
+
+    @Test
+    void isUserCreatorOfTheTheme(){
+        Integer themeId = 9;
+        boolean flag = themeDao.isUserCreatorOfTheTheme(themeId);
+        System.out.println(flag);
+    }
+
+    @Test
+    void isUserAdministratorOfTheCategoryOfTheTheme(){
+        Integer id = 19;
+        boolean flag = themeDao.isUserAdministratorOfTheCategoryOfTheTheme(id);
+        System.out.println(flag);
+    }
 }

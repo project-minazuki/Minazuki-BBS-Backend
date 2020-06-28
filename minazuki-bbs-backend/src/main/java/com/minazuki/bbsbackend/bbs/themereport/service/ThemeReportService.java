@@ -1,7 +1,9 @@
 package com.minazuki.bbsbackend.bbs.themereport.service;
 
 import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
+import com.minazuki.bbsbackend.bbs.themereport.exception.UncheckedThemeReportException;
 import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +11,7 @@ import java.util.List;
 @Service
 public interface ThemeReportService {
 
-    void setThemeReportChecked(Integer id);
-
-    void deleteCheckedReports(Integer themeId);
+    void setThemeReportChecked(Integer id)throws PermissionDeniedException;
 
     //主题帖是否有未检查的举报
     boolean isThemeHasUncheckedReport(Integer themeId);
@@ -22,6 +22,6 @@ public interface ThemeReportService {
     //新建举报
     public void createThemeReport(ThemeReportCreateDto themeReportCreateDto);
 
-    public List<ThemeReport> findAllThemeReportsByCategoryId(Integer categoryId);
+    void deleteReportById(Integer id)throws PermissionDeniedException, UncheckedThemeReportException;
 
 }

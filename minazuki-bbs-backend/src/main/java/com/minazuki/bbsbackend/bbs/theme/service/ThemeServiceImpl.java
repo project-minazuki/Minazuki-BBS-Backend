@@ -10,6 +10,7 @@ import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
 import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
 import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,22 +85,29 @@ public class ThemeServiceImpl implements ThemeService {
 
     //更新主题帖，同一个板块下不可有标题相同的主题帖，否则抛出DuplicateThemeInfoException异常
     @Override
-    public void updateThemeTitle(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException {
-        //获取该主题所在版块的Id
+    public void updateThemeTitle(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException, PermissionDeniedException {
+        //获取该主题所在版块的Id以及主题帖的Id
         Integer categoryId = themeDao.getCategoryIdOfThemeById(themeUpdateDto.getId());
+        Integer themeId = themeUpdateDto.getId();
         //新建一个ThemeCheckDto以备检测
         ThemeCheckDto uniqueCheckDto = new ThemeCheckDto();
         uniqueCheckDto.setTitle(themeUpdateDto.getTitle());
         uniqueCheckDto.setCategoryId(categoryId);
 
-        if(themeUpdateDto.isNoTitle()) return;
+        if(themeDao.isUserCreatorOfTheTheme(themeId)){
+            if(themeUpdateDto.isNoTitle()) return;
 
-        if (themeDao.isThemeUnique(uniqueCheckDto)) {
-            themeDao.updateThemeTitle(themeUpdateDto);
+            if (themeDao.isThemeUnique(uniqueCheckDto)) {
+                themeDao.updateThemeTitle(themeUpdateDto);
+            }
+            else {
+                throw new DuplicateThemeInfoException();
+            }
         }
         else {
-            throw new DuplicateThemeInfoException();
+            throw new PermissionDeniedException();
         }
+
     }
 
 
@@ -151,5 +159,13 @@ public class ThemeServiceImpl implements ThemeService {
         return themeDao.selectAll();
     }
 
-
+    @Override
+    public void deleteThemeById(Integer id) throws PermissionDeniedException{
+        if(themeDao.isUserCreatorOfTheTheme(id)||themeDao.isUserAdministratorOfTheCategoryOfTheTheme(id)){
+            themeDao.deleteTheme(id);
+        }
+        else {
+            throw new PermissionDeniedException();
+        }
+    }
 }

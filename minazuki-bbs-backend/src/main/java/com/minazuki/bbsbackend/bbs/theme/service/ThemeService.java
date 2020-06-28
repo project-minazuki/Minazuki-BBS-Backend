@@ -6,6 +6,7 @@ import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
 import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface ThemeService {
     void cancelHighQuality(Integer id);
 
     //更新主题帖
-    void updateThemeTitle(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException;
+    void updateThemeTitle(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException,PermissionDeniedException;
 
     //添加，减少访问数或回复数(+1,-1)
     void increaseVisitsCountById(Integer id);
@@ -51,6 +52,9 @@ public interface ThemeService {
 
     //寻找所有的主题帖
     List<Theme> getAllThemes();
+
+    //根据Id删除主题帖
+    void deleteThemeById(Integer id) throws PermissionDeniedException;
 
 
 }

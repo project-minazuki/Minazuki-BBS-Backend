@@ -5,6 +5,9 @@ import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeUpdateDto;
 import com.minazuki.bbsbackend.bbs.notice.pojo.Notice;
 import org.apache.ibatis.annotations.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
 @Mapper
 public interface NoticeMapper {
     @Insert("INSERT INTO notice(notice_title,notice_content,notice_category_id,notice_creator_id,created_time,updated_time) " +
@@ -22,4 +25,11 @@ public interface NoticeMapper {
 
     @UpdateProvider(type = NoticeSqlProvider.class, method = "updateById")
     void updateNotice(NoticeUpdateDto noticeUpdateDto);
+
+    @Select("SELECT category_admin_id FROM category_admin INNER JOIN notice " +
+            "ON notice.notice_category_id = category_admin.managed_category_id WHERE notice.id=#{id}")
+    List<Integer> getCategoryAdministrators(@Param("id") Integer id);
+
+    @Select("SELECT notice_creator_id FROM notice WHERE id = #{id}")
+    Integer getCreatorIdByNoticeId(@Param("id") Integer id);
 }
