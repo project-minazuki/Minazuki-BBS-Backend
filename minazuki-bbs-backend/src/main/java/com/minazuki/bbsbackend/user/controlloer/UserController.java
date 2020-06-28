@@ -9,6 +9,7 @@ import com.minazuki.bbsbackend.user.dataobject.UserSignInDto;
 import com.minazuki.bbsbackend.user.dataobject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.exception.DuplicateUserInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import com.minazuki.bbsbackend.user.exception.UnauthenticatedException;
 import com.minazuki.bbsbackend.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -82,11 +83,5 @@ public class UserController {
             return new StandardResponse<>(StandardResponse.FAILURE_CODE, "failure", null);
         }
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", token);
-    }
-
-    @ResponseBody
-    @ExceptionHandler({UnauthenticatedException.class})
-    public StandardResponse<Object> authenticationException(UnauthenticatedException e) {
-        return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
     }
 }
