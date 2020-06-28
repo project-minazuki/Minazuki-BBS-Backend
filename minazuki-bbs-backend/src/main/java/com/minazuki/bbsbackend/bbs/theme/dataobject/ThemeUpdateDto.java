@@ -18,4 +18,9 @@ public class ThemeUpdateDto {
 
     @ApiModelProperty(value = "主题帖标题")
     private String title;
+
+    public boolean isNoTitle() {
+        if(this.title == null) return true;
+        else return false;
+    }
 }

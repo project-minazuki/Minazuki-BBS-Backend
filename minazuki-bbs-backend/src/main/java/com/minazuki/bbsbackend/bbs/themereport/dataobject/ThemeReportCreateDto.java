@@ -18,7 +18,6 @@ public class ThemeReportCreateDto {
     private Integer themeId;
 
     @ApiModelProperty(value = "举报者的Id")
-    @NotNull
     private Integer reporterId;
 
     @ApiModelProperty(value = "举报原因")

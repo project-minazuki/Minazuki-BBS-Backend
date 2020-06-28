@@ -18,7 +18,6 @@ public class ThemeCreateDto {
     private String title;
 
     @ApiModelProperty(value = "创建者的Id")
-    @NotNull
     private Integer creatorId;
 
     @ApiModelProperty(value = "主题帖所在版块的Id")

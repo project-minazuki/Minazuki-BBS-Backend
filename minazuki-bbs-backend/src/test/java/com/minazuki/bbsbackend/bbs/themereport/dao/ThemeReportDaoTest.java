@@ -18,8 +18,8 @@ class ThemeReportDaoTest {
     @Test
     void addThemeReport() {
         ThemeReportCreateDto themeReportCreateDto = new ThemeReportCreateDto();
-        themeReportCreateDto.setThemeId(8);themeReportCreateDto.setReporterId(1);
-        themeReportCreateDto.setReason("cnm2");
+        themeReportCreateDto.setThemeId(19);themeReportCreateDto.setReporterId(1);
+        themeReportCreateDto.setReason("2版块的主题帖的举报2");
         themeReportDao.addThemeReport(themeReportCreateDto);
     }
 
@@ -51,5 +51,12 @@ class ThemeReportDaoTest {
     void deleteCheckedReports() {
         Integer themeId = 7;
         themeReportDao.deleteCheckedReports(themeId);
+    }
+
+    @Test
+    void findAllThemeReportsByCategoryId(){
+        Integer categoryId = 2;
+        List<ThemeReport> list = themeReportDao.findAllThemeReportsByCategoryId(categoryId);
+        System.out.println(list);
     }
 }

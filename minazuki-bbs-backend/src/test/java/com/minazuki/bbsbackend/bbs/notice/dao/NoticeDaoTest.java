@@ -49,6 +49,6 @@ class NoticeDaoTest {
         noticeUpdateDto.setContent("隔壁超市的薯片半价啦！！");
         noticeUpdateDto.setId(1);
 
-        noticeDao.updateNoticeById(noticeUpdateDto);
+        noticeDao.updateNotice(noticeUpdateDto);
     }
 }

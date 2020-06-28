@@ -10,6 +10,7 @@ import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
 import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
 import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
+import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class ThemeServiceImpl implements ThemeService {
         uniqueCheckDto.setTitle(themeCreateDto.getTitle());
 
         if (themeDao.isThemeUnique(uniqueCheckDto)) {
+            themeCreateDto.setCreatorId(AuthenticationInterceptor.getCurrentUserId());
             themeDao.addTheme(themeCreateDto);
         } else {
             throw new DuplicateThemeInfoException();
@@ -89,6 +91,8 @@ public class ThemeServiceImpl implements ThemeService {
         ThemeCheckDto uniqueCheckDto = new ThemeCheckDto();
         uniqueCheckDto.setTitle(themeUpdateDto.getTitle());
         uniqueCheckDto.setCategoryId(categoryId);
+
+        if(themeUpdateDto.isNoTitle()) return;
 
         if (themeDao.isThemeUnique(uniqueCheckDto)) {
             themeDao.updateThemeTitle(themeUpdateDto);

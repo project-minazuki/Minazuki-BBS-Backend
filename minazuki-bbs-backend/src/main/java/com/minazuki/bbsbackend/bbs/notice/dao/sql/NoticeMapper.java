@@ -21,5 +21,5 @@ public interface NoticeMapper {
     Notice findAllNotices(@Param("categoryId") Integer categoryId);
 
     @UpdateProvider(type = NoticeSqlProvider.class, method = "updateById")
-    void updateNoticeById(NoticeUpdateDto noticeUpdateDto);
+    void updateNotice(NoticeUpdateDto noticeUpdateDto);
 }

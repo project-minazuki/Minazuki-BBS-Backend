@@ -3,6 +3,7 @@ package com.minazuki.bbsbackend.bbs.themereport.service;
 import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
 import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
 import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
+import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,12 @@ public class ThemeReportServiceImpl implements ThemeReportService{
 
     @Override
     public void createThemeReport(ThemeReportCreateDto themeReportCreateDto) {
+        themeReportCreateDto.setReporterId(AuthenticationInterceptor.getCurrentUserId());
         themeReportDao.addThemeReport(themeReportCreateDto);
+    }
+
+    @Override
+    public List<ThemeReport> findAllThemeReportsByCategoryId(Integer categoryId) {
+        return themeReportDao.findAllThemeReportsByCategoryId(categoryId);
     }
 }

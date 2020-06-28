@@ -28,4 +28,7 @@ public interface ThemeReportMapper {
 
     @Delete("DELETE FROM theme_report WHERE report_theme_id = #{themeId} AND is_checked = true")
     void deleteCheckedReports(@Param("themeId") Integer themeId);
+
+    @Select("SELECT * FROM theme_report INNER JOIN theme ON theme_report.report_theme_id = theme.id WHERE theme.category_id = #{id}")
+    List<ThemeReport> findAllThemeReportsByCategoryId(@Param("categoryId") Integer categoryId);
 }

@@ -28,6 +28,6 @@ public class NoticeDao {
 
     public void deleteNotice(Integer id){this.sqlSession.delete("deleteNotice",id);}
 
-    public void updateNoticeById(NoticeUpdateDto noticeUpdateDto){this.sqlSession.update("updateNoticeById",noticeUpdateDto);}
+    public void updateNotice(NoticeUpdateDto noticeUpdateDto){this.sqlSession.update("updateNotice",noticeUpdateDto);}
 
 }

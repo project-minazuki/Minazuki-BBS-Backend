@@ -22,4 +22,6 @@ public interface ThemeReportService {
     //新建举报
     public void createThemeReport(ThemeReportCreateDto themeReportCreateDto);
 
+    public List<ThemeReport> findAllThemeReportsByCategoryId(Integer categoryId);
+
 }

@@ -26,4 +26,7 @@ public class ThemeReportDao {
     public void setThemeReportChecked(Integer id){this.sqlSession.update("setThemeReportChecked",id);}
 
     public void deleteCheckedReports(Integer themeId){this.sqlSession.delete("deleteCheckedReports",themeId);}
+
+    public List<ThemeReport> findAllThemeReportsByCategoryId(Integer categoryId){return this.sqlSession.selectList("findAllThemeReportsByCategoryId", categoryId);}
+
 }
