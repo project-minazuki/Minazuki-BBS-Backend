@@ -21,7 +21,7 @@ public interface ThemeMapper {
     void deleteTheme(@Param("id") Integer id);
 
     @UpdateProvider(type = ThemeSqlProvider.class, method = "updateById")
-    void updateThemeTile(ThemeUpdateDto themeUpdateDto);
+    void updateThemeTitle(ThemeUpdateDto themeUpdateDto);
 
     @Select("SELECT * FROM theme WHERE id = #{id}")
     Theme getThemeById(@Param("id") Integer id);
@@ -64,6 +64,12 @@ public interface ThemeMapper {
 
     @Select("SELECT * FROM theme")
     List<Theme> selectAll();
+
+    @Select("SELECT * FROM theme WHERE category_id = #{categoryId} AND is_high_quality = 1")
+    List<Theme> selectHighQuality(@Param("categoryId") Integer categoryId);
+
+    @Select("SELECT * FROM theme WHERE category_id = #{categoryId} AND is_top = 1")
+    List<Theme> selectTop(@Param("categoryId") Integer categoryId);
 
     @Update("SELECT * FROM theme WHERE theme_title like CONCAT('%',#{title},'%') ")
     List<Theme> searchThemeByTitle(@Param("title") String title);

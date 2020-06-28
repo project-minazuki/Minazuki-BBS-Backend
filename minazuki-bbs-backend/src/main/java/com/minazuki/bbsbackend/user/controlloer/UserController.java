@@ -102,7 +102,7 @@ public class UserController {
         try {
             token = userService.signIn(userSignInDto);
         } catch (NoUserMatchException e) {
-            return new StandardResponse<>(StandardResponse.FAILURE_CODE, "failure", null);
+            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
         }
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", token);
     }

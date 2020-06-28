@@ -1,6 +1,6 @@
 package com.minazuki.bbsbackend.bbs.theme.service;
 
-import com.minazuki.bbsbackend.bbs.category.service.impl.CategoryServiceImpl;
+import com.minazuki.bbsbackend.bbs.categorymoderator.dao.CategoryModeratorDao;
 import com.minazuki.bbsbackend.bbs.theme.dao.ThemeDao;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCheckDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
@@ -8,16 +8,12 @@ import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
-import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
-import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
 import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -25,11 +21,13 @@ import java.util.*;
 public class ThemeServiceImpl implements ThemeService {
     private final ThemeDao themeDao;
     private final ThemeReportDao themeReportDao;
+    private final CategoryModeratorDao categoryModeratorDao;
 
     @Autowired
-    public ThemeServiceImpl(ThemeDao themeDao,ThemeReportDao themeReportDao) {
+    public ThemeServiceImpl(ThemeDao themeDao,ThemeReportDao themeReportDao, CategoryModeratorDao categoryModeratorDao) {
         this.themeDao = themeDao;
         this.themeReportDao = themeReportDao;
+        this.categoryModeratorDao = categoryModeratorDao;
     }
 
     //创建一个新主题，同一个板块下不可有标题相同的主题帖，否则抛出DuplicateThemeInfoException异常
@@ -50,36 +48,69 @@ public class ThemeServiceImpl implements ThemeService {
 
     //找版块下的所有主题帖
     @Override
-    public List<Theme> getThemeListByCategoryId(Integer id) {
-        return themeDao.getThemeByCategoryId(id);
+    public List<Theme> getThemeListByCategoryId(Integer categoryId) {
+        return themeDao.getThemeByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<Theme> getHighQualityThemeByCategoryId(Integer categoryId) {
+        return themeDao.getHighQualityThemeByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<Theme> getTopThemeByCategoryId(Integer categoryId) {
+        return themeDao.getTopThemeByCategoryId(categoryId);
     }
 
     //根据Id找主题帖
     @Override
     public Theme getThemeByIndex(Integer id) {
+        this.themeDao.increaseVisitsCountById(id);
         return themeDao.getThemeById(id);
     }
 
     //设置，取消置顶
     @Override
-    public void setTopById(Integer id) {
-        themeDao.setTopById(id);
+    public void setTopById(Integer id) throws PermissionDeniedException{
+        if(categoryModeratorDao.getModeratorIds(themeDao.getCategoryIdOfThemeById(id))
+                .contains(AuthenticationInterceptor.getCurrentUserId())){
+            this.themeDao.setTopById(id);
+        }else {
+            throw new PermissionDeniedException();
+        }
     }
 
     @Override
-    public void cancelTopById(Integer id) {
-        themeDao.cancelTopById(id);
+    public void cancelTopById(Integer id) throws PermissionDeniedException{
+        if(categoryModeratorDao.getModeratorIds(themeDao.getCategoryIdOfThemeById(id))
+                .contains(AuthenticationInterceptor.getCurrentUserId())){
+            this.themeDao.cancelTopById(id);
+        }else {
+            throw new PermissionDeniedException();
+        }
     }
 
     //设置，取消精品
     @Override
-    public void setHighQuality(Integer id) {
-        themeDao.setHighQualityById(id);
+    public void setHighQuality(Integer id) throws PermissionDeniedException {
+        if(categoryModeratorDao.getModeratorIds(themeDao.getCategoryIdOfThemeById(id))
+                .contains(AuthenticationInterceptor.getCurrentUserId())){
+            themeDao.setHighQualityById(id);
+        }else {
+            throw new PermissionDeniedException();
+        }
+
     }
 
     @Override
-    public void cancelHighQuality(Integer id) {
-        themeDao.cancelHighQualityById(id);
+    public void cancelHighQuality(Integer id) throws PermissionDeniedException {
+        if(categoryModeratorDao.getModeratorIds(themeDao.getCategoryIdOfThemeById(id))
+                .contains(AuthenticationInterceptor.getCurrentUserId())){
+            themeDao.cancelHighQualityById(id);
+        }else {
+            throw new PermissionDeniedException();
+        }
+
     }
 
 
@@ -161,7 +192,8 @@ public class ThemeServiceImpl implements ThemeService {
 
     @Override
     public void deleteThemeById(Integer id) throws PermissionDeniedException{
-        if(themeDao.isUserCreatorOfTheTheme(id)||themeDao.isUserAdministratorOfTheCategoryOfTheTheme(id)){
+        if(themeDao.isUserCreatorOfTheTheme(id) || categoryModeratorDao.getModeratorIds(themeDao.getCategoryIdOfThemeById(id))
+                .contains(AuthenticationInterceptor.getCurrentUserId())){
             themeDao.deleteTheme(id);
         }
         else {

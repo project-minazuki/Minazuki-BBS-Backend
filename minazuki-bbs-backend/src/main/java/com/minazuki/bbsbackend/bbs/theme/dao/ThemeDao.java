@@ -22,9 +22,13 @@ public class ThemeDao {
 
     public void deleteTheme(Integer id){this.sqlSession.delete("deleteTheme",id);}
 
-    public void updateThemeTitle(ThemeUpdateDto themeUpdateDto){this.sqlSession.insert("updateThemeTitle",themeUpdateDto);}
+    public void updateThemeTitle(ThemeUpdateDto themeUpdateDto){this.sqlSession.update("updateThemeTitle",themeUpdateDto);}
 
     public List<Theme> getThemeByCategoryId(Integer categoryId){return this.sqlSession.selectList("getThemeByCategoryId",categoryId);}
+
+    public List<Theme> getHighQualityThemeByCategoryId(Integer categoryId) {return this.sqlSession.selectList("selectHighQuality", categoryId);}
+
+    public List<Theme> getTopThemeByCategoryId(Integer categoryId) {return this.sqlSession.selectList("selectTop", categoryId);}
 
     public Theme getThemeById(Integer id){return this.sqlSession.selectOne("getThemeById",id);}
 
@@ -69,34 +73,12 @@ public class ThemeDao {
 
     public boolean isUserCreatorOfTheTheme(Integer themeId){
         Integer currentUserId = AuthenticationInterceptor.getCurrentUserId();
-
-        //用于测试
-        //currentUserId = 2;
-
         Integer themeCreatorId = getCreatorIdByThemeId(themeId);
         if(themeCreatorId == currentUserId){
             return true;
         }
         else
             return false;
-    }
-
-    public boolean isUserAdministratorOfTheCategoryOfTheTheme(Integer themeId){
-        Integer currentUserId = AuthenticationInterceptor.getCurrentUserId();
-
-        //用于测试
-        //currentUserId = 3;
-
-        List<Integer> categoryAdministratorIdList = getCategoryAdminIdOfTheTheme(themeId);
-        int i = 0;
-
-        for (i = 0;i<categoryAdministratorIdList.size();i++){
-            if (currentUserId == categoryAdministratorIdList.get(i))
-                return true;
-        }
-
-        return false;
-
     }
 
 }

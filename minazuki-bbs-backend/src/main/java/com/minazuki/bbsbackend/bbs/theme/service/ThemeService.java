@@ -19,18 +19,20 @@ public interface ThemeService {
     void createTheme(ThemeCreateDto themeCreateDto) throws DuplicateThemeInfoException;
 
     //根据版块Id搜索主题帖
-    List<Theme> getThemeListByCategoryId(Integer id);
+    List<Theme> getThemeListByCategoryId(Integer categoryId);
+    List<Theme> getHighQualityThemeByCategoryId(Integer categoryId);
+    List<Theme> getTopThemeByCategoryId(Integer categoryId);
 
     //根据Id搜索主题帖
     Theme getThemeByIndex(Integer id);
 
     //设置，取消置顶
-    void setTopById(Integer id);
-    void cancelTopById(Integer id);
+    void setTopById(Integer id) throws PermissionDeniedException;
+    void cancelTopById(Integer id) throws PermissionDeniedException;
 
     //设置，取消精品
-    void setHighQuality(Integer id);
-    void cancelHighQuality(Integer id);
+    void setHighQuality(Integer id) throws PermissionDeniedException;
+    void cancelHighQuality(Integer id) throws PermissionDeniedException;
 
     //更新主题帖
     void updateThemeTitle(ThemeUpdateDto themeUpdateDto) throws DuplicateThemeInfoException,PermissionDeniedException;

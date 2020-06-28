@@ -94,6 +94,9 @@ public class UserServiceImpl implements UserService {
     public String signIn(UserSignInDto userSignInDto) throws NoUserMatchException {
         userSignInDto.setPassword(PasswordUtil.encryptPassword(userSignInDto.getPassword()));
         User user = userDao.signInCheck(userSignInDto);
+        if (user == null) {
+            throw new NoUserMatchException();
+        }
         return JwtUtil.sign(user);
     }
 

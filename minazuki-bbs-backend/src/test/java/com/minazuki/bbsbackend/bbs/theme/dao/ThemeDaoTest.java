@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -162,13 +161,6 @@ class ThemeDaoTest {
     void isUserCreatorOfTheTheme(){
         Integer themeId = 9;
         boolean flag = themeDao.isUserCreatorOfTheTheme(themeId);
-        System.out.println(flag);
-    }
-
-    @Test
-    void isUserAdministratorOfTheCategoryOfTheTheme(){
-        Integer id = 19;
-        boolean flag = themeDao.isUserAdministratorOfTheCategoryOfTheTheme(id);
         System.out.println(flag);
     }
 }
