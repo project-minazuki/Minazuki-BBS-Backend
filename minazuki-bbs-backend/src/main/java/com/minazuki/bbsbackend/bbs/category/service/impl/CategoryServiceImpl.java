@@ -10,6 +10,8 @@ import com.minazuki.bbsbackend.bbs.category.service.CategoryService;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dao.CategoryModeratorDao;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
 import com.minazuki.bbsbackend.bbs.categorymoderator.pojo.CategoryModerator;
+import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
+import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
 import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,13 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryDao categoryDao;
     private final CategoryModeratorDao categoryModeratorDao;
+    private final ThemeReportDao themeReportDao;
 
     @Autowired
-    public CategoryServiceImpl(CategoryDao categoryDao,CategoryModeratorDao categoryModeratorDao) {
+    public CategoryServiceImpl(CategoryDao categoryDao,CategoryModeratorDao categoryModeratorDao, ThemeReportDao themeReportDao) {
         this.categoryDao = categoryDao;
         this.categoryModeratorDao = categoryModeratorDao;
+        this.themeReportDao = themeReportDao;
     }
 
 
@@ -101,11 +105,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean isModerator(Integer userId) {
-        return getManagedCategories(userId).size() != 0;
-    }
-
-    @Override
     public void closeCategory(Integer categoryId) {
         this.categoryDao.closeCategory(categoryId);
     }
@@ -114,4 +113,24 @@ public class CategoryServiceImpl implements CategoryService {
     public void openCategory(Integer categoryId) {
         this.categoryDao.openCategory(categoryId);
     }
+
+    @Override
+    public List<ThemeReport> findAllThemeReportsByCategoryId(Integer categoryId) throws PermissionDeniedException {
+        if(categoryModeratorDao.getManageCategoryIds(AuthenticationInterceptor.getCurrentUserId()).contains(categoryId)) {
+            return this.themeReportDao.findAllThemeReportsByCategoryId(categoryId);
+        }else {
+            throw new PermissionDeniedException();
+        }
+    }
+
+    @Override
+    public void deleteCheckedReports(Integer categoryId) throws PermissionDeniedException {
+        if(categoryModeratorDao.getManageCategoryIds(AuthenticationInterceptor.getCurrentUserId()).contains(categoryId)) {
+            this.themeReportDao.deleteCheckedReports(categoryId);
+        } else {
+            throw new PermissionDeniedException();
+        }
+    }
+
+
 }

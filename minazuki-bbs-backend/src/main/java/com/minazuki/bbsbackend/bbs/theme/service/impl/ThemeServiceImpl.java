@@ -228,6 +228,19 @@ public class ThemeServiceImpl implements ThemeService {
         return themes;
     }
 
+    @Override
+    public List<Theme> selectThemeByTag(List<Tag> tags, Integer categoryId) {
+        List<Theme> themes = getThemeListByCategoryId(categoryId);
+        List<Theme> resultThemes = new ArrayList<>();
+        for (Theme theme : themes
+                ) {
+            if(theme.getTags().containsAll(tags)) {
+                resultThemes.add(theme);
+            }
+        }
+        return resultThemes;
+    }
+
 
     @Override
     public List<Theme> getAllThemes() {

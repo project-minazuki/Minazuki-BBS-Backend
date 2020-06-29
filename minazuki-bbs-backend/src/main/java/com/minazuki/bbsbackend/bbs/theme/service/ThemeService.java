@@ -54,6 +54,9 @@ public interface ThemeService {
     //搜索与主题帖名称类似的主题帖
     List<Theme> searchThemeByTitle(String title);
 
+    //根据tag筛选主题帖
+    List<Theme> selectThemeByTag(List<Tag> tags, Integer categoryId);
+
     //寻找所有的主题帖
     List<Theme> getAllThemes();
 

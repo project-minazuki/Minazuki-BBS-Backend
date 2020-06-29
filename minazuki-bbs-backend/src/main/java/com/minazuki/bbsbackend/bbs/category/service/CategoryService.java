@@ -6,6 +6,7 @@ import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryModerator
 import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryNameException;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
+import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
 import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 
 import java.util.List;
@@ -32,9 +33,13 @@ public interface CategoryService {
 
     List<Integer> getManagedCategories(Integer moderator);
 
-    boolean isModerator(Integer userId);
-
     void closeCategory(Integer categoryId);
 
     void openCategory(Integer categoryId);
+
+    // theme report 相关
+
+    List<ThemeReport> findAllThemeReportsByCategoryId(Integer categoryId) throws PermissionDeniedException;
+
+    void deleteCheckedReports(Integer categoryId) throws PermissionDeniedException;
 }

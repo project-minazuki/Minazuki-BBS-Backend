@@ -2,10 +2,16 @@ package com.minazuki.bbsbackend.bbs.category.controller;
 
 import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryCreateDto;
 import com.minazuki.bbsbackend.bbs.category.dataobject.CategoryUpdateDto;
+import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryModeratorException;
 import com.minazuki.bbsbackend.bbs.category.exception.DuplicateCategoryNameException;
 import com.minazuki.bbsbackend.bbs.category.pojo.Category;
 import com.minazuki.bbsbackend.bbs.category.service.CategoryService;
 import com.minazuki.bbsbackend.bbs.categorymoderator.dataobject.ModeratorPrimaryKeyDto;
+import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
+import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
+import com.minazuki.bbsbackend.bbs.themereport.pojo.ThemeReport;
+import com.minazuki.bbsbackend.bbs.themereport.service.ThemeReportService;
+import com.minazuki.bbsbackend.bbs.themereport.service.ThemeReportServiceImpl;
 import com.minazuki.bbsbackend.http.StandardResponse;
 import com.minazuki.bbsbackend.user.annotation.AdminRequired;
 import com.minazuki.bbsbackend.user.annotation.UserLoginRequired;
@@ -16,6 +22,7 @@ import com.minazuki.bbsbackend.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +37,13 @@ public class CategoryController {
 
     private final CategoryService categoryService;
     private final UserService userService;
+    private final ThemeReportService themeReportService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService, UserService userService) {
+    public CategoryController(CategoryService categoryService, UserService userService, ThemeReportService themeReportService) {
         this.categoryService = categoryService;
         this.userService = userService;
+        this.themeReportService = themeReportService;
     }
 
     @GetMapping("")
@@ -162,20 +171,67 @@ public class CategoryController {
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", categories);
     }
 
-    @DeleteMapping("/{categoryId}/moderator/{moderatorId}")
+    @PostMapping("/moderator/add")
+    @ResponseBody
+    @AdminRequired
+    @ApiOperation(value = "委任版主身份", notes = "需要管理员权限", httpMethod = "POST")
+    public StandardResponse<Object> setModerator(
+            @ApiParam(name = "新建版主入参", required = true)
+            @RequestBody ModeratorPrimaryKeyDto mpkDto) {
+        try {
+            this.categoryService.addModerator(mpkDto);
+        } catch (DuplicateCategoryModeratorException e) {
+            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
+        }
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
+
+    }
+
+    @DeleteMapping("/moderator/remove")
     @ResponseBody
     @AdminRequired
     @ApiOperation(value = "撤销版主身份", notes = "需要管理员权限", httpMethod = "DELETE")
     public StandardResponse<Object> dismissModerator(
-            @ApiParam(name = "版块id", required = true)
-            @PathVariable Integer categoryId,
-            @ApiParam(name = "版主id", required = true)
-            @PathVariable Integer moderatorId) {
-        ModeratorPrimaryKeyDto mpkDto = new ModeratorPrimaryKeyDto();
-        mpkDto.setCategoryId(categoryId);
-        mpkDto.setModeratorId(moderatorId);
+            @ApiParam(name = "移除版块入参", required = true)
+            @RequestBody ModeratorPrimaryKeyDto mpkDto) {
         this.categoryService.removeModerator(mpkDto);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
+
+
+    @GetMapping("/{categoryId}/manage/themeReport")
+    @ResponseBody
+    @UserLoginRequired
+    @ApiOperation(value = "获取该板块所有对主题帖的举报", notes = "需要版主权限", httpMethod = "GET")
+    public StandardResponse<List<ThemeReport>> getThemeReportsOfCategory(
+            @ApiParam(name = "版块id", required = true)
+            @PathVariable Integer categoryId ) throws PermissionDeniedException{
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE,
+                "success", this.categoryService.findAllThemeReportsByCategoryId(categoryId));
+    }
+
+    @GetMapping("/manage/themeReport/{themeReportId}")
+    @ResponseBody
+    @UserLoginRequired
+    @ApiOperation(value = "查看或者处理对主题帖的举报", notes = "需要版主权限", httpMethod = "GET")
+    public StandardResponse<Object> checkThemeReport(
+            @ApiParam(name = "对主题帖的举报的id", required = true)
+            @PathVariable Integer themeReportId)throws PermissionDeniedException{
+        this.themeReportService.setThemeReportChecked(themeReportId);
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
+    }
+
+    @DeleteMapping("/{categoryId}/manage/themeReport/checked")
+    @ResponseBody
+    @UserLoginRequired
+    @ApiOperation(value = "删除所有已处理的举报", notes = "需要版主权限", httpMethod = "DELETE")
+    public StandardResponse<Object> deleteCheckedThemeReportsOfCategory(
+            @ApiParam(name = "版块id", required = true)
+            @PathVariable Integer categoryId) throws PermissionDeniedException{
+        this.categoryService.deleteCheckedReports(categoryId);
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
+    }
+
+
 
 }

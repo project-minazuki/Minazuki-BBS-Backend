@@ -7,6 +7,7 @@ import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
 import com.minazuki.bbsbackend.bbs.theme.service.ThemeService;
+import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
 import com.minazuki.bbsbackend.bbs.themereport.service.ThemeReportService;
 import com.minazuki.bbsbackend.http.StandardResponse;
 import com.minazuki.bbsbackend.user.annotation.UserLoginRequired;
@@ -115,6 +116,16 @@ public class ThemeController {
                 "success", this.themeService.searchThemeByTitle(keyword));
     }
 
+    @GetMapping("/{categoryId}/selectByTag")
+    @ResponseBody
+    @ApiOperation(value = "根据tag筛选主题帖", notes = "可以多tag", httpMethod = "GET")
+    public StandardResponse<List<Theme>> selectThemeByTag(
+            @RequestBody List<Tag> tags,
+            @PathVariable Integer categoryId) {
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE,
+                "success", themeService.selectThemeByTag(tags, categoryId));
+    }
+
     @PostMapping("/update")
     @ResponseBody
     @UserLoginRequired
@@ -214,4 +225,15 @@ public class ThemeController {
         this.themeService.removeTagFromTheme(themeTagLinkDto);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
+
+    @PostMapping("/report")
+    @ResponseBody
+    @UserLoginRequired
+    @ApiOperation(value = "举报主题帖", httpMethod = "POST")
+    public StandardResponse<Object> reportTheme(
+            @RequestBody ThemeReportCreateDto trcDto) {
+        this.themeReportService.createThemeReport(trcDto);
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
+    }
+
 }

@@ -31,21 +31,6 @@ public class ThemeReportServiceImpl implements ThemeReportService{
         }
     }
 
-    /*
-    ******注：该方法应该写到Category的Service里
-    @Override
-    public void deleteCheckedReports(Integer categoryId) throws PermissionDeniedException{
-
-        if(themeReportDao.isUserCategoryAdministrator(categoryId)){
-            themeReportDao.deleteCheckedReports(categoryId);
-        }
-        else {
-            throw new PermissionDeniedException();
-        }
-    }
-
-     */
-
     @Override
     public boolean isThemeHasUncheckedReport(Integer themeId) {
         if(themeReportDao.getUncheckedReportsOfTheme(themeId)!=null){
@@ -67,16 +52,6 @@ public class ThemeReportServiceImpl implements ThemeReportService{
         themeReportCreateDto.setReporterId(AuthenticationInterceptor.getCurrentUserId());
         themeReportDao.addThemeReport(themeReportCreateDto);
     }
-
-    /*
-    ******注：该方法应该写到Category的Service里
-
-    @Override
-    public List<ThemeReport> findAllThemeReportsByCategoryId(Integer categoryId) throws PermissionDeniedException{
-        return themeReportDao.findAllThemeReportsByCategoryId(categoryId);
-    }
-
-     */
 
     @Override
     public void deleteReportById(Integer id) throws PermissionDeniedException,UncheckedThemeReportException {

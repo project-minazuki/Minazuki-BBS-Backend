@@ -27,4 +27,10 @@ public class Tag {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Tag tag = (Tag) obj;
+        return this.id == tag.getId();
+    }
 }
