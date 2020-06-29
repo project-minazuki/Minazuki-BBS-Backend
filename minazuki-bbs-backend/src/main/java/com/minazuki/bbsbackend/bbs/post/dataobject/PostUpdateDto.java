@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class PostUpdateDto {
 
     @ApiModelProperty(value = "更新回帖id")
+    @NotNull
     private Integer postId;
 
     @ApiModelProperty(value = "更新内容")

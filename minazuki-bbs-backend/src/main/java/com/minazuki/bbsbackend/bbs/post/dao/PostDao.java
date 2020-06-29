@@ -20,6 +20,8 @@ public class PostDao {
 
     public void deletePost(Integer id){this.sqlSession.delete("deletePost",id);}
 
+    public Post getPostById(Integer id){return this.sqlSession.selectOne("getPostById", id);}
+
     public void updatePost(PostUpdateDto postUpdateDto) {
         this.sqlSession.update("updatePost", postUpdateDto);
     }

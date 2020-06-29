@@ -33,14 +33,13 @@ public class FavoriteServiceImpl implements FavoriteService {
         favoriteDao.deleteFavorite(id);
     }
 
-    @Override
-    public void updateLastViewedTime(Integer id) {
+    private void updateLastViewedTime(Integer id) {
         favoriteDao.updateFavoriteLastViewedTime(id);
     }
 
     @Override
-    public List<Favorite> getAllFavoriteByUserId(Integer userId) {
-        return favoriteDao.findAllFavorites(userId);
+    public List<Favorite> getAllFavorite() {
+        return favoriteDao.findAllFavorites(AuthenticationInterceptor.getCurrentUserId());
     }
 
     @Override

@@ -13,9 +13,7 @@ public interface FavoriteService {
 
     void deleteFavorite(Integer id);
 
-    void updateLastViewedTime(Integer id);
-
-    List<Favorite> getAllFavoriteByUserId(Integer userId);
+    List<Favorite> getAllFavorite();
 
     Favorite getByIndexAndUpdate(Integer id);
 }
