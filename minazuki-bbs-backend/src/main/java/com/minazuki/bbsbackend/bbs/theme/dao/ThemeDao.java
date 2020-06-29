@@ -1,5 +1,7 @@
 package com.minazuki.bbsbackend.bbs.theme.dao;
 
+import com.minazuki.bbsbackend.bbs.tag.dataobject.ThemeTagLinkDto;
+import com.minazuki.bbsbackend.bbs.tag.pojo.Tag;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCheckDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
@@ -32,10 +34,14 @@ public class ThemeDao {
 
     public Theme getThemeById(Integer id){return this.sqlSession.selectOne("getThemeById",id);}
 
+    public Theme getThemeByTitleAndCategory(ThemeCheckDto themeCheckDto) {
+        return this.sqlSession.selectOne("getThemeWithTitleAndCategoryId", themeCheckDto);
+    }
+
     public List<Theme> getThemeByTitle(String title){return this.sqlSession.selectList("getThemeByTitle",title);}
 
     public boolean isThemeUnique(ThemeCheckDto themeCheckDto){
-        if(this.sqlSession.selectOne("getThemeWithTitleAndCategoryId",themeCheckDto)!=null){
+        if(getThemeByTitleAndCategory(themeCheckDto)!=null){
             return false;
         }
         else return true;
@@ -79,6 +85,18 @@ public class ThemeDao {
         }
         else
             return false;
+    }
+
+    public void addTagToTheme(ThemeTagLinkDto themeTagLinkDto) {
+        this.sqlSession.insert("addTagToTheme", themeTagLinkDto);
+    }
+
+    public void deleteTagFromTheme(ThemeTagLinkDto themeTagLinkDto) {
+        this.sqlSession.delete("deleteTagFromTheme", themeTagLinkDto);
+    }
+
+    public List<Tag> getTagsOfTheme(Integer themeId) {
+        return this.sqlSession.selectList("getTagsOfTheme", themeId);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.minazuki.bbsbackend.bbs.theme.service;
 
+import com.minazuki.bbsbackend.bbs.tag.dataobject.ThemeTagLinkDto;
+import com.minazuki.bbsbackend.bbs.tag.pojo.Tag;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
@@ -58,5 +60,9 @@ public interface ThemeService {
     //根据Id删除主题帖
     void deleteThemeById(Integer id) throws PermissionDeniedException;
 
+    public void addTagToTheme(ThemeTagLinkDto themeTagLinkDto) throws PermissionDeniedException;
 
+    public void removeTagFromTheme(ThemeTagLinkDto themeTagLinkDto)throws PermissionDeniedException;
+
+    List<Tag> getTagList();
 }

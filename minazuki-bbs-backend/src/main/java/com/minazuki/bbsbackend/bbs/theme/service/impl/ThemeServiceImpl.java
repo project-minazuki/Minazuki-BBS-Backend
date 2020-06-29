@@ -1,12 +1,16 @@
-package com.minazuki.bbsbackend.bbs.theme.service;
+package com.minazuki.bbsbackend.bbs.theme.service.impl;
 
 import com.minazuki.bbsbackend.bbs.categorymoderator.dao.CategoryModeratorDao;
+import com.minazuki.bbsbackend.bbs.tag.dao.TagDao;
+import com.minazuki.bbsbackend.bbs.tag.dataobject.ThemeTagLinkDto;
+import com.minazuki.bbsbackend.bbs.tag.pojo.Tag;
 import com.minazuki.bbsbackend.bbs.theme.dao.ThemeDao;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCheckDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
 import com.minazuki.bbsbackend.bbs.theme.pojo.Theme;
+import com.minazuki.bbsbackend.bbs.theme.service.ThemeService;
 import com.minazuki.bbsbackend.bbs.themereport.dao.ThemeReportDao;
 import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
@@ -21,10 +25,12 @@ import java.util.*;
 public class ThemeServiceImpl implements ThemeService {
     private final ThemeDao themeDao;
     private final ThemeReportDao themeReportDao;
+    private final TagDao tagDao;
     private final CategoryModeratorDao categoryModeratorDao;
 
     @Autowired
-    public ThemeServiceImpl(ThemeDao themeDao,ThemeReportDao themeReportDao, CategoryModeratorDao categoryModeratorDao) {
+    public ThemeServiceImpl(ThemeDao themeDao,ThemeReportDao themeReportDao, TagDao tagDao, CategoryModeratorDao categoryModeratorDao) {
+        this.tagDao = tagDao;
         this.themeDao = themeDao;
         this.themeReportDao = themeReportDao;
         this.categoryModeratorDao = categoryModeratorDao;
@@ -41,6 +47,14 @@ public class ThemeServiceImpl implements ThemeService {
         if (themeDao.isThemeUnique(uniqueCheckDto)) {
             themeCreateDto.setCreatorId(AuthenticationInterceptor.getCurrentUserId());
             themeDao.addTheme(themeCreateDto);
+            // 处理主题帖的tags
+            for (Tag tag: themeCreateDto.getTags()
+                 ) {
+                ThemeTagLinkDto themeTagLinkDto = new ThemeTagLinkDto();
+                themeTagLinkDto.setTagId(tag.getId());
+                themeTagLinkDto.setThemeId(themeDao.getThemeByTitleAndCategory(uniqueCheckDto).getId());
+                themeDao.addTagToTheme(themeTagLinkDto);
+            }
         } else {
             throw new DuplicateThemeInfoException();
         }
@@ -49,24 +63,41 @@ public class ThemeServiceImpl implements ThemeService {
     //找版块下的所有主题帖
     @Override
     public List<Theme> getThemeListByCategoryId(Integer categoryId) {
-        return themeDao.getThemeByCategoryId(categoryId);
+
+        List<Theme> themes = themeDao.getThemeByCategoryId(categoryId);
+        for (Theme theme: themes
+             ) {
+            packageTheme(theme);
+        }
+        return themes;
     }
 
     @Override
     public List<Theme> getHighQualityThemeByCategoryId(Integer categoryId) {
-        return themeDao.getHighQualityThemeByCategoryId(categoryId);
+        List<Theme> themes = themeDao.getHighQualityThemeByCategoryId(categoryId);
+        for (Theme theme: themes
+             ) {
+            packageTheme(theme);
+        }
+        return themes;
     }
 
     @Override
     public List<Theme> getTopThemeByCategoryId(Integer categoryId) {
-        return themeDao.getTopThemeByCategoryId(categoryId);
+        List<Theme> themes = themeDao.getTopThemeByCategoryId(categoryId);
+        for (Theme theme : themes) {
+            packageTheme(theme);
+        }
+        return themes;
     }
 
     //根据Id找主题帖
     @Override
     public Theme getThemeByIndex(Integer id) {
         this.themeDao.increaseVisitsCountById(id);
-        return themeDao.getThemeById(id);
+        Theme theme = themeDao.getThemeById(id);
+        packageTheme(theme);
+        return theme;
     }
 
     //设置，取消置顶
@@ -169,25 +200,43 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     public List<Theme> findTop10ByVisitsCount() {
         List<Theme> list = themeDao.getReplyCountTOP10();
+        for (Theme theme: list
+             ) {
+            packageTheme(theme);
+        }
         return list;
     }
 
     @Override
     public List<Theme> findTop10ByReplyCount() {
         List<Theme> list = themeDao.getReplyCountTOP10();
+        for (Theme theme: list
+        ) {
+            packageTheme(theme);
+        }
         return list;
     }
 
     //找所有板块下与该名称类似的主题帖
     @Override
     public List<Theme> searchThemeByTitle(String title) {
-        return themeDao.searchThemeByTitle(title);
+        List<Theme> themes = themeDao.searchThemeByTitle(title);
+        for (Theme theme: themes
+             ) {
+            packageTheme(theme);
+        }
+        return themes;
     }
 
 
     @Override
     public List<Theme> getAllThemes() {
-        return themeDao.selectAll();
+        List<Theme> themes = themeDao.selectAll();
+        for (Theme theme: themes
+             ) {
+            packageTheme(theme);
+        }
+        return themes;
     }
 
     @Override
@@ -199,5 +248,41 @@ public class ThemeServiceImpl implements ThemeService {
         else {
             throw new PermissionDeniedException();
         }
+    }
+
+    @Override
+    public void addTagToTheme(ThemeTagLinkDto themeTagLinkDto) throws PermissionDeniedException{
+        if(themeDao.isUserCreatorOfTheTheme(themeTagLinkDto.getThemeId())) {
+            this.themeDao.addTagToTheme(themeTagLinkDto);
+        }
+        else {
+            throw new PermissionDeniedException();
+        }
+    }
+
+    @Override
+    public void removeTagFromTheme(ThemeTagLinkDto themeTagLinkDto) throws PermissionDeniedException{
+        if(themeDao.isUserCreatorOfTheTheme(themeTagLinkDto.getThemeId())) {
+            this.themeDao.deleteTagFromTheme(themeTagLinkDto);
+        }
+        else {
+            throw new PermissionDeniedException();
+        }
+    }
+
+    @Override
+    public List<Tag> getTagList() {
+        return tagDao.getAllTags();
+    }
+
+    public void packageTheme(Theme theme) {
+        /**
+         * @Description: 组装theme，加入tags
+         * @param [theme]
+         * @return void
+         * @author hlodice
+         * @date 2020/6/29 17:27
+         */
+        theme.setTags(themeDao.getTagsOfTheme(theme.getId()));
     }
 }

@@ -115,10 +115,10 @@ public class CategoryController {
     @ApiOperation(value = "修改版块信息", notes = "只有版主有权限", httpMethod = "POST")
     public StandardResponse<Object> updateCategory(
             @ApiParam(name = "修改板块入参", value = "版块id（必需）", required = true)
-            @RequestBody CategoryUpdateDto categoryUpdateDto) {
+            @RequestBody CategoryUpdateDto categoryUpdateDto) throws PermissionDeniedException{
         try {
             categoryService.updateCategory(categoryUpdateDto);
-        }catch(PermissionDeniedException | DuplicateCategoryNameException e) {
+        }catch(DuplicateCategoryNameException e) {
             return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
         }
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);

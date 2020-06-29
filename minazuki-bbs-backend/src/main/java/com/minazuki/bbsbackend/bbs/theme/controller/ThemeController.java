@@ -1,5 +1,7 @@
 package com.minazuki.bbsbackend.bbs.theme.controller;
 
+import com.minazuki.bbsbackend.bbs.tag.dataobject.ThemeTagLinkDto;
+import com.minazuki.bbsbackend.bbs.tag.pojo.Tag;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
@@ -119,10 +121,10 @@ public class ThemeController {
     @ApiOperation(value = "修改主题帖", notes = "只有创建者有权限,需要登录")
     public StandardResponse<Object> updateTheme(
             @ApiParam(name = "更新主题帖入参", required = true)
-            @RequestBody ThemeUpdateDto themeUpdateDto) {
+            @RequestBody ThemeUpdateDto themeUpdateDto) throws PermissionDeniedException{
         try {
             this.themeService.updateThemeTitle(themeUpdateDto);
-        } catch (DuplicateThemeInfoException | PermissionDeniedException e) {
+        } catch (DuplicateThemeInfoException e) {
             return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
         }
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
@@ -134,12 +136,8 @@ public class ThemeController {
     @ApiOperation(value = "删除主题帖", notes = "只有创建者或者版主有权，需要登录")
     public StandardResponse<Object> deleteThemeById(
             @ApiParam(name = "主题帖id", required = true)
-            @PathVariable Integer themeId) {
-        try {
-            this.themeService.deleteThemeById(themeId);
-        } catch (PermissionDeniedException e) {
-            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
-        }
+            @PathVariable Integer themeId) throws PermissionDeniedException{
+        this.themeService.deleteThemeById(themeId);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
 
@@ -149,11 +147,8 @@ public class ThemeController {
     @ApiOperation(value = "设置为精品贴", httpMethod = "GET")
     public StandardResponse<Object> setThemeHighQuality(
             @ApiParam(name = "themeId", required = true)
-            @PathVariable Integer themeId) {
-        try {
-            this.themeService.setHighQuality(themeId);
-        } catch (PermissionDeniedException e) {
-            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);        }
+            @PathVariable Integer themeId) throws PermissionDeniedException{
+        this.themeService.setHighQuality(themeId);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
 
@@ -163,11 +158,8 @@ public class ThemeController {
     @ApiOperation(value = "取消精品贴", httpMethod = "GET")
     public StandardResponse<Object> cancelSetThemeHighQuality(
             @ApiParam(name = "themeId", required = true)
-            @PathVariable Integer themeId) {
-        try {
-            this.themeService.cancelHighQuality(themeId);
-        } catch (PermissionDeniedException e) {
-            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);        }
+            @PathVariable Integer themeId) throws PermissionDeniedException{
+        this.themeService.cancelHighQuality(themeId);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
 
@@ -177,12 +169,8 @@ public class ThemeController {
     @ApiOperation(value = "设置为置顶帖", httpMethod = "GET")
     public StandardResponse<Object> setThemeTop(
             @ApiParam(name = "themeId", required = true)
-            @PathVariable Integer themeId) {
-        try {
-            this.themeService.setTopById(themeId);
-        } catch (PermissionDeniedException e) {
-            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
-        }
+            @PathVariable Integer themeId) throws PermissionDeniedException{
+        this.themeService.setTopById(themeId);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
 
@@ -192,12 +180,38 @@ public class ThemeController {
     @ApiOperation(value = "取消置顶贴", httpMethod = "GET")
     public StandardResponse<Object> cancelSetThemeTop(
             @ApiParam(name = "themeId", required = true)
-            @PathVariable Integer themeId) {
-        try {
-            this.themeService.setHighQuality(themeId);
-        } catch (PermissionDeniedException e) {
-            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
-        }
+            @PathVariable Integer themeId) throws PermissionDeniedException{
+        this.themeService.setHighQuality(themeId);
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
+    }
+
+    @GetMapping("/tag")
+    @ResponseBody
+    @ApiOperation(value = "获取所有可选tag", httpMethod = "GET")
+    public StandardResponse<List<Tag>> getTagsList() {
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", themeService.getTagList());
+    }
+
+
+    @PostMapping("/tag/add")
+    @ResponseBody
+    @UserLoginRequired
+    @ApiOperation(value = "给theme添加tag", httpMethod = "POST")
+    public StandardResponse<Object> addTag(
+            @ApiParam(name = "主题帖id和tag id入参", required = true)
+            @RequestBody ThemeTagLinkDto themeTagLinkDto) throws PermissionDeniedException{
+        this.themeService.addTagToTheme(themeTagLinkDto);
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
+    }
+
+    @PostMapping("/tag/remove")
+    @ResponseBody
+    @UserLoginRequired
+    @ApiOperation(value = "给theme移除tag", httpMethod = "POST")
+    public StandardResponse<Object> removeTag(
+            @ApiParam(name = "主题帖id和tag id入参", required = true)
+            @RequestBody ThemeTagLinkDto themeTagLinkDto) throws PermissionDeniedException{
+        this.themeService.removeTagFromTheme(themeTagLinkDto);
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
 }
