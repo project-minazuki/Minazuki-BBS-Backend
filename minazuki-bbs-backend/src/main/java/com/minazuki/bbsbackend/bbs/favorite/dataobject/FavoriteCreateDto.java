@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Data
 @NoArgsConstructor
-@ApiModel
+@ApiModel(value = "新建收藏入参")
 public class FavoriteCreateDto {
 
     @ApiModelProperty(value = "收藏主题id")

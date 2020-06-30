@@ -4,6 +4,7 @@ import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeCreateDto;
 import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeUpdateDto;
 import com.minazuki.bbsbackend.bbs.notice.pojo.Notice;
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -20,8 +21,16 @@ public interface NoticeMapper {
     @Select("SELECT * FROM notice WHERE id = #{id}")
     Notice getNoticeById(@Param("id") Integer id);
 
+
+    /*
     @Select("SELECT * FROM notice WHERE notice_category_id = #{categoryId}")
     Notice findAllNotices(@Param("categoryId") Integer categoryId);
+     */
+
+    //updated:返回一个按照更新时间排序的List，更新时间越晚排位越靠前
+    @Select("SELECT * FROM notice WHERE notice_category_id = #{categoryId} ORDER BY updated_time DESC ")
+    List<Notice> findAllNotices (@Param("categoryId") Integer categoryId);
+
 
     @UpdateProvider(type = NoticeSqlProvider.class, method = "updateById")
     void updateNotice(NoticeUpdateDto noticeUpdateDto);
@@ -32,4 +41,6 @@ public interface NoticeMapper {
 
     @Select("SELECT notice_creator_id FROM notice WHERE id = #{id}")
     Integer getCreatorIdByNoticeId(@Param("id") Integer id);
+
+
 }

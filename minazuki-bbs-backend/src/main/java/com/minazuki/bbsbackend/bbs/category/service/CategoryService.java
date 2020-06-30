@@ -33,6 +33,8 @@ public interface CategoryService {
 
     List<Integer> getManagedCategories(Integer moderator);
 
+    //boolean isModerator(Integer userId);
+
     void closeCategory(Integer categoryId);
 
     void openCategory(Integer categoryId);

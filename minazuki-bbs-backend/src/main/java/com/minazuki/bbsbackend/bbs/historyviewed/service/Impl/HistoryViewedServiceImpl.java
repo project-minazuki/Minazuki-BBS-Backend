@@ -38,7 +38,8 @@ public class HistoryViewedServiceImpl implements HistoryViewedService {
     }
 
     @Override
-    public List<HistoryViewed> getAllHistoryByUserId(Integer userId) {
+    public List<HistoryViewed> getAllHistory() {
+        Integer userId = AuthenticationInterceptor.getCurrentUserId();
         return historyViewedDao.findAllHistoryViewed(userId);
     }
 }

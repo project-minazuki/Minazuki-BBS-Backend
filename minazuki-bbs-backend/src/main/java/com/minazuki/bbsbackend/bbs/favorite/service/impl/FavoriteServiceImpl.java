@@ -5,9 +5,13 @@ import com.minazuki.bbsbackend.bbs.favorite.dataobject.FavoriteCreateDto;
 import com.minazuki.bbsbackend.bbs.favorite.pojo.Favorite;
 import com.minazuki.bbsbackend.bbs.favorite.service.FavoriteService;
 import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class FavoriteServiceImpl implements FavoriteService {
 
     private final FavoriteDao favoriteDao;

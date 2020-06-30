@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootTest
 class InboxDaoTest {
@@ -32,9 +33,9 @@ class InboxDaoTest {
 
     @Test
     void getInboxById() {
-        System.out.println(inboxDao.getInboxById(1));
+        System.out.println(inboxDao.getMessageById(1));
     }
-
+/*
     @Test
     void findAllInboxesBetweenTwoUsers() {
         InboxIndexDto inboxIndexDto = new InboxIndexDto();
@@ -42,6 +43,8 @@ class InboxDaoTest {
         inboxIndexDto.setTargetUserId(3);
         System.out.println(inboxDao.findAllInboxesBetweenTwoUsers(inboxIndexDto));
     }
+
+ */
 
     @Test
     void checkInbox() {
@@ -53,6 +56,7 @@ class InboxDaoTest {
         System.out.println(inboxDao.countUnCheckedInbox(1));
     }
 
+    /*
     @Test
     void countUnCheckedInboxOfTwoUsers() {
         InboxIndexDto inboxIndexDto = new InboxIndexDto();
@@ -60,4 +64,26 @@ class InboxDaoTest {
         inboxIndexDto.setTargetUserId(3);
         System.out.println(inboxDao.countUnCheckedInboxOfTwoUsers(inboxIndexDto));
     }
+     */
+
+    @Test
+    public void getInboxByRecipient(){
+        List<Inbox> list = inboxDao.getInboxByRecipientId(3);
+        System.out.println(list);
+    }
+    @Test
+    public void getOutBoxBySenderId(){
+        List<Inbox> list = inboxDao.getOutBoxBySenderId(1);
+        System.out.println(list);
+    }
+
+    /*
+    @Test
+    public void setMessageChecked(){
+        Integer id = 3;
+        inboxDao.setMessageChecked(id);
+    }
+
+     */
+
 }

@@ -21,4 +21,5 @@ public interface NoticeService {
 
     void updateNoticeById(NoticeUpdateDto noticeUpdateDto)throws PermissionDeniedException;
 
+
 }

@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.bbs.notice.service.impl;
 
+import com.minazuki.bbsbackend.bbs.categorymoderator.dao.CategoryModeratorDao;
 import com.minazuki.bbsbackend.bbs.notice.dao.NoticeDao;
 import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeCreateDto;
 import com.minazuki.bbsbackend.bbs.notice.dataobject.NoticeUpdateDto;
@@ -17,14 +18,19 @@ import java.util.List;
 @Transactional
 public class NoticeServiceImpl implements NoticeService {
     private final NoticeDao noticeDao;
+    private final CategoryModeratorDao categoryModeratorDao;
     @Autowired
-    public NoticeServiceImpl(NoticeDao noticeDao){this.noticeDao = noticeDao;}
+    public NoticeServiceImpl(NoticeDao noticeDao, CategoryModeratorDao categoryModeratorDao){
+        this.noticeDao = noticeDao;
+        this.categoryModeratorDao = categoryModeratorDao;
+    }
 
 
     @Override
     public void addNotice(NoticeCreateDto noticeCreateDto) throws PermissionDeniedException {
-        if(noticeDao.isUserCategoryAdministrator(noticeCreateDto.getCreatorId())){
-            noticeCreateDto.setCreatorId(AuthenticationInterceptor.getCurrentUserId());
+        Integer currentUserId = AuthenticationInterceptor.getCurrentUserId();
+        if(categoryModeratorDao.getManageCategoryIds(currentUserId).contains(noticeCreateDto.getCategoryId())){
+            noticeCreateDto.setCreatorId(currentUserId);
             noticeDao.addNotice(noticeCreateDto);
         }
         else throw new PermissionDeniedException();

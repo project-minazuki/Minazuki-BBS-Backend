@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 @Data
-@ApiModel
+@ApiModel(value = "创建邮件入参")
 @NoArgsConstructor
 public class InboxCreateDto {
 

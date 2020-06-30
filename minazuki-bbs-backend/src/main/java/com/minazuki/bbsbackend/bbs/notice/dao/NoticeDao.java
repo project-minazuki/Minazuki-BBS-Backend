@@ -23,6 +23,7 @@ public class NoticeDao {
         return this.sqlSession.selectOne("getNoticeById", id);
     }
 
+    //按更新顺序排序
     public List<Notice> findAllNotices(Integer categoryId) {
         return this.sqlSession.selectList("findAllNotices", categoryId);
     }

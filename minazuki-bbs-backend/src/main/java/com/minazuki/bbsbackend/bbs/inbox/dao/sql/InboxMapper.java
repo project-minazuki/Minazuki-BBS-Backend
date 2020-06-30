@@ -23,7 +23,7 @@ public interface InboxMapper {
             @Result(property = "createdAt", column = "created_time"),
             @Result(property = "isChecked", column = "is_checked")
     })
-    Inbox getInboxById(@Param("id") Integer id);
+    Inbox getMessageById(@Param("id") Integer id);
 
     @Select("SELECT * FROM inbox WHERE (inbox_sender_id = #{thisUserId} AND inbox_recipient_id = #{targetUserId}) OR " +
             "(inbox_sender_id = #{targetUserId} AND inbox_recipient_id = #{thisUserId})")
@@ -44,4 +44,17 @@ public interface InboxMapper {
     @Select("SELECT COUNT(*) FROM inbox WHERE inbox_sender_id = #{targetUserId} AND inbox_recipient_id = #{thisUserId} " +
             "AND is_checked = 0")
     Integer countUnCheckedInboxOfTwoUsers(@Param("inboxIndexDto") InboxIndexDto inboxIndexDto);
+
+    @Select("SELECT * FROM inbox WHERE inbox_recipient_id = #{recipientId}")
+    List<Inbox> getInboxByRecipientId(@Param("recipientId") Integer recipientId);
+
+    @Select("SELECT * FROM inbox WHERE inbox_sender_id = #{senderId}")
+    List<Inbox> getOutBoxBySenderId(@Param(":senderId") Integer senderId);
+
+    //@Update("UPDATE inbox SET is_checked = true WHERE inbox_recipient_id = #{recipientId}")
+    //void setMessageChecked(@Param("recipientId") Integer recipientId);
+
+    @Select("SELECT is_checked FROM inbox WHERE id=#{id}")
+    boolean isMessageChecked(@Param("id") Integer id);
+
 }

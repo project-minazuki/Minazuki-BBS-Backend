@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@ApiModel
+@ApiModel(value = "创建历史记录入参")
 @NoArgsConstructor
 public class HistoryViewedCreateDto {
 

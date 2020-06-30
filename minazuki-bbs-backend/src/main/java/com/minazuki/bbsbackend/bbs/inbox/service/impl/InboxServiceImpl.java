@@ -3,6 +3,7 @@ package com.minazuki.bbsbackend.bbs.inbox.service.impl;
 import com.minazuki.bbsbackend.bbs.inbox.dao.InboxDao;
 import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxCreateDto;
 import com.minazuki.bbsbackend.bbs.inbox.dataobject.InboxIndexDto;
+import com.minazuki.bbsbackend.bbs.inbox.exception.UncheckedMessageException;
 import com.minazuki.bbsbackend.bbs.inbox.pojo.Inbox;
 import com.minazuki.bbsbackend.bbs.inbox.service.InboxService;
 import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
@@ -27,19 +28,29 @@ public class InboxServiceImpl implements InboxService{
     }
 
     @Override
-    public void deleteInboxById(Integer inboxId) {
-
+    public void deleteMessageById(Integer messageId) throws UncheckedMessageException {
+        if(inboxDao.isMessageChecked(messageId)) {
+            inboxDao.deleteInbox(messageId);
+        }
+        else throw new UncheckedMessageException();
     }
 
     @Override
-    public Inbox getInboxById(Integer inboxId) {
-        Inbox inbox = inboxDao.getInboxById(inboxId);
+    public Inbox getMessageById(Integer inboxId) {
+        Inbox inbox = inboxDao.getMessageById(inboxId);
+        //将对应的邮件设置为已读
+        inboxDao.checkInbox(inboxId);
         return inbox;
     }
 
     @Override
-    public List<Inbox> findAllInboxesBetweenTwoUsers(InboxIndexDto inboxIndexDto) {
-        return inboxDao.findAllInboxesBetweenTwoUsers(inboxIndexDto);
+    public List<Inbox> getInboxByRecipientId(Integer recipientId) {
+        return inboxDao.getInboxByRecipientId(recipientId);
+    }
+
+    @Override
+    public List<Inbox> getOutBoxBySenderId(Integer senderId) {
+        return inboxDao.getOutBoxBySenderId(senderId);
     }
 
     @Override
@@ -52,8 +63,16 @@ public class InboxServiceImpl implements InboxService{
         return inboxDao.countUnCheckedInbox(userId);
     }
 
+
+/*
     @Override
     public Integer countUnCheckedInboxOfTwoUsers(InboxIndexDto inboxIndexDto) {
         return inboxDao.countUnCheckedInboxOfTwoUsers(inboxIndexDto);
     }
+
+    @Override
+    public List<Inbox> findAllInboxesBetweenTwoUsers(InboxIndexDto inboxIndexDto) {
+        return inboxDao.findAllInboxesBetweenTwoUsers(inboxIndexDto);
+    }
+ */
 }
