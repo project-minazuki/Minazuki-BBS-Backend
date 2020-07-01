@@ -25,19 +25,6 @@ public class HistoryViewedController {
         this.historyViewedService = historyViewedService;
     }
 
-    @PostMapping("/create")
-    @ResponseBody
-    @UserLoginRequired
-    @ApiOperation(value = "新增一条历史记录",notes = "需要登录", httpMethod = "POST")
-    public StandardResponse<Object> createHistoryViewed(
-            @ApiParam(name = "创建历史记录入参")
-            @RequestBody HistoryViewedCreateDto historyViewedCreateDto
-    ){
-        this.historyViewedService.addHistory(historyViewedCreateDto);
-        return new StandardResponse<>(StandardResponse.SUCCESS_CODE,
-                "success",null);
-    }
-
     @DeleteMapping("/{historyViewedId}/delete")
     @ResponseBody
     @UserLoginRequired
