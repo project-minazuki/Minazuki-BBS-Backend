@@ -1,6 +1,8 @@
 package com.minazuki.bbsbackend.bbs.theme.service.impl;
 
 import com.minazuki.bbsbackend.bbs.categorymoderator.dao.CategoryModeratorDao;
+import com.minazuki.bbsbackend.bbs.historyviewed.dao.HistoryViewedDao;
+import com.minazuki.bbsbackend.bbs.historyviewed.dataobject.HistoryViewedCreateDto;
 import com.minazuki.bbsbackend.bbs.tag.dao.TagDao;
 import com.minazuki.bbsbackend.bbs.tag.dataobject.ThemeTagLinkDto;
 import com.minazuki.bbsbackend.bbs.tag.pojo.Tag;
@@ -24,15 +26,15 @@ import java.util.*;
 @Transactional
 public class ThemeServiceImpl implements ThemeService {
     private final ThemeDao themeDao;
-    private final ThemeReportDao themeReportDao;
     private final TagDao tagDao;
+    private final HistoryViewedDao historyViewedDao;
     private final CategoryModeratorDao categoryModeratorDao;
 
     @Autowired
-    public ThemeServiceImpl(ThemeDao themeDao,ThemeReportDao themeReportDao, TagDao tagDao, CategoryModeratorDao categoryModeratorDao) {
+    public ThemeServiceImpl(ThemeDao themeDao, HistoryViewedDao historyViewedDao, TagDao tagDao, CategoryModeratorDao categoryModeratorDao) {
         this.tagDao = tagDao;
+        this.historyViewedDao = historyViewedDao;
         this.themeDao = themeDao;
-        this.themeReportDao = themeReportDao;
         this.categoryModeratorDao = categoryModeratorDao;
     }
 
@@ -95,6 +97,13 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     public Theme getThemeByIndex(Integer id) {
         this.themeDao.increaseVisitsCountById(id);
+        Integer nowUserId = AuthenticationInterceptor.getCurrentUserId();
+        if (nowUserId != null) {
+            HistoryViewedCreateDto hvcDto = new HistoryViewedCreateDto();
+            hvcDto.setOwnerId(nowUserId);
+            hvcDto.setViewedThemeId(id);
+            this.historyViewedDao.addHistoryViewed(hvcDto);
+        }
         Theme theme = themeDao.getThemeById(id);
         packageTheme(theme);
         return theme;

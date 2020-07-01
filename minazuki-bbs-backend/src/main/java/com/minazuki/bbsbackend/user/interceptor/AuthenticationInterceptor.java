@@ -48,16 +48,16 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         if (method.isAnnotationPresent(UserLoginRequired.class)) {
             UserLoginRequired userLoginRequired = method.getAnnotation(UserLoginRequired.class);
             if (userLoginRequired.required()) {
-                return authenticate(token, false);
+                return authenticate(token, true, false);
             }
         }
         if (method.isAnnotationPresent(AdminRequired.class)) {
             AdminRequired adminRequired = method.getAnnotation(AdminRequired.class);
             if (adminRequired.required()) {
-                return authenticate(token, true);
+                return authenticate(token, true, true);
             }
         }
-        return true;
+        return authenticate(token, false, false);
     }
 
     @Override
@@ -70,20 +70,26 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         tl.remove();
     }
 
-    private boolean authenticate(String token, Boolean needAdmin) throws UnauthenticatedException, PermissionDeniedException {
+    private boolean authenticate(String token,  Boolean needLogin, Boolean needAdmin) throws UnauthenticatedException, PermissionDeniedException {
         UserJwtInfoDto userJwtInfoDto;
-        //执行认证
-        if (token == null) {
+        // 倘若不需要登陆但token不为null，保存当前登录用户id
+        if (!needLogin && token != null){
+            userJwtInfoDto = JwtUtil.verify(token);
+            tl.set(userJwtInfoDto.getUserId());
+            return true;
+        }
+        //倘若需要登陆且token是null，抛出异常
+        if (needLogin && token == null) {
             throw new UnauthenticatedException("missing the token");
         }
-        //获取 token 中的 userId信息
+        if (token == null) return true;
+        //需要登陆时，进行相应认证
         try {
             userJwtInfoDto = JwtUtil.verify(token);
             tl.set(userJwtInfoDto.getUserId());
         } catch (TokenExpiredException e) {
             throw new UnauthenticatedException("The token expired", e);
-        }
-        catch (JWTVerificationException e) {
+        } catch (JWTVerificationException e) {
             throw new UnauthenticatedException("Token verify failed", e);
         }
         if(needAdmin) {

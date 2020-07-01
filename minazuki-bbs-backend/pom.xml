@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.minazuki</groupId>
     <artifactId>bbs-backend</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <name>bbs-backend</name>
     <description>a self-made bbs backend</description>
 
@@ -85,6 +85,7 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
