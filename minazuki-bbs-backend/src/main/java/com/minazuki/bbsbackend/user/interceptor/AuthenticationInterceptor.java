@@ -1,5 +1,6 @@
 package com.minazuki.bbsbackend.user.interceptor;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.minazuki.bbsbackend.user.annotation.AdminRequired;
@@ -74,8 +75,12 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         UserJwtInfoDto userJwtInfoDto;
         // 倘若不需要登陆但token不为null，保存当前登录用户id
         if (!needLogin && token != null){
-            userJwtInfoDto = JwtUtil.verify(token);
-            tl.set(userJwtInfoDto.getUserId());
+            try{
+                userJwtInfoDto = JwtUtil.verify(token);
+                tl.set(userJwtInfoDto.getUserId());
+            } catch (JWTDecodeException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         //倘若需要登陆且token是null，抛出异常
