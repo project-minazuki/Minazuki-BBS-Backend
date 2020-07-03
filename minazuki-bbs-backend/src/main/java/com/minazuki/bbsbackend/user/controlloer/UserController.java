@@ -36,7 +36,6 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseBody
-    @AdminRequired
     @ApiOperation(value = "查看用户详情", notes = "查看用户详情", httpMethod = "GET")
     public StandardResponse<UserInfoOutDto> getUserById(
             @ApiParam(name = "用户id", value = "用户id", required = true)
@@ -66,10 +65,11 @@ public class UserController {
 
     @PostMapping("/update")
     @ResponseBody
-    @ApiOperation(value = "修改用户资料", notes = "只传入需要修改的部分，其他如果未修改不传即可", httpMethod = "POST")
+    @UserLoginRequired
+    @ApiOperation(value = "修改用户资料", notes = "只传入需要修改的部分，其他如果未修改不传即可,需要登录", httpMethod = "POST")
     public StandardResponse<Object> updateUser(
             @ApiParam(name = "修改用户资料入参数据模型", value = "用户id（必需）" , required = true)
-            @RequestBody UserUpdateDto userUpdateDto) {
+            @RequestBody UserUpdateDto userUpdateDto) throws PermissionDeniedException{
         try {
             userService.updateUser(userUpdateDto);
         } catch (DuplicateUserInfoException e) {

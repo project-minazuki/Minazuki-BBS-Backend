@@ -151,7 +151,7 @@ public class CategoryController {
     @GetMapping("/manage")
     @ResponseBody
     @UserLoginRequired
-    @ApiOperation(value = "获取该用户管理的所有板块", notes = "可能不止一个,不传默认当前用户,需要登陆", httpMethod = "GET")
+    @ApiOperation(value = "获取该用户管理的所有板块", notes = "可能不止一个,倘若传'current'则表示当前用户,需要登陆", httpMethod = "GET")
     public StandardResponse<List<Category>> getManagedCategoriesByUserId(
             @ApiParam(name = "用户id")
             @RequestParam String userId) {

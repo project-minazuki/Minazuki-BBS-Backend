@@ -7,6 +7,8 @@ import com.minazuki.bbsbackend.user.dataobject.UserSignInDto;
 import com.minazuki.bbsbackend.user.dataobject.UserUpdateDto;
 import com.minazuki.bbsbackend.user.exception.DuplicateUserInfoException;
 import com.minazuki.bbsbackend.user.exception.NoUserMatchException;
+import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
+import com.minazuki.bbsbackend.user.interceptor.AuthenticationInterceptor;
 import com.minazuki.bbsbackend.user.pojo.User;
 import com.minazuki.bbsbackend.user.service.UserService;
 import com.minazuki.bbsbackend.user.util.JwtUtil;
@@ -49,7 +51,10 @@ public class UserServiceImpl implements UserService {
         return userInfoOutDto;
     }
 
-    public void updateUser(UserUpdateDto userUpdateDto) throws DuplicateUserInfoException {
+    public void updateUser(UserUpdateDto userUpdateDto) throws DuplicateUserInfoException, PermissionDeniedException {
+        if (!userDao.getUserById(AuthenticationInterceptor.getCurrentUserId()).isAdmin()
+                && !userUpdateDto.getId().equals(AuthenticationInterceptor.getCurrentUserId()))
+            throw new PermissionDeniedException();
         if (userUpdateDto.isAllNull()) return;
         if (userUpdateDto.getNickname() != null) {
             User user = userDao.getUserByNickname(userUpdateDto.getNickname());

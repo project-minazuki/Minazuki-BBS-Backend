@@ -15,6 +15,9 @@ public class UserInfoOutDto {
     @ApiModelProperty(value = "用户id")
     private Integer id;
 
+    @ApiModelProperty(value = "是否是管理员")
+    private Boolean isAdmin;
+
     @ApiModelProperty(value = "用户名")
     private String username;
 
@@ -45,5 +48,6 @@ public class UserInfoOutDto {
         this.avatarUrl = user.getAvatarUrl();
         this.createdAt = user.getCreatedAt();
         this.lastSignIn = user.getLastSignIn();
+        this.isAdmin = user.isAdmin();
     }
 }
