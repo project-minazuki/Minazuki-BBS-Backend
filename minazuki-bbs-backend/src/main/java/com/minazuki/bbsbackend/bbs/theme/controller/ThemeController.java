@@ -1,7 +1,9 @@
 package com.minazuki.bbsbackend.bbs.theme.controller;
 
 import com.minazuki.bbsbackend.bbs.tag.dataobject.ThemeTagLinkDto;
+import com.minazuki.bbsbackend.bbs.tag.exception.DuplicatedTagNameException;
 import com.minazuki.bbsbackend.bbs.tag.pojo.Tag;
+import com.minazuki.bbsbackend.bbs.tag.service.TagService;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeCreateDto;
 import com.minazuki.bbsbackend.bbs.theme.dataobject.ThemeUpdateDto;
 import com.minazuki.bbsbackend.bbs.theme.exception.DuplicateThemeInfoException;
@@ -10,6 +12,7 @@ import com.minazuki.bbsbackend.bbs.theme.service.ThemeService;
 import com.minazuki.bbsbackend.bbs.themereport.dataobject.ThemeReportCreateDto;
 import com.minazuki.bbsbackend.bbs.themereport.service.ThemeReportService;
 import com.minazuki.bbsbackend.http.StandardResponse;
+import com.minazuki.bbsbackend.user.annotation.AdminRequired;
 import com.minazuki.bbsbackend.user.annotation.UserLoginRequired;
 import com.minazuki.bbsbackend.user.exception.PermissionDeniedException;
 import io.swagger.annotations.Api;
@@ -28,11 +31,13 @@ public class ThemeController {
 
     private final ThemeService themeService;
     private final ThemeReportService themeReportService;
+    private final TagService tagService;
 
     @Autowired
-    public ThemeController(ThemeReportService themeReportService, ThemeService themeService) {
+    public ThemeController(ThemeReportService themeReportService, ThemeService themeService, TagService tagService) {
         this.themeReportService = themeReportService;
         this.themeService = themeService;
+        this.tagService = tagService;
     }
 
     @PostMapping("/create")
@@ -201,6 +206,21 @@ public class ThemeController {
     @ApiOperation(value = "获取所有可选tag", httpMethod = "GET")
     public StandardResponse<List<Tag>> getTagsList() {
         return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", themeService.getTagList());
+    }
+
+    @PostMapping("/tag/create")
+    @ResponseBody
+    @ApiOperation(value = "创建tag", httpMethod = "POST")
+    @AdminRequired
+    public StandardResponse<Object> createTag(
+            @ApiParam(name = "新tag名字", required = true)
+            @RequestParam String tagName) {
+        try {
+            this.tagService.createTag(tagName);
+        }catch (DuplicatedTagNameException e) {
+            return new StandardResponse<>(StandardResponse.FAILURE_CODE, e.getMessage(), null);
+        }
+        return new StandardResponse<>(StandardResponse.SUCCESS_CODE, "success", null);
     }
 
 
